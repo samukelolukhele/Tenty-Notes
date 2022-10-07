@@ -13,6 +13,11 @@ export class UsersController {
     return await this.serv.getAll();
   }
 
+  @Get(':id')
+  public async getById(@Param('id') id: string) {
+    return await this.serv.getById(id);
+  }
+
   @Post()
   public async create(@Body() user: CreatUserDto) {
     return await this.serv.create(user);

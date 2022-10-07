@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   public async getById(id: any) {
-    return await this.repo.getId(id);
+    return await this.repo.findOneBy({ id: id });
   }
 
   public async updateById(id: any, user: UpdateUserDto) {
