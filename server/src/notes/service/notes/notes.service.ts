@@ -17,14 +17,10 @@ export class NotesService {
   }
 
   public async create(note: CreateNoteDto) {
-    const user = await this.userRepo.findOneBy({ id: parseInt(note.authorId) });
-
     const newNote = await this.repo.create({
       title: note.title,
       body: note.body,
-      author: user.username,
-      authorId: note.authorId,
-      isPinned: note.isPinned,
+      author_id: note.author_id,
     });
 
     return this.repo.save(newNote);

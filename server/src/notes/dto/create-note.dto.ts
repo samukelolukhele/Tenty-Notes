@@ -16,18 +16,13 @@ export class CreateNoteDto {
   body: string;
 
   @ApiProperty({
-    description: 'Author of the note',
-  })
-  author: string;
-
-  @ApiProperty({
     description: 'Id of the author of the note',
   })
   @IsNotEmpty()
-  authorId: string;
+  author_id: number;
 
   @ApiProperty({
     description: 'Checks if the note is pinned by the user',
   })
-  isPinned: boolean;
+  is_pinned: boolean;
 }

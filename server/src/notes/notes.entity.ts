@@ -16,9 +16,9 @@ export class Note extends BaseEntity {
   @Column({ type: 'varchar' })
   author: string;
 
-  @Column({ type: 'varchar' })
-  authorId: string;
+  @Column({ type: 'bigint' })
+  author_id: number;
 
   @Column({ type: 'boolean' })
-  isPinned: boolean = false;
+  is_pinned: boolean = false;
 }
