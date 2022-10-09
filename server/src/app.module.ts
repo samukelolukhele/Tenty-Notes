@@ -4,9 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ormConfig } from './orm.config';
-import { NotesController } from './notes/controller/notes/notes.controller';
-import { NotesService } from './notes/service/notes/notes.service';
+import { ormConfig } from './config/orm.config';
 import { NotesModule } from './notes/notes.module';
 
 @Module({

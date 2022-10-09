@@ -1,0 +1,39 @@
+@import "../../variables/Variables.scss";
+
+.home {
+  width: 100vw;
+  height: 100vh;
+  background-color: $blackColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.text-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .main-text {
+    font-size: 3rem;
+    text-align: center;
+    color: $whiteColor;
+    .logo-small {
+      font-weight: 100;
+      font-style: italic;
+    }
+    .logo {
+      font-weight: 300;
+      font-style: bold;
+    }
+  }
+}

@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
+import { UpdateNoteDto } from 'src/notes/dto/update-note.dto';
 import { Note } from 'src/notes/notes.entity';
-import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class NotesService {
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
     @InjectRepository(Note) private readonly repo: Repository<Note>,
   ) {}
 
@@ -24,5 +23,14 @@ export class NotesService {
     });
 
     return this.repo.save(newNote);
+  }
+
+  public async update(id: any, note: UpdateNoteDto) {
+    const noteToUpdate = await this.repo.findOne(id);
+
+    if (!noteToUpdate.id) return 'Note not found';
+
+    await this.repo.update(id, note);
+    return this.repo.findOne(id);
   }
 }

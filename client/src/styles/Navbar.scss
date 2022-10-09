@@ -1,0 +1,34 @@
+@import "variables/Variables.scss";
+.navbar {
+  width: 100%;
+  height: 60px;
+  background-color: $blackColor;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    .nav-links {
+      a {
+        margin: 0 20px;
+        font-weight: 300;
+      }
+    }
+
+    a {
+      color: $whiteColor;
+      font-size: 25px;
+      text-decoration: none;
+      font-family: $titleFont;
+      font-weight: bold;
+      text-decoration: none;
+
+      span {
+        font-weight: 300;
+        font-style: italic;
+      }
+    }
+  }
+}
