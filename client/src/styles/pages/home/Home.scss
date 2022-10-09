@@ -1,19 +1,19 @@
-@import "../../variables/Variables.scss";
+@import "../../variables";
 
 .home {
   width: 100vw;
-  height: 100vh;
-  background-color: $blackColor;
+  height: 90vh;
+  background-color: $primary;
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 }
 
 .text-container {
@@ -24,9 +24,10 @@
   flex-direction: column;
 
   .main-text {
-    font-size: 3rem;
+    font-size: 5rem;
     text-align: center;
-    color: $whiteColor;
+    color: $secondary;
+    margin-bottom: 0;
     .logo-small {
       font-weight: 100;
       font-style: italic;
@@ -36,4 +37,22 @@
       font-style: bold;
     }
   }
+
+  hr {
+    border-style: dashed;
+    width: 80%;
+    border-color: $secondary;
+  }
+
+  .secondary-text {
+    font-size: 1.5rem;
+    font-weight: map-get($font-weight, "light");
+    color: $secondary;
+    width: 80%;
+    text-align: center;
+  }
+}
+.btn-container {
+  display: flex;
+  gap: 0 10px;
 }

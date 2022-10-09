@@ -1,0 +1,44 @@
+@import "../variables.scss";
+
+$btn-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "error": $error,
+  "info": $info,
+);
+
+@mixin btn($bg-color: $primary) {
+  cursor: pointer;
+  border: 0;
+  display: inline-block;
+  background-color: $bg-color;
+  padding: $base-padding 0;
+  text-align: center;
+  width: 130px;
+  border-radius: $base-border-radius;
+  font-size: 1.3rem;
+  font-weight: map-get($map: $font-weight, $key: "base");
+}
+
+.btn {
+  @include btn;
+}
+
+@each $key, $color in $btn-colors {
+  .btn-#{$key} {
+    @include btn($color);
+    @if $color == $secondary {
+      color: $primary;
+    } @else if ($color == $primary) {
+      background-color: darken($color, 20%);
+    } @else {
+      color: $secondary;
+    }
+    &:hover {
+      background-color: darken($color, 10%);
+      transform: scale(1.05);
+      box-shadow: $base-box-shadow;
+      transition: ease-in 0.3s;
+    }
+  }
+}

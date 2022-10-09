@@ -11,6 +11,7 @@ const Home = () => {
             Welcome To <span className="logo-small">Tenty</span>
             <span className="logo-bold">Notes</span>
           </h1>
+          <hr />
           <h4 className="secondary-text">
             Capture important notes to help you learn or just to keep track of
             things.
