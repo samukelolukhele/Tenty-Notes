@@ -1,0 +1,48 @@
+@use "../../variables" as var;
+
+.login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var.$secondary;
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.login-card {
+  padding: 3.5rem 2.75rem;
+  box-shadow: var.$base-box-shadow;
+  background-color: var.$primary;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem 0;
+
+  .login-fields {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 4px 0;
+    flex-direction: column;
+    margin: 0 10px;
+
+    input {
+      width: 100%;
+      padding: 10px 0;
+      background-color: darken(var.$secondary, 5%);
+    }
+  }
+
+  .register-link {
+    color: var.$tetiary;
+    text-decoration: underline;
+  }
+}

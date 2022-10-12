@@ -18,3 +18,29 @@ a {
   text-decoration: none;
   color: $secondary;
 }
+
+input {
+  border: none;
+}
+
+.logo {
+  color: $secondary;
+  font-size: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  text-decoration: none;
+
+  span {
+    font-weight: 300;
+    font-style: italic;
+  }
+}
+
+.error-message {
+  background-color: $error;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 2rem;
+}

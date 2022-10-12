@@ -19,6 +19,31 @@ a {
   color: #dddddd;
 }
 
+input {
+  border: none;
+}
+
+.logo {
+  color: #dddddd;
+  font-size: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  text-decoration: none;
+}
+.logo span {
+  font-weight: 300;
+  font-style: italic;
+}
+
+.error-message {
+  background-color: #d32752;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 2rem;
+}
+
 .btn {
   cursor: pointer;
   border: 0;
@@ -27,7 +52,6 @@ a {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
-  border-radius: 40px;
   font-size: 1.3rem;
 }
 
@@ -39,14 +63,13 @@ a {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
-  border-radius: 40px;
   font-size: 1.3rem;
   background-color: black;
 }
 .btn-primary:hover {
   background-color: black;
   transform: scale(1.05);
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;
 }
 
@@ -58,14 +81,31 @@ a {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
-  border-radius: 40px;
   font-size: 1.3rem;
   color: #181818;
 }
 .btn-secondary:hover {
   background-color: #c4c4c4;
   transform: scale(1.05);
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
+  transition: ease-in 0.3s;
+}
+
+.btn-tetiary {
+  cursor: pointer;
+  border: 0;
+  display: inline-block;
+  background-color: #1a9da7;
+  padding: 0.75rem 0;
+  text-align: center;
+  width: 130px;
+  font-size: 1.3rem;
+  color: #dddddd;
+}
+.btn-tetiary:hover {
+  background-color: #13747b;
+  transform: scale(1.05);
+  box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;
 }
 
@@ -77,14 +117,13 @@ a {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
-  border-radius: 40px;
   font-size: 1.3rem;
   color: #dddddd;
 }
 .btn-error:hover {
   background-color: #a81f41;
   transform: scale(1.05);
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;
 }
 
@@ -96,13 +135,12 @@ a {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
-  border-radius: 40px;
   font-size: 1.3rem;
   color: #dddddd;
 }
 .btn-info:hover {
   background-color: #d6a609;
   transform: scale(1.05);
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;
 }/*# sourceMappingURL=index.css.map */

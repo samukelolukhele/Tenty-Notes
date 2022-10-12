@@ -3,6 +3,7 @@
 $btn-colors: (
   "primary": $primary,
   "secondary": $secondary,
+  "tetiary": $tetiary,
   "error": $error,
   "info": $info,
 );
@@ -15,7 +16,7 @@ $btn-colors: (
   padding: $base-padding 0;
   text-align: center;
   width: 130px;
-  border-radius: $base-border-radius;
+  // border-radius: $base-border-radius;
   font-size: 1.3rem;
   font-weight: map-get($map: $font-weight, $key: "base");
 }

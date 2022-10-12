@@ -5,6 +5,7 @@ import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { LoginUserDto } from 'src/users/dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,8 +30,18 @@ export class UsersService {
     return await this.repo.save(newUser);
   }
 
+  public async login(user: LoginUserDto) {
+    return `Here is the user info: ${user}. Imagine this a JWT token`;
+  }
+
   public async getById(id: any) {
     return await this.repo.findOneBy({ id: id });
+  }
+
+  public async getByEmail(email: string) {
+    return await this.repo.findOneOrFail({
+      where: { email },
+    });
   }
 
   public async updateById(id: any, user: UpdateUserDto) {
