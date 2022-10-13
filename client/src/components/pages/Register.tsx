@@ -54,8 +54,16 @@ const Register = () => {
           <div className="login-fields">
             <label>Email</label>
             <input type="email" name="email" onChange={handleData} />
+            <label>Username</label>
+            <input type="text" name="username" onChange={handleData} />
             <label>Password</label>
             <input type="password" name="password" onChange={handleData} />
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              onChange={handleData}
+            />
           </div>
           <button
             type="submit"

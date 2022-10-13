@@ -33,11 +33,13 @@ const Login = () => {
 
     // if ((email && password !== undefined) || "") {
     await axios
-      .post(`${url}/users/login`, {
+      .post(`${url}/auth/login`, {
         email: email,
         password: password,
       })
-      .then(() => redirect("/"))
+      .then((data) => {
+        console.log(data.data);
+      })
       .catch((err) => setError({ status: true, message: "Error" }));
     // }
 

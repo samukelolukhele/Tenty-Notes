@@ -3,16 +3,16 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
-  Put,
-  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Get } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AuthUser } from 'src/auth/user.decorator';
 import { CreatUserDto } from 'src/users/dto/create-user.dto';
-import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { UsersService } from 'src/users/services/users/users.service';
-import { threadId } from 'worker_threads';
 
 @Controller('users')
 export class UsersController {
@@ -23,15 +23,10 @@ export class UsersController {
     return await this.serv.getAll();
   }
 
-  @Get('/id/:id')
-  public async getById(@Param('id') id: string) {
-    return await this.serv.getById(id);
-  }
-
-  @Get('/email')
-  public async getByEmail(@Req() req: any) {
-    console.log(req.email);
-    return await this.serv.getByEmail(req.body.email);
+  @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  public async getById(@AuthUser() user: any) {
+    return await this.serv.getById(user.userId);
   }
 
   @Post()
@@ -39,14 +34,14 @@ export class UsersController {
     return await this.serv.create(user);
   }
 
-  @Post('/login')
-  public async login(@Body() user: LoginUserDto) {
-    return await this.serv.login(user);
-  }
-
-  @Put(':id')
-  public async update(@Param() id: any, @Body() user: UpdateUserDto) {
-    return await this.serv.updateById(id, user);
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  public async update(
+    @AuthUser() user: any,
+    @Body() updatedUser: UpdateUserDto,
+  ) {
+    console.log(user);
+    return await this.serv.updateById(user.userId, updatedUser);
   }
 
   @Delete(':id')

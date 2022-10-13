@@ -7,6 +7,7 @@ declare global {
       POSTGRES_PASSWORD?: string;
       POSTGRES_DATABASE: string;
       JWT_SECRET: string;
+      SALT_ROUNDS: number;
     }
   }
 }

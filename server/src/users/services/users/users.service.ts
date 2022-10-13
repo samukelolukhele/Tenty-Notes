@@ -1,16 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatUserDto } from 'src/users/dto/create-user.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
 import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
-import { LoginUserDto } from 'src/users/dto/login-user.dto';
-
+import { AuthService } from 'src/auth/services/auth.service';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly repo: Repository<User>,
+    @Inject(forwardRef(() => AuthService)) private auth: AuthService,
   ) {}
 
   public async getAll() {
@@ -18,20 +17,17 @@ export class UsersService {
   }
 
   public async create(user: CreatUserDto) {
-    // const salt = await bcrypt.genSalt(20);
-    const hash = await bcrypt.hashSync(user.password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
-    const newUser = this.repo.create({
+    const newUser = {
       username: user.username,
       email: user.email,
-      password: user.password,
-    });
+      password: hashedPassword,
+    };
 
-    return await this.repo.save(newUser);
-  }
+    await this.repo.save(newUser);
 
-  public async login(user: LoginUserDto) {
-    return `Here is the user info: ${user}. Imagine this a JWT token`;
+    return await this.auth.login(user);
   }
 
   public async getById(id: any) {
@@ -39,12 +35,12 @@ export class UsersService {
   }
 
   public async getByEmail(email: string) {
-    return await this.repo.findOneOrFail({
+    return await this.repo.findOne({
       where: { email },
     });
   }
 
-  public async updateById(id: any, user: UpdateUserDto) {
+  public async updateById(id: any, user: any) {
     return await this.repo.update(id, user);
   }
 

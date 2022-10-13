@@ -10,22 +10,24 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string) {
-    const user = await this.usersService.getByEmail(username);
+  async validateUser(email: string, pass: string) {
+    const user = await this.usersService.getByEmail(email);
 
-    const passwordCheck = await bcrypt.compare(pass, user.password);
-    console.log(passwordCheck);
-    if (passwordCheck) {
+    // const passwordCheck = await bcrypt.compare(pass, user.password);
+
+    if (await bcrypt.compare(pass, user.password)) {
       return user;
     }
     return null;
   }
 
   async login(user: any) {
+    const foundUser = await this.usersService.getByEmail(user.email);
+
     const payload = {
-      email: user.email,
-      username: user.username,
-      sub: user.id,
+      email: foundUser.email,
+      username: foundUser.username,
+      sub: foundUser.id,
     };
     return {
       access_token: this.jwtService.sign(payload),

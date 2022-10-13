@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(password: string): Promise<void> {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hashSync(password || this.password, 10);
+    this.password = await bcrypt.hash(this.password, process.env.SALT_ROUNDS);
+    console.log(this.password);
   }
 }
