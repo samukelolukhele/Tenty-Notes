@@ -10,7 +10,7 @@ export class Note extends BaseEntity {
   @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 100000 })
   body: string;
 
   @Column({ type: 'varchar' })

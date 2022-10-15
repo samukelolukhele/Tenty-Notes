@@ -1,0 +1,42 @@
+@use "../../variables" as var;
+
+.card {
+  height: 250px;
+  width: 100%;
+  display: flex;
+  padding: 1.3rem 3rem;
+  box-shadow: var.$small-box-shadow;
+  flex-direction: column;
+  width: fit-content;
+  background-color: lighten(var.$secondary, 10%);
+  color: var.$primary;
+
+  &:hover {
+    border: 1px solid var.$primary;
+    transition: ease 0.5s;
+  }
+}
+
+.card-header {
+  font-size: 1.4rem;
+  text-transform: capitalize;
+
+  p {
+    font-size: 0.8rem;
+    font-weight: map-get($map: var.$font-weight, $key: "light");
+  }
+}
+
+.card-tetiary {
+  .trash-icon {
+    color: darken(var.$secondary, 30%);
+
+    padding: 4px;
+    border-radius: 1000px;
+
+    &:hover {
+      background-color: var.$error;
+      color: white;
+    }
+  }
+}

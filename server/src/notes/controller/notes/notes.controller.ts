@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AuthUser } from 'src/auth/user.decorator';
 import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
 import { NotesService } from 'src/notes/service/notes/notes.service';
 
@@ -11,13 +23,26 @@ export class NotesController {
     return await this.serv.getAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() note: CreateNoteDto) {
-    return await this.serv.create(note);
+  async create(@AuthUser() user: any, @Body() note: CreateNoteDto) {
+    return await this.serv.create({
+      title: note.title,
+      body: note.body,
+      author_id: user.userId,
+      is_pinned: false,
+    });
   }
 
-  @Put(':id')
-  async update(@Param() id: any, @Body() note: CreateNoteDto) {
-    return await this.serv.update(id, note);
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  async update(@AuthUser() user: any, @Body() note: CreateNoteDto) {
+    return await this.serv.update(user.userId, note);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async delete(@AuthUser() user: any, @Param() id: any) {
+    return await this.serv.delete(user.userId, id);
   }
 }

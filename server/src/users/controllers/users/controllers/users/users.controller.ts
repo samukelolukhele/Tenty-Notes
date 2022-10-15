@@ -35,7 +35,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch()
+  @Patch(':id')
   public async update(
     @AuthUser() user: any,
     @Body() updatedUser: UpdateUserDto,

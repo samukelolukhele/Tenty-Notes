@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   public async getById(id: any) {
-    return await this.repo.findOneBy({ id: id });
+    return await this.repo.findOneBy(id);
   }
 
   public async getByEmail(email: string) {

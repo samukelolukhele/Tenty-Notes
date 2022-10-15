@@ -1,22 +1,27 @@
-import React, { useState } from "react";
-import { Link, redirect } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/pages/login/login.css";
 import Logo from "../Logo";
 import Error from "../Error";
-import axios from "axios";
+import Loading from "../Loading";
+import useForm from "../../hooks/useForm";
+import useFetch from "../../hooks/useFetch";
+import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
+  const nav = useNavigate();
+
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const url = "http://localhost:8080";
+  const { LOGIN } = useFetch<UseFetchTypes>("auth/login", false, data);
+  const { loggedIn } = useContext(AuthContext);
 
   const [error, setError] = useState({ status: false, message: "No error" });
   const [loading, setLoading] = useState(false);
-
-  const handleError = () => {};
 
   const handleData = (e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
@@ -27,25 +32,17 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    const { email, password } = data;
-
     setError({ status: false, message: "" });
+    setLoading(true);
 
-    // if ((email && password !== undefined) || "") {
-    await axios
-      .post(`${url}/auth/login`, {
-        email: email,
-        password: password,
-      })
-      .then((data) => {
-        console.log(data.data);
-      })
-      .catch((err) => setError({ status: true, message: "Error" }));
-    // }
-
-    console.log(email, password);
-
-    // setError({ status: true, message: "Fields are empty" });
+    if (data.password === "" || undefined || data.email === "" || undefined) {
+      setError({ status: true, message: "Fields are empty" });
+      setLoading(false);
+    }
+    await LOGIN();
+    setLoading(false);
+    loggedIn && nav("/dashboard");
+    window.location.reload();
   };
 
   return (
@@ -55,9 +52,14 @@ const Login = () => {
           <Logo size={2.2} />
           <div className="login-fields">
             <label>Email</label>
-            <input type="email" name="email" onChange={handleData} />
+            <input type="email" name="email" required onChange={handleData} />
             <label>Password</label>
-            <input type="password" name="password" onChange={handleData} />
+            <input
+              type="password"
+              name="password"
+              required
+              onChange={handleData}
+            />
           </div>
           <button
             type="submit"
@@ -72,6 +74,7 @@ const Login = () => {
               Register here.
             </Link>
           </p>
+          {loading && <Loading />}
           {error.status && <Error message={error.message} />}
         </div>
       </div>
