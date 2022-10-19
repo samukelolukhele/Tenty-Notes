@@ -1,55 +1,39 @@
-import axios from "axios";
-import React, {
-  useState,
-  createContext,
-  useRef,
-  useMemo,
-  useEffect,
-} from "react";
-import { UseFetchTypes } from "../hooks/types/@types.useFetch";
-import useFetch from "../hooks/useFetch";
+import jwtDecode from "jwt-decode";
+import React, { createContext, useEffect } from "react";
 
 interface AProps {
   children?: React.ReactNode;
-  user?: React.MutableRefObject<{}>;
-  loggedIn?: React.MutableRefObject<boolean>;
+}
+
+interface TokenProps {
+  sub: number;
+  exp: number;
+  iat: number;
 }
 
 export const AuthContext = createContext<AProps>({});
 
+const defaultUser = {
+  email: null,
+  id: null,
+  username: null,
+};
+
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const loggedIn = useRef(true);
-  const user = useRef({});
-  const { GETUSER } = useFetch<UseFetchTypes>("users/profile");
+  const token = localStorage.getItem("token");
+  const genLogIn = async (token: any) => {
+    if (!token) return;
 
+    const decodedToken: TokenProps = jwtDecode(token);
+    if (decodedToken.exp * 1000 < Date.now())
+      return localStorage.removeItem("token");
+  };
   useEffect(() => {
-    const genLogIn = async () => {
-      const token = localStorage.getItem("token");
-      const userData = await GETUSER().then(
-        (res) => (user.current = res?.data)
-      );
-
-      if (token) {
-        if (userData.data === undefined || {}) {
-          user.current = userData;
-          loggedIn.current = true;
-        }
-
-        loggedIn.current = false;
-        user.current = {};
-      } else {
-        loggedIn.current = true;
-        user.current = {};
-      }
-    };
-
-    genLogIn();
+    genLogIn(token);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ loggedIn, user, children }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ children }}>{children}</AuthContext.Provider>
   );
 };
 

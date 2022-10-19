@@ -23,6 +23,9 @@ export class UsersService {
       username: user.username,
       email: user.email,
       password: hashedPassword,
+      profile_image: 'hacker.png',
+      description: "Hey I'm on Tenty Notes!",
+      full_name: user.full_name,
     };
 
     await this.repo.save(newUser);
@@ -41,7 +44,12 @@ export class UsersService {
   }
 
   public async updateById(id: any, user: any) {
-    return await this.repo.update(id, user);
+    return await this.repo.update(id, {
+      ...(user.name && { username: user.name }),
+      ...(user.email && { email: user.email }),
+      ...(user.full_name && { full_name: user.full_name }),
+      ...(user.description && { description: user.description }),
+    });
   }
 
   public async delete(id: any) {

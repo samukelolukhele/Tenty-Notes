@@ -1,13 +1,16 @@
 import axios, { AxiosResponse } from "axios";
 
-const useFetch = <T,>(route = "", authRequired = false, body?: any) => {
+const useFetch = <T,>() => {
   const authHeaders = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   };
 
-  const GET = async (): Promise<any | AxiosResponse<any, any>> => {
+  const GET = async (
+    route: string,
+    authRequired = false
+  ): Promise<any | AxiosResponse<any, any>> => {
     return await axios
       .get(route, authRequired ? authHeaders : undefined)
       .then((res) => {
@@ -16,28 +19,28 @@ const useFetch = <T,>(route = "", authRequired = false, body?: any) => {
       .catch((err) => err.message);
   };
 
-  const POST = async () => {
+  const POST = async (route: string, authRequired = false, body: any) => {
     return await axios
       .post(route, body, authRequired ? authHeaders : undefined)
       .then((res) => res)
       .catch((e) => e.message);
   };
 
-  const PATCH = async () => {
+  const PATCH = async (route: string, body: any) => {
     return await axios
       .patch(route, body, authHeaders)
       .then((res) => res)
       .catch((e) => e.message);
   };
 
-  const DELETE = async () => {
+  const DELETE = async (route: string, id: string) => {
     return await axios
-      .delete(route, authHeaders)
+      .delete(route + `/${id}`, authHeaders)
       .then((res) => res)
       .catch((e) => e.message);
   };
 
-  const LOGIN = async () => {
+  const LOGIN = async (route: string, body: any) => {
     return await axios
       .post(route, body)
       .then((res) => {
@@ -47,7 +50,7 @@ const useFetch = <T,>(route = "", authRequired = false, body?: any) => {
       .catch((err) => err);
   };
 
-  const GETUSER = async () => {
+  const GETUSER = async (route: string, authRequired = false) => {
     return await axios(route, authHeaders)
       .then((res) => {
         return res;

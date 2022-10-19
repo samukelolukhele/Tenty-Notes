@@ -23,4 +23,16 @@ export class CreatUserDto {
   @IsNotEmpty()
   @Length(8)
   password: string;
+
+  @ApiProperty({
+    description: 'Full name of the user',
+    example: 'John Doe',
+  })
+  full_name: string;
+
+  @ApiProperty({
+    description: 'Users profile description',
+    example: 'This is a user profile',
+  })
+  description: string;
 }

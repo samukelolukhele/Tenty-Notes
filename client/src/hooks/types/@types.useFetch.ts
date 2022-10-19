@@ -5,6 +5,6 @@ export interface UseFetchTypes {
   POST: () => Promise<void | AxiosResponse<any, any>>;
   PATCH: () => Promise<void | AxiosResponse<any, any>>;
   DELETE: () => Promise<void | AxiosResponse<any, any>>;
-  LOGIN: () => Promise<void>;
-  GETUSER: () => Promise<void>;
+  LOGIN: () => Promise<void | AxiosResponse<any, any>>;
+  GETUSER: () => Promise<void | AxiosResponse<any, any>>;
 }

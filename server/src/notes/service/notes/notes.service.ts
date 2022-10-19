@@ -35,7 +35,7 @@ export class NotesService {
   }
 
   public async getById(id: any) {
-    return await this.repo.findOne(id);
+    return await this.repo.findOneBy(id);
   }
 
   public async delete(userId: any, id: any) {

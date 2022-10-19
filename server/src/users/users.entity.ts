@@ -1,12 +1,6 @@
-import {
-  BaseEntity,
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -19,15 +13,18 @@ export class User extends BaseEntity {
   username: string;
 
   @Column({ type: 'varchar' })
+  full_name: string;
+
+  @Column({ type: 'varchar' })
   email: string;
 
+  @Column({ type: 'varchar', length: 255, default: "Hey I'm on Tenty Notes!" })
+  description: string;
+
+  @Exclude({ toPlainOnly: true })
   @Column({ type: 'varchar' })
   password: string;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword(password: string): Promise<void> {
-    this.password = await bcrypt.hash(this.password, process.env.SALT_ROUNDS);
-    console.log(this.password);
-  }
+  @Column({ nullable: false, default: 'hacker.png' })
+  profile_image: string;
 }

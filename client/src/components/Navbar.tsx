@@ -9,15 +9,13 @@ interface AProps {
 }
 
 function Navbar() {
-  const { loggedIn } = useContext(AuthContext);
-
   return (
     <div className="navbar">
       <div className="container">
         <Link to="/" className="logo">
           <span>Tenty</span>NOTES
         </Link>
-        {loggedIn?.current ? (
+        {localStorage.getItem("token") ? (
           <Logout />
         ) : (
           <div className="nav-links">

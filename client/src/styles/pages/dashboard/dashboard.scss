@@ -4,6 +4,7 @@
   min-height: 100vh;
   height: 100%;
   background-color: var.$secondary;
+  padding-top: 4rem;
   .container {
     max-width: 740px;
   }
@@ -17,4 +18,54 @@
   grid-template-rows: repeat(auto, 1fr);
   column-gap: 10px;
   row-gap: 10px;
+}
+
+.profile {
+  width: 100%;
+  box-shadow: var.$small-box-shadow;
+  background-color: darken(var.$secondary, 10%);
+}
+
+.profile-container {
+  width: 100%;
+  margin: 1.2rem 2.5rem;
+  display: flex;
+  align-items: center;
+
+  .profile-img img {
+    width: 180px;
+    height: 180px;
+    border-radius: 5000px;
+    border: 1px solid black;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    margin-left: 1.2rem;
+
+    .profile-name-container {
+      .profile-name {
+        font-size: 2rem;
+      }
+
+      button {
+        padding: 0.3rem 0.35rem;
+        font-size: 0.8rem;
+        font-weight: map-get(var.$font-weight, "heavy");
+      }
+
+      .action-btns {
+        display: flex;
+        gap: 0 5px;
+      }
+    }
+
+    .profile-description {
+      font-weight: map-get(var.$font-weight, "light");
+    }
+  }
 }

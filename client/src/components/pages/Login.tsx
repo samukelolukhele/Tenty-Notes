@@ -17,8 +17,7 @@ const Login = () => {
     password: "",
   });
 
-  const { LOGIN } = useFetch<UseFetchTypes>("auth/login", false, data);
-  const { loggedIn } = useContext(AuthContext);
+  const { LOGIN } = useFetch<UseFetchTypes>();
 
   const [error, setError] = useState({ status: false, message: "No error" });
   const [loading, setLoading] = useState(false);
@@ -39,9 +38,9 @@ const Login = () => {
       setError({ status: true, message: "Fields are empty" });
       setLoading(false);
     }
-    await LOGIN();
+    await LOGIN("auth/login", data);
     setLoading(false);
-    loggedIn && nav("/dashboard");
+    localStorage.getItem("token") && nav("/dashboard");
     window.location.reload();
   };
 
