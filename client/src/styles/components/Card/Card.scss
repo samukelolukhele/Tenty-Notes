@@ -1,6 +1,7 @@
 @use "../../variables" as var;
 
 .card {
+  position: relative;
   height: 250px;
   width: 100%;
   display: flex;
@@ -12,8 +13,8 @@
   color: var.$primary;
 
   &:hover {
-    border: 1px solid var.$primary;
-    transition: ease 0.5s;
+    border-left: 3px solid var.$tetiary;
+    transition: ease 0.3s;
   }
 }
 
@@ -28,10 +29,31 @@
 }
 
 .card-tetiary {
-  .trash-icon {
-    color: darken(var.$secondary, 30%);
+  display: flex;
+  gap: 0 10px;
+  width: 100%;
 
+  color: darken(var.$secondary, 30%);
+
+  .pencil-icon {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.6rem;
     padding: 4px;
+    font-size: 1.5rem;
+    border-radius: 1000px;
+    color: var.$tetiary;
+    border: 1px solid var.$tetiary;
+
+    &:hover {
+      background-color: var.$tetiary;
+      color: white;
+    }
+  }
+
+  .trash-icon {
+    padding: 4px;
+    font-size: 1.5rem;
     border-radius: 1000px;
 
     &:hover {

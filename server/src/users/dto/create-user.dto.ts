@@ -35,4 +35,10 @@ export class CreatUserDto {
     example: 'This is a user profile',
   })
   description: string;
+
+  @ApiProperty({
+    description: 'Profile image of the user',
+    example: 'randomimage.jpg',
+  })
+  profile_image: string;
 }

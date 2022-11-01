@@ -9,7 +9,11 @@ const Logout = () => {
     localStorage.removeItem("token");
     window.location.reload();
   };
-  return <a onClick={handleClick}>Logout</a>;
+  return (
+    <a className="logout" onClick={handleClick}>
+      Logout
+    </a>
+  );
 };
 
 export default Logout;

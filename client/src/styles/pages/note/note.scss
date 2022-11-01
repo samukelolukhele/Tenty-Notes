@@ -1,0 +1,41 @@
+@use "../../variables" as var;
+@use "../../breakpoints" as break;
+
+.note-title-container {
+  .note-title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+  .note-username-container {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+
+    .note-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 1000px;
+      border: 1px black solid;
+    }
+
+    .note-username {
+      color: #494949;
+      cursor: pointer;
+      &:hover {
+        color: var.$tetiary;
+      }
+    }
+
+    .note-date {
+      margin-left: auto;
+      color: #a1a1a1;
+    }
+  }
+}
+
+.note-content-container {
+  .note-body {
+    font-size: 1.3rem;
+  }
+}

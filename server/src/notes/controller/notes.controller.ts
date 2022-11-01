@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -23,13 +22,23 @@ export class NotesController {
     return await this.serv.getAll();
   }
 
+  @Get(':id')
+  async getById(@Param('id') id: number) {
+    return await this.serv.getById(id);
+  }
+
+  @Get('notes-by-user/:id')
+  async getNotesByUser(@Param('id') id: number) {
+    return await this.serv.getByUserId(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@AuthUser() user: any, @Body() note: CreateNoteDto) {
     return await this.serv.create({
       title: note.title,
       body: note.body,
-      author_id: user.userId,
+      authorId: user.userId,
       is_pinned: false,
     });
   }
@@ -42,7 +51,7 @@ export class NotesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@AuthUser() user: any, @Param() id: any) {
+  async delete(@AuthUser() user: any, @Param('id') id: number) {
     return await this.serv.delete(user.userId, id);
   }
 }

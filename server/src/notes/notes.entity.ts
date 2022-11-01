@@ -1,4 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/users.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('notes')
 export class Note extends BaseEntity {
@@ -13,12 +23,18 @@ export class Note extends BaseEntity {
   @Column({ type: 'varchar', length: 100000 })
   body: string;
 
-  @Column({ type: 'varchar' })
-  author: string;
-
   @Column({ type: 'bigint' })
-  author_id: number;
+  authorId: number;
 
   @Column({ type: 'boolean' })
   is_pinned: boolean = false;
+
+  @Column({ type: 'date', default: Date.now() })
+  created_at: Date;
+
+  @Column({ type: 'date', default: Date.now() })
+  updated_at: Date;
+
+  @ManyToOne(() => User, (user) => user.note)
+  author: User;
 }

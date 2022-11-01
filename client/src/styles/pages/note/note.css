@@ -1,0 +1,32 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic);
+.note-title-container .note-title {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+.note-title-container .note-username-container {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0 15px;
+}
+.note-title-container .note-username-container .note-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 1000px;
+  border: 1px black solid;
+}
+.note-title-container .note-username-container .note-username {
+  color: #494949;
+  cursor: pointer;
+}
+.note-title-container .note-username-container .note-username:hover {
+  color: #1a9da7;
+}
+.note-title-container .note-username-container .note-date {
+  margin-left: auto;
+  color: #a1a1a1;
+}
+
+.note-content-container .note-body {
+  font-size: 1.3rem;
+}/*# sourceMappingURL=note.css.map */

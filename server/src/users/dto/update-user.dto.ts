@@ -4,20 +4,29 @@ import { isEmail, Length } from 'class-validator';
 export class UpdateUserDto {
   @ApiProperty({
     description: 'The name of the user',
-    example: 'John Doe',
+    example: 'john_doe',
   })
-  username: string;
+  username?: string;
 
   @ApiProperty({
     description: 'The email of the user',
     example: 'john@doe.com',
   })
-  email: string;
+  email?: string;
 
   @ApiProperty({
     description: 'The password of the user',
     example: 'Password123',
   })
   @Length(8)
-  password: string;
+  password?: string;
+
+  @ApiProperty({ description: 'Full name of the user', example: 'John Doe' })
+  full_name?: string;
+
+  @ApiProperty({
+    description: 'User profile image',
+    example: 'randomimage.jpg',
+  })
+  profile_image?: string;
 }

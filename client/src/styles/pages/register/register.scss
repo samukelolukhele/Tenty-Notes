@@ -1,0 +1,37 @@
+@use "../../variables" as var;
+@use "../../breakpoints" as break;
+
+.register {
+  .login-card {
+    max-width: 400px;
+    padding: 1.3rem 2.75rem;
+    margin-top: 1.5rem;
+
+    @include break.sm {
+      width: 90%;
+      margin-top: 0;
+    }
+  }
+
+  .register-name-container {
+    display: flex;
+    gap: 0 15px;
+
+    @include break.sm {
+      flex-direction: column;
+      gap: 10px 0;
+    }
+
+    .full-name-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px 0;
+    }
+
+    .username-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px 0;
+    }
+  }
+}

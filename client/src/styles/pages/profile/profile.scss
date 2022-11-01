@@ -1,0 +1,47 @@
+@use "../../variables" as var;
+@use "../../breakpoints" as break;
+
+.profile-page {
+  .profile-container {
+    max-width: 740px;
+    margin: 0 auto;
+
+    @include break.md {
+      text-align: center;
+      display: flex;
+      width: 100%;
+      padding: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-info {
+      @include break.md {
+        justify-content: center;
+        align-items: center;
+      }
+
+      .profile-username {
+        @include break.md {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .profile {
+    box-shadow: none;
+  }
+
+  .row {
+    max-width: 740px;
+    margin: 0 auto;
+
+    @include break.md {
+      width: 80%;
+      grid-template-columns: repeat(auto, 1fr);
+    }
+  }
+}

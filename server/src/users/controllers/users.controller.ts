@@ -28,8 +28,7 @@ const storage = diskStorage({
   destination: './uploads/profileimages',
   filename: (req, file, cb) => {
     const filename: string =
-      path.parse(file.originalname.toUpperCase()).name.replace(/\s/g, '') +
-      uuidv4();
+      path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
     const extension: string = path.parse(file.originalname).ext;
     cb(null, `${filename}${extension}`);
   },
@@ -46,8 +45,13 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  public async getById(@AuthUser() user: any) {
-    return await this.serv.getById(user.userId);
+  public async getByProfile(@AuthUser() user: any) {
+    return await this.serv.getProfile(user.userId);
+  }
+
+  @Get('/profile/:id')
+  public async getById(@Param('id') id: number) {
+    return this.serv.getById(id);
   }
 
   @Post()

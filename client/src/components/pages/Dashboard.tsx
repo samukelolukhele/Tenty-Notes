@@ -1,74 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
+import React, { useEffect, useState, useTransition } from "react";
 import useFetch from "../../hooks/useFetch";
 import Card from "../Card";
 import "../../styles/pages/dashboard/dashboard.css";
-import { AuthContext } from "../../context/AuthContext";
-import { AddNoteModal, UpdateUserModal } from "../Modal";
+import { AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-
-interface UserProps {
-  full_name: string;
-  username: string;
-  description: string;
-  email: string;
-  id: number | null;
-  profile_image: string;
-}
+import useLink from "../../hooks/useLink";
+import useUserData from "../../hooks/useUserData";
+import useModal from "../../hooks/useModal";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
+import Username from "../Username";
 
 const Dashboard = () => {
-  const [notes, setNotes] = useState<any[]>([]);
-  const [user, setUser] = useState<UserProps>({
-    email: "",
-    username: "",
-    id: null,
-    description: "",
-    profile_image: "",
-    full_name: "",
-  });
-
-  const [modal, setModal] = useState({
-    type: "Update_User",
-    status: false,
-  });
-
   const nav = useNavigate();
+  const { user, notes, handleDashboardData } = useUserData();
+  const { handleModal, setModal } = useModal();
+  const handleLinkId = useLink();
+  const { DELETE } = useFetch();
+  const authRedirect = useAuthRedirect();
 
-  const handleModal = () => {
-    if (!modal.status) return;
-
-    const handleClose = () => {
-      setModal({
-        type: modal.type,
-        status: false,
-      });
-    };
-
-    if (modal.type == "Update_User")
-      return (
-        <UpdateUserModal btnCloseClick={handleClose} bgClick={handleClose} />
-      );
-    if (modal.type == "Add_Note")
-      return <AddNoteModal btnCloseClick={handleClose} bgClick={handleClose} />;
-  };
-
-  const { GET, DELETE } = useFetch<UseFetchTypes>();
-
-  const handleNotes = async () => {
-    await GET("users/profile", true)
-      .then((res) => setUser(res.data))
-      .catch((err) => console.log(err.message));
-
-    await GET("notes").then((res) => setNotes(res.data));
-  };
-  const handleDel = async (id: any) => {
-    await DELETE("notes", id).then((res) => console.log(res));
-    window.location.reload();
+  const handleDel = async (id: string | undefined) => {
+    await DELETE("notes", id).then(() => window.location.reload());
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) return nav("/login0");
-    handleNotes();
+    authRedirect;
+    handleDashboardData();
   }, []);
 
   return (
@@ -88,12 +44,18 @@ const Dashboard = () => {
             <div className="profile-info">
               <div className="profile-name-container">
                 <h2 className="profile-name">{user.full_name}</h2>
+                <Username
+                  className="profile-username"
+                  username={user.username}
+                  userId={user.id}
+                  route="dashboard/profile"
+                />
                 <div className="action-btns">
                   <button
-                    className="btn btn-success"
+                    className="btn btn-add-note btn-success"
                     onClick={() => setModal({ type: "Add_Note", status: true })}
                   >
-                    Create Note
+                    <AiOutlinePlus />
                   </button>
                   <button
                     className="btn btn-tetiary"
@@ -105,7 +67,9 @@ const Dashboard = () => {
                   </button>
                   <button
                     className="btn btn-error"
-                    onClick={() => alert("Create Note!")}
+                    onClick={() =>
+                      setModal({ type: "Delete_User", status: true })
+                    }
                   >
                     Delete Profile
                   </button>
@@ -120,10 +84,13 @@ const Dashboard = () => {
             return (
               <Card
                 key={i + note.title}
-                author={note.author}
+                username={note.author.username}
+                userId={note.author.id}
+                route="dashboard/profile"
                 title={note.title}
                 body={note.body}
                 delClick={() => handleDel(note.id)}
+                onClick={() => handleLinkId("/note", note.id)}
               />
             );
           })}

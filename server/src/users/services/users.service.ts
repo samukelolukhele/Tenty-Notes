@@ -13,7 +13,18 @@ export class UsersService {
   ) {}
 
   public async getAll() {
-    return await this.repo.find();
+    return await this.repo.find({
+      relations: {
+        note: true,
+      },
+      select: {
+        email: false,
+        full_name: false,
+        username: true,
+        description: true,
+        id: true,
+      },
+    });
   }
 
   public async create(user: CreatUserDto) {
@@ -21,7 +32,7 @@ export class UsersService {
 
     const newUser = {
       username: user.username,
-      email: user.email,
+      email: user.email.toLowerCase(),
       password: hashedPassword,
       profile_image: 'hacker.png',
       description: "Hey I'm on Tenty Notes!",
@@ -34,12 +45,25 @@ export class UsersService {
   }
 
   public async getById(id: any) {
-    return await this.repo.findOneBy(id);
+    return await this.repo.findOne({
+      where: { id: id },
+      relations: { note: true },
+      select: { email: false },
+    });
+  }
+
+  public async getProfile(id: any) {
+    return await this.repo.findOne({
+      where: { id: id },
+      relations: { note: true },
+    });
   }
 
   public async getByEmail(email: string) {
     return await this.repo.findOne({
-      where: { email },
+      where: { email: email },
+      relations: { note: true },
+      select: { password: true, id: true },
     });
   }
 

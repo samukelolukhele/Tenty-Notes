@@ -1,4 +1,3 @@
-import jwtDecode from "jwt-decode";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,10 +5,12 @@ import "../../src/styles/components/Modal/Modal.css";
 import { UseFetchTypes } from "../hooks/types/@types.useFetch";
 import useFetch from "../hooks/useFetch";
 import useForm from "../hooks/useForm";
+import Error from "./Error";
 
 interface ModalProps {
   children?: React.ReactNode;
   bgClick?: any;
+  btnCloseVisiible?: string;
   btnCloseClick?: any;
 }
 
@@ -19,13 +20,49 @@ const Modal = (props: ModalProps) => {
       <div className="modal-bg" onClick={props.bgClick}></div>
       <div className="modal-container">
         <div className="modal">
-          <button className="modal-close" onClick={props.btnCloseClick}>
+          <button
+            style={{ display: props.btnCloseVisiible }}
+            className={`modal-close`}
+            onClick={props.btnCloseClick}
+          >
             X
           </button>
           <div className="modal-fields">{props.children}</div>
         </div>
       </div>
     </>
+  );
+};
+
+export const DeleteProfileModal = ({
+  onAccept,
+  onCancel,
+  error = false,
+  errorMessage = "",
+}: {
+  onAccept: void | any;
+  onCancel: void | any;
+  error: boolean;
+  errorMessage: string;
+}) => {
+  return (
+    <Modal btnCloseVisiible="none">
+      <div className="dialogue-box">
+        <p>
+          Deleting your profile will also delete all of your notes. Are you sure
+          you want to delete your profile?
+        </p>
+        <div className="btn-container">
+          <button className="btn btn-tetiary" onClick={onCancel}>
+            Cancel
+          </button>
+          <button className="btn btn-error" onClick={onAccept}>
+            Delete
+          </button>
+        </div>
+        {error && <Error message={errorMessage} />}
+      </div>
+    </Modal>
   );
 };
 
@@ -67,7 +104,7 @@ export const UpdateUserModal = (props: ModalProps) => {
   const { PATCH } = useFetch<UseFetchTypes>();
 
   const handleSubmit = async () => {
-    await PATCH("users", state);
+    await PATCH("users", state).then(() => window.location.reload());
   };
 
   return (

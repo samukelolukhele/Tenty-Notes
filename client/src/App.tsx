@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -7,14 +6,10 @@ import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import AuthContextProvider from "./context/AuthContext";
-import Card from "./components/Card";
 import Dashboard from "./components/pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
-
-export const LoginContext = React.createContext({
-  loggedIn: false,
-  setLoggedIn: (loggedIn: false) => {},
-});
+import Note from "./components/pages/Note";
+import Profile from "./components/pages/Profile";
 
 function App() {
   return (
@@ -29,6 +24,11 @@ function App() {
             path="/dashboard"
             element={<PrivateRoute component={Dashboard} />}
           />
+          <Route
+            path="/dashboard/profile/"
+            element={<PrivateRoute component={Profile} />}
+          />
+          <Route path="note/" element={<Note />} />
         </Routes>
       </Router>
     </AuthContextProvider>

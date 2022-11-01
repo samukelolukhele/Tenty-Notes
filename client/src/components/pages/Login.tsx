@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/pages/login/login.css";
 import Logo from "../Logo";
@@ -7,7 +7,6 @@ import Loading from "../Loading";
 import useForm from "../../hooks/useForm";
 import useFetch from "../../hooks/useFetch";
 import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
-import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const nav = useNavigate();
@@ -17,7 +16,8 @@ const Login = () => {
     password: "",
   });
 
-  const { LOGIN } = useFetch<UseFetchTypes>();
+  const { LOGIN, handleFetchError, response, fetchError } =
+    useFetch<UseFetchTypes>();
 
   const [error, setError] = useState({ status: false, message: "No error" });
   const [loading, setLoading] = useState(false);
@@ -38,11 +38,33 @@ const Login = () => {
       setError({ status: true, message: "Fields are empty" });
       setLoading(false);
     }
-    await LOGIN("auth/login", data);
-    setLoading(false);
-    localStorage.getItem("token") && nav("/dashboard");
-    window.location.reload();
+
+    await LOGIN("auth/login", data)
+      .then(() => {
+        handleFetchError(
+          response.status,
+          401,
+          "Login credentials are incorrect"
+        );
+        handleFetchError(response.status, 201, "Failed to login", true);
+
+        setLoading(false);
+        localStorage.getItem("token") && nav("/dashboard");
+        // window.location.reload();
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError({
+          status: true,
+          message: "Failed to login",
+        });
+      });
   };
+
+  console.log(response);
+  useEffect(() => {
+    if (localStorage.getItem("token")) return nav("/dashboard");
+  }, []);
 
   return (
     <div className="login">
@@ -65,7 +87,7 @@ const Login = () => {
             className="login-submit btn-tetiary"
             onClick={handleSubmit}
           >
-            Submit
+            Login
           </button>
           <p>
             Don't have an account?{" "}
@@ -74,7 +96,7 @@ const Login = () => {
             </Link>
           </p>
           {loading && <Loading />}
-          {error.status && <Error message={error.message} />}
+          {fetchError.status && <Error message={fetchError.message} />}
         </div>
       </div>
     </div>

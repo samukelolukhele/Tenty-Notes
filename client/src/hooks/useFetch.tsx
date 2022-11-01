@@ -1,10 +1,34 @@
 import axios, { AxiosResponse } from "axios";
+import { useState } from "react";
 
 const useFetch = <T,>() => {
+  const [response, setResponse] = useState<any>();
+  const [error, setError] = useState<any>();
+  const [fetchError, setFetchError] = useState({
+    status: false,
+    message: "",
+  });
   const authHeaders = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
+  };
+
+  const handleFetchError = (
+    status: number,
+    desiredStatus: number,
+    message: string,
+    inverse = false
+  ) => {
+    if (
+      (!inverse && status === desiredStatus) ||
+      (inverse && status !== desiredStatus)
+    ) {
+      return setFetchError({
+        status: true,
+        message: message,
+      });
+    }
   };
 
   const GET = async (
@@ -33,9 +57,9 @@ const useFetch = <T,>() => {
       .catch((e) => e.message);
   };
 
-  const DELETE = async (route: string, id: string) => {
+  const DELETE = async (route: string, id = "") => {
     return await axios
-      .delete(route + `/${id}`, authHeaders)
+      .delete(id == "" ? `${route}/${id}` : route, authHeaders)
       .then((res) => res)
       .catch((e) => e.message);
   };
@@ -44,21 +68,32 @@ const useFetch = <T,>() => {
     return await axios
       .post(route, body)
       .then((res) => {
-        localStorage.setItem("token", res.data.access_token);
-        return res.data;
+        setResponse(res.status);
+        return localStorage.setItem("token", res.data.access_token);
       })
-      .catch((err) => err);
+      .catch((err) => setError(err));
   };
 
   const GETUSER = async (route: string, authRequired = false) => {
-    return await axios(route, authHeaders)
+    return await axios(route, authRequired ? authHeaders : undefined)
       .then((res) => {
         return res;
       })
       .catch((err) => console.log("error"));
   };
 
-  return { GET, POST, PATCH, DELETE, GETUSER, LOGIN };
+  return {
+    GET,
+    POST,
+    PATCH,
+    DELETE,
+    GETUSER,
+    LOGIN,
+    handleFetchError,
+    fetchError,
+    response,
+    setFetchError,
+  };
 };
 
 export default useFetch;

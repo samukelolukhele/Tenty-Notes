@@ -1,6 +1,16 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Exclude } from 'class-transformer';
+import { Note } from 'src/notes/notes.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -21,8 +31,11 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 255, default: "Hey I'm on Tenty Notes!" })
   description: string;
 
+  @OneToMany(() => Note, (note) => note.author)
+  note: Note[];
+
   @Exclude({ toPlainOnly: true })
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @Column({ nullable: false, default: 'hacker.png' })

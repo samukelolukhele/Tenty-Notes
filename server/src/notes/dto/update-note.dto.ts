@@ -16,5 +16,11 @@ export class UpdateNoteDto {
   @ApiProperty({
     description: 'Checks if the note is pinned by user',
   })
-  is_pinned: boolean;
+  is_pinned?: boolean;
+
+  @ApiProperty({
+    description: 'Date the note was last updated',
+    example: '2022/22/12',
+  })
+  updated_at?: string;
 }

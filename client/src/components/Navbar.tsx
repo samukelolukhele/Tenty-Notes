@@ -1,30 +1,55 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "../styles/components/Navbar/Navbar.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Logout from "./Logout";
-
-interface AProps {
-  loggedIn: React.MutableRefObject<boolean>;
-}
+import useWindowDimesions from "../hooks/useWindowDimesions";
+import { FaTimes, FaBars } from "react-icons/fa";
 
 function Navbar() {
+  const navRef = useRef<any>();
+
+  const showNavbar = () => navRef.current.classList.toggle("responsive_nav");
+
   return (
-    <div className="navbar">
+    <header className="navbar">
       <div className="container">
         <Link to="/" className="logo">
           <span>Tenty</span>NOTES
         </Link>
-        {localStorage.getItem("token") ? (
-          <Logout />
-        ) : (
-          <div className="nav-links">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </div>
-        )}
+        <nav ref={navRef} className="nav-links">
+          {!localStorage.getItem("token") ? (
+            <>
+              <button className="nav-btn nav-close-btn" onClick={showNavbar}>
+                <FaTimes />
+              </button>
+              <Link to="/login" onClick={showNavbar}>
+                Login
+              </Link>
+              <Link to="/register" onClick={showNavbar}>
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/dashboard" onClick={showNavbar}>
+                Dashboard
+              </Link>
+              <Link to="/dashboard/profile" onClick={showNavbar}>
+                Profile
+              </Link>
+              <Logout />
+              <button className="nav-btn nav-close-btn" onClick={showNavbar}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </nav>
+        <button className="nav-btn nav-open-btn" onClick={showNavbar}>
+          <FaBars />
+        </button>
       </div>
-    </div>
+    </header>
   );
 }
 

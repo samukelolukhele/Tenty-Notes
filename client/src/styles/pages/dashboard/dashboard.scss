@@ -1,4 +1,5 @@
 @use "../../variables" as var;
+@use "../../breakpoints" as break;
 
 .dashboard {
   min-height: 100vh;
@@ -16,14 +17,47 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(auto, 1fr);
-  column-gap: 10px;
-  row-gap: 10px;
+  column-gap: 30px;
+  row-gap: 30px;
+
+  @include break.md {
+    grid-template-columns: repeat(1, 100%);
+
+    .card {
+      padding-bottom: 4rem;
+    }
+  }
+
+  .card {
+    cursor: pointer;
+
+    .card-author {
+      position: relative;
+      z-index: 99;
+      font-size: 1.1rem;
+      width: fit-content;
+
+      &:hover {
+        color: var.$tetiary;
+      }
+    }
+  }
 }
 
 .profile {
   width: 100%;
   box-shadow: var.$small-box-shadow;
-  background-color: darken(var.$secondary, 10%);
+  background: linear-gradient(
+    170deg,
+    darken(var.$secondary, 10%),
+    darken(var.$secondary, 2%)
+  );
+  padding: 1.1rem 0;
+
+  &:hover {
+    border-left: 3px solid var.$tetiary;
+    transition: ease 0.3s;
+  }
 }
 
 .profile-container {
@@ -50,6 +84,19 @@
     .profile-name-container {
       .profile-name {
         font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .profile-username {
+        font-size: 1rem;
+        font-weight: map-get(var.$font-weight, "light");
+        margin-top: 0;
+        width: fit-content;
+
+        &:hover {
+          color: var.$tetiary;
+          cursor: pointer;
+        }
       }
 
       button {
@@ -61,11 +108,57 @@
       .action-btns {
         display: flex;
         gap: 0 5px;
+
+        .btn-add-note {
+          position: fixed;
+          bottom: 10vh;
+          right: 5%;
+          height: min-content;
+          width: min-content;
+          padding: 10px;
+          font-size: 3rem;
+          text-align: center;
+          border-radius: 1000px;
+          display: flex;
+          align-items: center;
+          z-index: 98;
+
+          @include break.md {
+            bottom: 40vh;
+          }
+        }
       }
     }
 
     .profile-description {
       font-weight: map-get(var.$font-weight, "light");
+    }
+  }
+
+  @include break.md {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+
+    .profile-info {
+      margin-left: 0;
+
+      .profile-description {
+        padding: 0 2rem;
+      }
+      .profile-name-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        button {
+          font-size: 0.8rem;
+        }
+      }
     }
   }
 }
