@@ -1,7 +1,20 @@
 import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const useFetch = <T,>() => {
+interface FProps {
+  url: string;
+  method: Methods;
+  body: any;
+  authRequired: boolean;
+}
+type Methods = "head" | "options" | "put" | "post" | "patch" | "delete" | "get";
+
+const useFetch = <T,>({
+  url,
+  method,
+  body = null,
+  authRequired = false,
+}: FProps) => {
   const [response, setResponse] = useState<any>();
   const [error, setError] = useState<any>();
   const [fetchError, setFetchError] = useState({
@@ -31,69 +44,23 @@ const useFetch = <T,>() => {
     }
   };
 
-  const GET = async (
-    route: string,
-    authRequired = false
-  ): Promise<any | AxiosResponse<any, any>> => {
-    return await axios
-      .get(route, authRequired ? authHeaders : undefined)
+  const fetchData = () => {
+    axios[method](url, authRequired ? authHeaders : undefined, body)
       .then((res) => {
-        return res;
+        handleFetchError(res.status, 401, "Login credentials are incorrect.");
+        handleFetchError(res.status, 200, "Failed to login", true);
+
+        return setResponse(res);
       })
-      .catch((err) => err.message);
+      .catch((err) => setError(err))
+      .finally(() => window.location.reload());
   };
 
-  const POST = async (route: string, authRequired = false, body: any) => {
-    return await axios
-      .post(route, body, authRequired ? authHeaders : undefined)
-      .then((res) => res)
-      .catch((e) => e.message);
-  };
+  useEffect(() => {
+    fetchData();
+  }, [method, url, body, authRequired]);
 
-  const PATCH = async (route: string, body: any) => {
-    return await axios
-      .patch(route, body, authHeaders)
-      .then((res) => res)
-      .catch((e) => e.message);
-  };
-
-  const DELETE = async (route: string, id = "") => {
-    return await axios
-      .delete(id == "" ? `${route}/${id}` : route, authHeaders)
-      .then((res) => res)
-      .catch((e) => e.message);
-  };
-
-  const LOGIN = async (route: string, body: any) => {
-    return await axios
-      .post(route, body)
-      .then((res) => {
-        setResponse(res.status);
-        return localStorage.setItem("token", res.data.access_token);
-      })
-      .catch((err) => setError(err));
-  };
-
-  const GETUSER = async (route: string, authRequired = false) => {
-    return await axios(route, authRequired ? authHeaders : undefined)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.log("error"));
-  };
-
-  return {
-    GET,
-    POST,
-    PATCH,
-    DELETE,
-    GETUSER,
-    LOGIN,
-    handleFetchError,
-    fetchError,
-    response,
-    setFetchError,
-  };
+  return { response, error, fetchError };
 };
 
 export default useFetch;
