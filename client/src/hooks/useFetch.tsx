@@ -64,14 +64,17 @@ const useFetch = <T,>() => {
       .catch((e) => e.message);
   };
 
-  const LOGIN = async (route: string, body: any) => {
+  const LOGIN = async (
+    route: string,
+    body: any
+  ): Promise<AxiosResponse<any, any>> => {
     return await axios
       .post(route, body)
       .then((res) => {
-        setResponse(res.status);
-        return localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem("token", res.data.access_token);
+        return setResponse(res);
       })
-      .catch((err) => setError(err));
+      .catch((err) => err);
   };
 
   const GETUSER = async (route: string, authRequired = false) => {

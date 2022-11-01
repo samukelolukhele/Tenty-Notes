@@ -61,7 +61,6 @@ const Login = () => {
       });
   };
 
-  console.log(response);
   useEffect(() => {
     if (localStorage.getItem("token")) return nav("/dashboard");
   }, []);
