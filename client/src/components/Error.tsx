@@ -5,7 +5,6 @@ interface ErrorProps {
 }
 
 const Error = ({ message }: ErrorProps) => {
-  console.log(message);
   return (
     <div className="error-message">
       <p>{message}</p>

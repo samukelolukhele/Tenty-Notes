@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   Get,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -23,6 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Observable, of } from 'rxjs';
 import { join } from 'path';
 import { cwd } from 'process';
+import { Response } from 'express';
 
 const storage = diskStorage({
   destination: './uploads/profileimages',
@@ -57,6 +59,32 @@ export class UsersController {
   @Post()
   public async create(@Body() user: CreatUserDto) {
     return await this.serv.create(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/change-password')
+  public async changePassword(
+    @AuthUser() user: any,
+    @Body() password: any,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.serv.updatePassword(
+      password.currentPassword,
+      password.newPassword,
+      user.userId,
+    );
+
+    if (!result) {
+      res.status(HttpStatus.UNAUTHORIZED).json({
+        status: 'Unauthorized',
+        message: 'Password is does not match the one stored on the database',
+      });
+    } else if (result) {
+      res.status(HttpStatus.CREATED).json({
+        status: 'Created',
+        message: 'Password was changed successfully',
+      });
+    }
   }
 
   @UseGuards(JwtAuthGuard)

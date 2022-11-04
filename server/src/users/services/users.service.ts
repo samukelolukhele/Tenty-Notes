@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
@@ -67,12 +72,42 @@ export class UsersService {
     });
   }
 
+  public async updatePassword(
+    currentPassword: string,
+    newPassword: string,
+    user: any,
+  ) {
+    const foundUser = await this.repo.findOne({
+      where: { id: user.id },
+      relations: { note: true },
+      select: { password: true, id: true },
+    });
+
+    const checkPassword: boolean = await bcrypt.compare(
+      currentPassword,
+      foundUser.password,
+    );
+
+    if (checkPassword == false) {
+      return null;
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    console.log('Checks passed', hashedPassword);
+
+    return await this.repo.update(foundUser.id, {
+      ...(newPassword && { password: hashedPassword }),
+    });
+  }
+
   public async updateById(id: any, user: any) {
     return await this.repo.update(id, {
       ...(user.name && { username: user.name }),
       ...(user.email && { email: user.email }),
       ...(user.full_name && { full_name: user.full_name }),
       ...(user.description && { description: user.description }),
+      ...(user.profile_image && { profile_image: user.profile_image }),
     });
   }
 

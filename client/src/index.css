@@ -143,7 +143,7 @@ input {
   cursor: pointer;
   border: 0;
   display: inline-block;
-  background-color: #f6c31c;
+  background-color: #cfa108;
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
@@ -151,7 +151,7 @@ input {
   color: #dddddd;
 }
 .btn-info:hover {
-  background-color: #d6a609;
+  background-color: #9e7b06;
   transform: scale(1.05);
   box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;

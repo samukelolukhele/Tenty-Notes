@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import Card from "../Card";
 import "../../styles/pages/dashboard/dashboard.css";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineCamera, AiOutlinePlus } from "react-icons/ai";
+import { HiOutlinePencil } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useLink from "../../hooks/useLink";
 import useUserData from "../../hooks/useUserData";
@@ -13,13 +14,38 @@ import Username from "../Username";
 const Dashboard = () => {
   const nav = useNavigate();
   const { user, notes, handleDashboardData } = useUserData();
-  const { handleModal, setModal } = useModal();
+  const [noteContent, setNoteContent] = useState({
+    id: "",
+    title: "",
+    body: "",
+  });
+
+  const { handleModal, setModal } = useModal(
+    {
+      full_name: user.full_name,
+      username: user.username,
+      email: user.email,
+      description: user.description,
+    },
+    {
+      id: noteContent.id,
+      defaults: {
+        title: noteContent.title,
+        body: noteContent.body,
+      },
+    }
+  );
   const handleLinkId = useLink();
   const { DELETE } = useFetch();
   const authRedirect = useAuthRedirect();
 
-  const handleDel = async (id: string | undefined) => {
+  const handleDel = async (id: string | number | undefined) => {
     await DELETE("notes", id).then(() => window.location.reload());
+  };
+
+  const handleEdit = (note: any) => {
+    setModal({ status: true, type: "Update_Note" });
+    return setNoteContent(note);
   };
 
   useEffect(() => {
@@ -30,11 +56,14 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       {handleModal()}
+
       <div className="container">
         <div className="profile">
           <div className="profile-container">
             <div className="profile-img">
+              <AiOutlineCamera className="profile-img-logo" />
               <img
+                onClick={() => setModal({ status: true, type: "Upload_Image" })}
                 src={
                   "http://localhost:8080/users/profile-image/" +
                   user.profile_image
@@ -58,12 +87,20 @@ const Dashboard = () => {
                     <AiOutlinePlus />
                   </button>
                   <button
-                    className="btn btn-tetiary"
+                    className="btn btn-edit-profile btn-tetiary"
                     onClick={() =>
                       setModal({ type: "Update_User", status: true })
                     }
                   >
-                    Edit Profile
+                    <HiOutlinePencil className="pencil-icon" />
+                  </button>
+                  <button
+                    className="btn btn-info"
+                    onClick={() =>
+                      setModal({ type: "Change_Password", status: true })
+                    }
+                  >
+                    Change Password
                   </button>
                   <button
                     className="btn btn-error"
@@ -75,7 +112,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               </div>
-              <p className="profile-description">Hey I'm on Tenty Notes!</p>
+              <p className="profile-description">{user.description}</p>
             </div>
           </div>
         </div>
@@ -89,6 +126,8 @@ const Dashboard = () => {
                 route="dashboard/profile"
                 title={note.title}
                 body={note.body}
+                loggedInUserId={user.id}
+                editClick={() => handleEdit(note)}
                 delClick={() => handleDel(note.id)}
                 onClick={() => handleLinkId("/note", note.id)}
               />

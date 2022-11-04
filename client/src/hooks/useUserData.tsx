@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import useFetch from "./useFetch";
+import { User } from "./types/@types.User";
 
-interface UserProps {
-  full_name: string;
-  username: string;
-  description: string;
-  email: string;
-  id: number | null;
-  profile_image: string;
-  note: [
-    {
-      title: string;
-      body: string;
-      isPinned: boolean;
-      author: string;
-    }
-  ];
+interface Note {
+  id: string | number;
+  title: string;
+  body: string;
+  authorId: number | string;
+  is_pinned: boolean;
+  created_at: number | string;
+  updated_at: number | string;
+  author: any;
 }
 
 const useUserData = () => {
-  const [notes, setNotes] = useState<any[]>([]);
-  const [user, setUser] = useState<UserProps>({
+  const [notes, setNotes] = useState<Note[]>([
+    {
+      id: "",
+      title: "",
+      body: "",
+      authorId: "",
+      is_pinned: false,
+      created_at: "",
+      updated_at: "",
+      author: {},
+    },
+  ]);
+  const [user, setUser] = useState<User>({
     email: "",
     username: "",
     id: null,
@@ -29,10 +35,13 @@ const useUserData = () => {
     full_name: "",
     note: [
       {
+        id: "",
         title: "",
-        body: "",
-        isPinned: false,
-        author: "",
+        content: "",
+        is_pinned: false,
+        authorId: "",
+        created_at: "",
+        updated_at: "",
       },
     ],
   });

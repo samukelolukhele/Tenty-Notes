@@ -44,9 +44,13 @@ export class NotesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch()
-  async update(@AuthUser() user: any, @Body() note: CreateNoteDto) {
-    return await this.serv.update(user.userId, note);
+  @Patch(':id')
+  async update(
+    @AuthUser() user: any,
+    @Param('id') id: number,
+    @Body() note: CreateNoteDto,
+  ) {
+    return await this.serv.update(user.userId, id, note);
   }
 
   @UseGuards(JwtAuthGuard)

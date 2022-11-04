@@ -69,7 +69,12 @@ const Register = () => {
             <label>Password</label>
             <input type="password" name="password" {...bind} />
             <label>Confirm Password</label>
-            <input type="password" name="confirmPassword" {...bind} />
+            <input
+              type="password"
+              name="confirmPassword"
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              {...bind}
+            />
           </div>
           <button
             type="submit"

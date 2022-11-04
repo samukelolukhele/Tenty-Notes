@@ -44,10 +44,11 @@ const useFetch = <T,>() => {
   };
 
   const POST = async (route: string, authRequired = false, body: any) => {
-    return await axios
-      .post(route, body, authRequired ? authHeaders : undefined)
-      .then((res) => res)
-      .catch((e) => e.message);
+    return await axios.post(
+      route,
+      body,
+      authRequired ? authHeaders : undefined
+    );
   };
 
   const PATCH = async (route: string, body: any) => {
@@ -57,7 +58,10 @@ const useFetch = <T,>() => {
       .catch((e) => e.message);
   };
 
-  const DELETE = async (route: string, id = "") => {
+  const DELETE = async (
+    route: string,
+    id: string | number | undefined = ""
+  ) => {
     return await axios
       .delete(id == "" ? `${route}/${id}` : route, authHeaders)
       .then((res) => res)

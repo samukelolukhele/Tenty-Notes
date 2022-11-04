@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { use } from 'passport';
 import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
 import { UpdateNoteDto } from 'src/notes/dto/update-note.dto';
 import { Note } from 'src/notes/notes.entity';
@@ -34,12 +35,23 @@ export class NotesService {
     return this.repo.save(newNote);
   }
 
-  public async update(id: any, note: UpdateNoteDto) {
-    const noteToUpdate = await this.repo.findOne(id);
+  public async update(userId: any, id: any, note: UpdateNoteDto) {
+    const noteToUpdate = await this.repo.findOne({
+      where: { id: id },
+      select: {
+        title: true,
+        body: true,
+      },
+    });
 
     if (!noteToUpdate.id) return 'Note not found';
 
-    await this.repo.update(id, note);
+    if (noteToUpdate.authorId != userId) return new UnauthorizedException();
+
+    await this.repo.update(id, {
+      ...(note.title && { title: note.title }),
+      ...(note.body && { body: note.body }),
+    });
     return this.repo.findOne(id);
   }
 

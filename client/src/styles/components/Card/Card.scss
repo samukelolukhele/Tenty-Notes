@@ -22,6 +22,17 @@
   font-size: 1.4rem;
   text-transform: capitalize;
 
+  .card-title {
+    cursor: pointer;
+    &:hover {
+      color: var.$tetiary;
+    }
+  }
+
+  .card-author {
+    cursor: pointer;
+  }
+
   p {
     font-size: 0.8rem;
     font-weight: map-get($map: var.$font-weight, $key: "light");

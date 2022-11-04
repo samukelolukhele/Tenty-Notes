@@ -7,6 +7,7 @@ import Loading from "../Loading";
 import useForm from "../../hooks/useForm";
 import useFetch from "../../hooks/useFetch";
 import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
+import axios from "axios";
 
 const Login = () => {
   const nav = useNavigate();
@@ -39,25 +40,31 @@ const Login = () => {
       setLoading(false);
     }
 
-    await LOGIN("auth/login", data)
-      .then(() => {
+    await axios
+      .post("auth/login", data)
+      .then((response) => {
+        response.data.access_token &&
+          localStorage.setItem("token", response.data.access_token);
+      })
+      .catch((err) => {
         handleFetchError(
-          response.status,
+          Number(err.response.status),
+          201,
+          "Failed to login",
+          true
+        );
+        handleFetchError(
+          Number(err.response.status),
           401,
           "Login credentials are incorrect"
         );
-        handleFetchError(response.status, 201, "Failed to login", true);
 
         setLoading(false);
-        localStorage.getItem("token") && nav("/dashboard");
-        // window.location.reload();
       })
-      .catch((err) => {
+      .finally(() => {
         setLoading(false);
-        setError({
-          status: true,
-          message: "Failed to login",
-        });
+        localStorage.getItem("token") && nav("/dashboard");
+        window.location.reload();
       });
   };
 
@@ -79,6 +86,7 @@ const Login = () => {
               name="password"
               required
               onChange={handleData}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
           </div>
           <button

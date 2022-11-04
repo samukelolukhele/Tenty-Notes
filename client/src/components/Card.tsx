@@ -16,6 +16,7 @@ interface CProps {
   username: string;
   userId: any;
   route: string;
+  loggedInUserId: any;
   delClick?: (e: React.MouseEvent<SVGElement>) => void;
   editClick?: (e: React.MouseEvent<SVGElement>) => void;
   onClick: React.MouseEventHandler<any>;
@@ -30,10 +31,13 @@ const Card = ({
   delClick,
   editClick,
   onClick,
+  loggedInUserId,
 }: CProps) => {
   const { hover, handleHover } = useHover();
 
   const truncate = useTruncate();
+  const editPrivileges = loggedInUserId === userId ? true : false;
+
   return (
     <>
       <div
@@ -57,7 +61,7 @@ const Card = ({
         <div className="card-body">
           <p>{truncate(body, 50)}</p>
         </div>
-        {hover ? (
+        {hover && editPrivileges ? (
           <div className="card-tetiary">
             <HiOutlinePencil className="pencil-icon" onClick={editClick} />
             <BsTrash2 className="trash-icon" onClick={delClick} />
