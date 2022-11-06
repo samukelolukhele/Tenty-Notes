@@ -94,8 +94,6 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    console.log('Checks passed', hashedPassword);
-
     return await this.repo.update(foundUser.id, {
       ...(newPassword && { password: hashedPassword }),
     });
