@@ -46,16 +46,15 @@
 }
 .navbar .container .nav-btn {
   background: transparent;
-  display: none;
   color: #dddddd;
   opacity: 0;
   font-size: 1.4rem;
-  display: flex;
   align-items: center;
-  display: none !important;
+  display: none;
 }
 @media (max-width: 960px) {
   .navbar .container .nav-btn {
+    display: flex;
     opacity: 1;
     visibility: visible;
   }

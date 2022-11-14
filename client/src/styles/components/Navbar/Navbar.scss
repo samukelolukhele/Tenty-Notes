@@ -52,15 +52,14 @@
 
     .nav-btn {
       background: transparent;
-      display: none;
       color: var.$secondary;
       opacity: 0;
       font-size: 1.4rem;
-      display: flex;
       align-items: center;
-      display: none !important;
+      display: none;
 
       @include break.lg {
+        display: flex;
         opacity: 1;
         visibility: visible;
       }
