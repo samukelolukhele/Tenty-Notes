@@ -1,7 +1,12 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
@@ -28,7 +33,8 @@ function App() {
             path="/dashboard/profile/"
             element={<PrivateRoute component={Profile} />}
           />
-          <Route path="note/" element={<Note />} />
+          <Route path="note/" element={<PrivateRoute component={Note} />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthContextProvider>

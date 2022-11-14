@@ -4,6 +4,22 @@ $spinner: var.$tetiary;
 $background: var.$primary;
 $size: 30px;
 
+$backgroundColors: (
+  "primary": var.$primary,
+  "secondary": var.$secondary,
+  "tetiary": var.$tetiary,
+);
+
+@each $key, $color in $backgroundColors {
+  .bg-#{$key} {
+    background-color: $color;
+  }
+
+  .bg-#{$key}-darken {
+    background-color: darken($color, 10%);
+  }
+}
+
 .spinner {
   top: calc(50% - #{$size / 2});
   left: calc(50% - #{$size / 2});
@@ -45,11 +61,27 @@ $size: 30px;
   }
 }
 
+.bar {
+  animation: bar 0.75s linear infinite;
+  width: 100%;
+  height: 100%;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes bar {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.3;
   }
 }

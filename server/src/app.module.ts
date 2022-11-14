@@ -5,11 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './config/orm.config';
 import { NotesModule } from './notes/notes.module';
 import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'client/dist'),
     }),
     TypeOrmModule.forRoot(ormConfig),
     UsersModule,

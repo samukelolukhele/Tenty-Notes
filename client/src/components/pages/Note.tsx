@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Grid } from "react-loader-spinner";
 import { useLocation, useSearchParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useGetSearchParams from "../../hooks/useGetSearchParams";
 import "../../styles/pages/note/note.css";
 import Username from "../Username";
+import { colours } from "../utils/colours";
 
 const Note = () => {
   const [note, setNote] = useState({
@@ -33,7 +35,12 @@ const Note = () => {
   }, []);
   console.log(note.author.id);
 
-  return (
+  return !note.title ? (
+    <div className="loading-container">
+      <Grid height={80} width={80} color={colours.primary} />
+      <h3>Loading please wait...</h3>
+    </div>
+  ) : (
     <div className="container-small">
       <div className="note">
         <div className="note-container">
@@ -50,7 +57,7 @@ const Note = () => {
               <Username
                 username={note.author.username}
                 userId={note.author.id}
-                route="/dashboard/profile"
+                route="dashboard/profile"
                 className="note-username"
               />
               <p className="note-date">{note.created_at}</p>

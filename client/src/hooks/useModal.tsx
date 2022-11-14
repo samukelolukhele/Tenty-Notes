@@ -51,17 +51,19 @@ const useModal = (
     };
 
     const handleDelete = async () => {
-      await DELETE("users", undefined).then((res) => {
-        if (res.statusText !== "OK") {
-          return setError({
-            status: true,
-            message: "Failed to delete profile",
-          });
-        }
-
-        localStorage.removeItem("token");
-        return nav("/");
-      });
+      await DELETE("users", undefined)
+        .then((res) => {
+          localStorage.removeItem("token");
+          return nav("/");
+        })
+        .catch((err) => {
+          if (err.response.status != 202) {
+            return setError({
+              status: true,
+              message: "Failed to delete profile",
+            });
+          }
+        });
     };
 
     if (modal.type == "Change_Password")

@@ -17,7 +17,8 @@ $btn-colors: (
   padding: $base-padding 0;
   text-align: center;
   width: 130px;
-  // border-radius: $base-border-radius;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   font-weight: map-get($map: $font-weight, $key: "base");
 }

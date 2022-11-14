@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar' })
   email: string;
 
-  @Column({ type: 'varchar', length: 255, default: "Hey I'm on Tenty Notes!" })
+  @Column({ type: 'varchar', length: 255 })
   description: string;
 
   @OneToMany(() => Note, (note) => note.author)

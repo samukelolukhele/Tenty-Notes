@@ -62,10 +62,8 @@ const useFetch = <T,>() => {
     route: string,
     id: string | number | undefined = ""
   ) => {
-    return await axios
-      .delete(id == "" ? `${route}/${id}` : route, authHeaders)
-      .then((res) => res)
-      .catch((e) => e.message);
+    console.log(`${route}/${id}`);
+    return await axios.delete(id == "" ? `${route}/${id}` : route, authHeaders);
   };
 
   const LOGIN = async (

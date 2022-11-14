@@ -47,6 +47,13 @@ input {
   font-style: italic;
 }
 
+.pwd-requisites {
+  color: #d32752;
+}
+.pwd-requisites .valid {
+  color: #12b828;
+}
+
 .error-message {
   background-color: #d32752;
   color: white;
@@ -64,6 +71,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
 }
 
@@ -75,6 +84,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   background-color: black;
 }
@@ -93,6 +104,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   color: #181818;
 }
@@ -111,6 +124,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   color: #dddddd;
 }
@@ -129,6 +144,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   color: #dddddd;
 }
@@ -147,6 +164,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   color: #dddddd;
 }
@@ -165,6 +184,8 @@ input {
   padding: 0.75rem 0;
   text-align: center;
   width: 130px;
+  padding: 10px 0;
+  border-radius: 30px;
   font-size: 1.3rem;
   color: #dddddd;
 }

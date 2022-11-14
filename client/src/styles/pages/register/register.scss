@@ -2,8 +2,10 @@
 @use "../../breakpoints" as break;
 
 .register {
+  padding: 4rem 0;
+
   .login-card {
-    max-width: 400px;
+    max-width: 300px;
     padding: 1.3rem 2.75rem;
     margin-top: 1.5rem;
 
@@ -33,5 +35,9 @@
       flex-direction: column;
       gap: 10px 0;
     }
+  }
+  .register-divider {
+    border: 1px solid var.$secondary;
+    width: 100%;
   }
 }

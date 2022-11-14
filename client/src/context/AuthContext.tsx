@@ -54,7 +54,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .then((res) => setLoggedInUser(res.data))
       .catch((err) => {
-        if (err.response.status != 500 || 408) return;
+        console.log(err);
+        if (err.response.status != 500 || 408 || 401) return;
         window.location.reload();
         return localStorage.removeItem("token");
       });

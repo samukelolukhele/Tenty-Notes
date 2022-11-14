@@ -48,6 +48,13 @@ input {
   }
 }
 
+.pwd-requisites {
+  color: $error;
+  .valid {
+    color: $success;
+  }
+}
+
 .error-message {
   background-color: $error;
   color: white;

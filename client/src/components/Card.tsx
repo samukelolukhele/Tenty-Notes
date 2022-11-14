@@ -3,11 +3,8 @@ import "../styles/components/Card/Card.css";
 import { BsTrash2 } from "react-icons/bs";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi";
-import { UseHoverTypes } from "../hooks/types/@types.useHover";
 import useTruncate from "../hooks/useTruncate";
 import useHover from "../hooks/useHover";
-import useFetch from "../hooks/useFetch";
-import useLink from "../hooks/useLink";
 import Username from "./Username";
 
 interface CProps {

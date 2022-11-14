@@ -5,6 +5,7 @@ const useLink = () => {
   const nav = useNavigate();
 
   const handleLinkId = async (route: string, id: string | number) => {
+    console.log(`/${route}/?id=${id}`);
     return nav(`/${route}/?id=${id}`);
   };
 

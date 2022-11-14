@@ -52,11 +52,13 @@
 
     .nav-btn {
       background: transparent;
+      display: none;
       color: var.$secondary;
       opacity: 0;
       font-size: 1.4rem;
       display: flex;
       align-items: center;
+      display: none !important;
 
       @include break.lg {
         opacity: 1;
@@ -83,6 +85,13 @@
         font-style: italic;
       }
     }
+  }
+}
+
+button {
+  display: none;
+  @include break.lg {
+    display: none;
   }
 }
 

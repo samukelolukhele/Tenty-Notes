@@ -8,6 +8,8 @@ import useForm from "../../hooks/useForm";
 import useFetch from "../../hooks/useFetch";
 import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
 import axios from "axios";
+import { Circles } from "react-loader-spinner";
+import { colours } from "../utils/colours";
 
 const Login = () => {
   const nav = useNavigate();
@@ -60,11 +62,6 @@ const Login = () => {
         );
 
         setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
-        localStorage.getItem("token") && nav("/dashboard");
-        window.location.reload();
       });
   };
 
@@ -102,7 +99,9 @@ const Login = () => {
               Register here.
             </Link>
           </p>
-          {loading && <Loading />}
+          {loading && (
+            <Circles width={40} height={40} color={colours.tetiary} />
+          )}
           {fetchError.status && <Error message={fetchError.message} />}
         </div>
       </div>

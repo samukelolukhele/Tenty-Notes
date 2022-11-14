@@ -35,6 +35,8 @@ export class UsersService {
   public async create(user: CreatUserDto) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
+    if (await this.getByEmail(user.email)) return null;
+
     const newUser = {
       username: user.username,
       email: user.email.toLowerCase(),

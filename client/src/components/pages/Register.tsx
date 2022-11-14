@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Form, Link, redirect, useNavigate } from "react-router-dom";
 import "../../styles/pages/login/login.css";
 import "../../styles/pages/register/register.css";
 import Logo from "../Logo";
@@ -7,6 +7,9 @@ import Error from "../Error";
 import useForm from "../../hooks/useForm";
 import useFetch from "../../hooks/useFetch";
 import Loading from "../Loading";
+import { Circles } from "react-loader-spinner";
+import { colours } from "../utils/colours";
+import PwdRequisites from "../utils/PwdRequisites";
 
 const Register = () => {
   const initialState = {
@@ -17,6 +20,13 @@ const Register = () => {
   };
 
   const [loading, setLoading] = useState(false);
+  const [pwdRequisites, setPwdRequisites] = useState(false);
+  const [checks, setChecks] = useState({
+    capsLetterCheck: false,
+    lowerLetterCheck: false,
+    numberCheck: false,
+    pwdLengthCheck: false,
+  });
   const [error, setError] = useState({
     status: false,
     message: "",
@@ -26,21 +36,47 @@ const Register = () => {
   const { POST } = useFetch();
   const nav = useNavigate();
 
+  const handleOnKeyUp = (e: ChangeEvent<any>) => {
+    const { value } = e.target;
+    const capsLetterCheck = /[A-Z]/.test(value);
+    const lowerLetterCheck = /[a-z]/.test(value);
+    const numberCheck = /[0-9]/.test(value);
+    const pwdLengthCheck = value.length > 7;
+
+    setChecks({
+      capsLetterCheck,
+      lowerLetterCheck,
+      numberCheck,
+      pwdLengthCheck,
+    });
+  };
+
   const handleSubmit = async () => {
+    Object.values(checks).some((v) => {
+      if (v === false) {
+        setLoading(false);
+        console.log(true);
+        return setError({
+          status: true,
+          message: "Password requirements not met",
+        });
+      }
+    });
     if (state.password !== state.confirmPassword)
       return setError({ status: true, message: "Passwords must match" });
 
     setLoading(true);
 
-    return await POST("users", false, state).then(
-      (res) => {
+    return await POST("users", false, state)
+      .then((res) => {
         localStorage.setItem("token", res.data.access_token);
 
         setLoading(false);
         return nav("/dashboard");
-      },
-      (reason) => setError({ status: true, message: reason })
-    );
+      })
+      .catch((err) => {
+        return setError({ status: true, message: "Failed to create account." });
+      });
   };
 
   useEffect(() => {
@@ -67,7 +103,14 @@ const Register = () => {
             <label>Email</label>
             <input type="email" name="email" {...bind} />
             <label>Password</label>
-            <input type="password" name="password" {...bind} />
+            <input
+              type="password"
+              name="password"
+              onFocus={() => setPwdRequisites(true)}
+              onBlur={() => setPwdRequisites(false)}
+              onKeyUp={handleOnKeyUp}
+              {...bind}
+            />
             <label>Confirm Password</label>
             <input
               type="password"
@@ -76,6 +119,15 @@ const Register = () => {
               {...bind}
             />
           </div>
+          <hr className="register-divider" />
+          {pwdRequisites && (
+            <PwdRequisites
+              capsCheck={checks.capsLetterCheck}
+              lowerCheck={checks.lowerLetterCheck}
+              lengthCheck={checks.lowerLetterCheck}
+              numberCheck={checks.numberCheck}
+            />
+          )}
           <button
             type="submit"
             className="login-submit btn-tetiary"
@@ -89,7 +141,9 @@ const Register = () => {
               Login here.
             </Link>
           </p>
-          {loading && <Loading />}
+          {loading && (
+            <Circles width={40} height={40} color={colours.tetiary} />
+          )}
           {error.status && <Error message={error.message} />}
         </div>
       </div>

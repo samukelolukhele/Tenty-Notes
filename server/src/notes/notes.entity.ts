@@ -29,10 +29,10 @@ export class Note extends BaseEntity {
   @Column({ type: 'boolean' })
   is_pinned: boolean = false;
 
-  @Column({ type: 'date', default: Date.now() })
+  @Column({ type: 'timestamptz' })
   created_at: Date;
 
-  @Column({ type: 'date', default: Date.now() })
+  @Column({ type: 'timestamptz' })
   updated_at: Date;
 
   @ManyToOne(() => User, (user) => user.note)
