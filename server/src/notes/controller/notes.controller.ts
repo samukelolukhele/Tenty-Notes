@@ -8,10 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AuthUser } from 'src/auth/user.decorator';
-import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
-import { NotesService } from 'src/notes/service/notes.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { AuthUser } from '../../auth/user.decorator';
+import { CreateNoteDto } from '../../notes/dto/create-note.dto';
+import { NotesService } from '../../notes/service/notes.service';
 
 @Controller('notes')
 export class NotesController {

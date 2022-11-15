@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
-import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
-import { UpdateNoteDto } from 'src/notes/dto/update-note.dto';
-import { Note } from 'src/notes/notes.entity';
+import { CreateNoteDto } from '../../notes/dto/create-note.dto';
+import { UpdateNoteDto } from '../../notes/dto/update-note.dto';
+import { Note } from '../../notes/notes.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -2,15 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
-import { Note } from 'src/notes/notes.entity';
+import { Note } from '../notes/notes.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
