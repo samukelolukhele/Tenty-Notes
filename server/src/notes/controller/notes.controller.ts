@@ -11,7 +11,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AuthUser } from 'src/auth/user.decorator';
 import { CreateNoteDto } from 'src/notes/dto/create-note.dto';
-import { NotesService } from 'src/notes/service/notes/notes.service';
+import { NotesService } from 'src/notes/service/notes.service';
 
 @Controller('notes')
 export class NotesController {
