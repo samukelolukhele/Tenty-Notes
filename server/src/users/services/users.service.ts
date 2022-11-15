@@ -5,11 +5,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreatUserDto } from 'src/users/dto/create-user.dto';
+import { CreatUserDto } from '../../users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'src/users/users.entity';
+import { User } from '../../users/users.entity';
 import { Repository } from 'typeorm';
-import { AuthService } from 'src/auth/services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 @Injectable()
 export class UsersService {
   constructor(
