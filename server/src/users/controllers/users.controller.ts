@@ -26,7 +26,7 @@ import { join } from 'path';
 import { Response } from 'express';
 
 const storage = diskStorage({
-  destination: './uploads/profileimages',
+  destination: './tmp/uploads/profileimages',
   filename: (req, file, cb) => {
     const filename: string =
       path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
