@@ -108,7 +108,7 @@ export class UsersController {
     @Res() res: any,
   ): Observable<Object> {
     return of(
-      res.sendFile(join(process.cwd(), 'uploads/profileimages/' + image)),
+      res.sendFile(join(process.cwd(), 'tmp/uploads/profileimages/' + image)),
     );
   }
 
