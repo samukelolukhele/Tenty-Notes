@@ -7,9 +7,7 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
-  app.enableCors({
-    origin: [process.env.CLIENT_URL],
-  });
+  app.enableCors();
   await app.listen(8080);
 }
 bootstrap();
