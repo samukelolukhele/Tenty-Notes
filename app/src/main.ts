@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
 
-async function bootstrap() {
+export default async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
@@ -12,5 +12,7 @@ async function bootstrap() {
     allowedHeaders: '*',
     origin: '*',
   });
+
+  await app.listen(process.env.PORT || 8080);
 }
 bootstrap();

@@ -9,6 +9,7 @@ declare global {
       JWT_SECRET: string;
       SALT_ROUNDS: number;
       CLIENT_URL: string;
+      PORT: number;
     }
   }
 }
