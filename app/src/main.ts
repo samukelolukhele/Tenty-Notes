@@ -5,9 +5,11 @@ import { AppModule } from './app.module';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: [process.env.CLIENT_URL],
+  });
   await app.listen(8080);
 }
 bootstrap();

@@ -8,6 +8,7 @@ declare global {
       POSTGRES_DATABASE: string;
       JWT_SECRET: string;
       SALT_ROUNDS: number;
+      CLIENT_URL: string;
     }
   }
 }

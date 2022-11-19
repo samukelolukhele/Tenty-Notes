@@ -40,6 +40,8 @@ To run this project, you will need to add the following environment variables to
 
 `JWT_SECRET`
 
+`CLIENT_URL`
+
 ### Client Side Variables
 
 `VITE_SERVER_URL`
