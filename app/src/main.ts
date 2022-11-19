@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
 
-async function bootstrap() {
+export default async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use((req, res, next) => {
@@ -19,6 +19,6 @@ async function bootstrap() {
     allowedHeaders: '*',
     origin: '*',
   });
-  await app.listen(8080);
+  // await app.listen(8080);
 }
 bootstrap();
