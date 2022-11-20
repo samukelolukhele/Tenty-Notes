@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { join } from 'path';
 
 export default async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +12,6 @@ export default async function bootstrap() {
     origin: '*',
   });
 
-  // await app.listen(8080);
+  await app.listen(2890);
 }
 bootstrap();

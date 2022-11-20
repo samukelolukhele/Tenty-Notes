@@ -11,6 +11,7 @@ async function bootstrap() {
         allowedHeaders: '*',
         origin: '*',
     });
+    await app.listen(2890);
 }
 exports.default = bootstrap;
 bootstrap();
