@@ -25,15 +25,15 @@ import { Observable, of } from 'rxjs';
 import { join } from 'path';
 import { Response } from 'express';
 
-// const storage = diskStorage({
-//   destination: './tmp/uploads/profileimages',
-//   filename: (req, file, cb) => {
-//     const filename: string =
-//       path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-//     const extension: string = path.parse(file.originalname).ext;
-//     cb(null, `${filename}${extension}`);
-//   },
-// });
+const storage = diskStorage({
+  destination: './tmp/uploads/profileimages',
+  filename: (req, file, cb) => {
+    const filename: string =
+      path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+    const extension: string = path.parse(file.originalname).ext;
+    cb(null, `${filename}${extension}`);
+  },
+});
 
 @Controller('users')
 export class UsersController {
@@ -95,12 +95,12 @@ export class UsersController {
     return await this.serv.updateById(user.userId, updatedUser);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Post('/upload')
-  // @UseInterceptors(FileInterceptor('file', { storage: storage }))
-  // public uploadFile(@UploadedFile() file, @AuthUser() user: any) {
-  //   return this.serv.updateById(user.userId, { profile_image: file.filename });
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post('/upload')
+  @UseInterceptors(FileInterceptor('file', { storage: storage }))
+  public uploadFile(@UploadedFile() file, @AuthUser() user: any) {
+    return this.serv.updateById(user.userId, { profile_image: file.filename });
+  }
 
   @Get('profile-image/:image')
   public getProfileImage(
