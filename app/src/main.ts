@@ -12,6 +12,9 @@ export default async function bootstrap() {
     origin: '*',
   });
 
-  await app.listen(2890);
+  const host = '0.0.0.0';
+  const port = process.env.PORT;
+
+  await app.listen(port, host);
 }
 bootstrap();
