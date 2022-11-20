@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A web application made for taking notes and sharing notes for revision.",
   "scripts": {
-    "heroku-prebuild": "cd app && npm i && npm run build && cd .. && cd api && npm i",
-    "start": "cd api && npm run start:prod"
+    "heroku-prebuild": "cd app && npm i && npm run build && cd .. && cd app && npm i",
+    "start": "cd app && node dist/main.js"
   },
   "repository": {
     "type": "git",
