@@ -376,7 +376,8 @@ export const UploadImageModal = (props: ModalProps) => {
     setLoading(true);
     await POST('users/upload', true, data)
       .then((res) => {
-        return !fetchError.status && window.location.reload();
+        setLoading(false);
+        return window.location.reload();
       })
       .catch((err) => {
         setLoading(false);

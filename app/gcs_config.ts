@@ -5,4 +5,4 @@ const config = {
   client_email: process.env.GCS_CLIENT_EMAIL,
 };
 
-export default config;
+export default JSON.stringify(config);

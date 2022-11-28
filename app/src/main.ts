@@ -14,7 +14,9 @@ export default async function bootstrap() {
     origin: '*',
   });
 
-  fs.writeFile('./credentials.json', JSON.stringify(gcs_config), (err) => {
+  console.log(process.env.GCS_PRIVATE_KEY);
+
+  fs.writeFile('./credentials.json', gcs_config, (err) => {
     if (err) {
       console.log(err);
     }

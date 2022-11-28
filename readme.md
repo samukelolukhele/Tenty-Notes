@@ -42,6 +42,16 @@ To run this project, you will need to add the following environment variables to
 
 `CLIENT_URL`
 
+# Google Cloud Storage Credentials
+
+`GCS_PROJECT`
+
+`GCS_BUCKET`
+
+`GCS_CLIENT_EMAIL`
+
+`GCS_PRIVATE_KEY`
+
 ### Client Side Variables
 
 `VITE_SERVER_URL`
