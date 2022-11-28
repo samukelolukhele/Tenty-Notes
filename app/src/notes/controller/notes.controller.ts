@@ -1,25 +1,39 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { AuthUser } from '../../auth/user.decorator';
 import { CreateNoteDto } from '../../notes/dto/create-note.dto';
 import { NotesService } from '../../notes/service/notes.service';
+import { Note } from '../notes.entity';
 
 @Controller('notes')
 export class NotesController {
   constructor(private serv: NotesService) {}
 
   @Get()
-  async getAll() {
-    return await this.serv.getAll();
+  async paginate(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Note>> {
+    limit = limit > 10 ? 10 : limit;
+
+    return this.serv.paginate({
+      page,
+      limit,
+      route: 'notes',
+    });
   }
 
   @Get(':id')
@@ -28,8 +42,15 @@ export class NotesController {
   }
 
   @Get('notes-by-user/:id')
-  async getNotesByUser(@Param('id') id: number) {
-    return await this.serv.getByUserId(id);
+  async getNotesByUser(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 10,
+    @Param('id') id: number,
+  ) {
+    return await this.serv.getByUserId(
+      { page, limit, route: 'notes' },
+      Number(id),
+    );
   }
 
   @UseGuards(JwtAuthGuard)

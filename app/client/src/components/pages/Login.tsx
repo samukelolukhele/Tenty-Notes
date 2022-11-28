@@ -1,28 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../../styles/pages/login/login.css";
-import Logo from "../Logo";
-import Error from "../Error";
-import Loading from "../Loading";
-import useForm from "../../hooks/useForm";
-import useFetch from "../../hooks/useFetch";
-import { UseFetchTypes } from "../../hooks/types/@types.useFetch";
-import axios from "axios";
-import { Circles } from "react-loader-spinner";
-import { colours } from "../utils/colours";
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../../styles/pages/login/login.css';
+import Logo from '../Logo';
+import Error from '../Error';
+import Loading from '../Loading';
+import useForm from '../../hooks/useForm';
+import useFetch from '../../hooks/useFetch';
+import { UseFetchTypes } from '../../hooks/types/@types.useFetch';
+import axios from 'axios';
+import { Circles } from 'react-loader-spinner';
+import { colours } from '../utils/colours';
 
 const Login = () => {
   const nav = useNavigate();
 
   const [data, setData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const { LOGIN, handleFetchError, response, fetchError } =
     useFetch<UseFetchTypes>();
 
-  const [error, setError] = useState({ status: false, message: "No error" });
+  const [error, setError] = useState({ status: false, message: 'No error' });
   const [loading, setLoading] = useState(false);
 
   const handleData = (e: React.ChangeEvent<any>) => {
@@ -34,31 +34,33 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    setError({ status: false, message: "" });
+    setError({ status: false, message: '' });
     setLoading(true);
 
-    if (data.password === "" || undefined || data.email === "" || undefined) {
-      setError({ status: true, message: "Fields are empty" });
+    if (data.password === '' || undefined || data.email === '' || undefined) {
+      setError({ status: true, message: 'Fields are empty' });
       setLoading(false);
     }
 
     await axios
-      .post("auth/login", data)
+      .post('auth/login', data)
       .then((response) => {
         response.data.access_token &&
-          localStorage.setItem("token", response.data.access_token);
+          localStorage.setItem('token', response.data.access_token);
+
+        return window.location.reload();
       })
       .catch((err) => {
         handleFetchError(
           Number(err.response.status),
           201,
-          "Failed to login",
-          true
+          'Failed to login',
+          true,
         );
         handleFetchError(
           Number(err.response.status),
           401,
-          "Login credentials are incorrect"
+          'Login credentials are incorrect',
         );
 
         setLoading(false);
@@ -66,7 +68,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) return nav("/dashboard");
+    if (localStorage.getItem('token')) return nav('/dashboard');
   }, []);
 
   return (
@@ -83,7 +85,7 @@ const Login = () => {
               name="password"
               required
               onChange={handleData}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
             />
           </div>
           <button
@@ -94,7 +96,7 @@ const Login = () => {
             Login
           </button>
           <p>
-            Don't have an account?{" "}
+            Don't have an account?{' '}
             <Link to="/register" className="register-link">
               Register here.
             </Link>

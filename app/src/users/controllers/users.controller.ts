@@ -18,20 +18,21 @@ import { AuthUser } from '../../auth/user.decorator';
 import { CreatUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UsersService } from '../services/users.service';
-import { diskStorage } from 'multer';
-import * as path from 'path';
+import * as Multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { Observable, of } from 'rxjs';
-import { join } from 'path';
+import path, { join } from 'path';
 import { Response } from 'express';
+import { Storage } from '@google-cloud/storage';
+import * as multerGoogleStorage from 'multer-google-storage';
 
-const storage = diskStorage({
-  destination: './tmp/uploads/profileimages',
-  filename: (req, file, cb) => {
-    const filename: string =
-      path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-    const extension: string = path.parse(file.originalname).ext;
-    cb(null, `${filename}${extension}`);
+const gcStorage = multerGoogleStorage.storageEngine({
+  bucket: process.env.GCS_BUCKET,
+  projectId: process.env.GCS_PROJECT,
+  keyFilename: './credentials.json',
+  credentials: {
+    client_email: process.env.GCS_CLIENT_EMAIL,
+    private_key: process.env.GCS_PRIVATE_KEY,
   },
 });
 
@@ -76,7 +77,7 @@ export class UsersController {
     if (!result) {
       res.status(HttpStatus.UNAUTHORIZED).json({
         status: 'Unauthorized',
-        message: 'Password is does not match the one stored on the database',
+        message: 'Password does not match the one stored on the database',
       });
     } else if (result) {
       res.status(HttpStatus.CREATED).json({
@@ -97,7 +98,11 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/upload')
-  @UseInterceptors(FileInterceptor('file', { storage: storage }))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: gcStorage,
+    }),
+  )
   public uploadFile(@UploadedFile() file, @AuthUser() user: any) {
     return this.serv.updateById(user.userId, { profile_image: file.filename });
   }
@@ -108,7 +113,12 @@ export class UsersController {
     @Res() res: any,
   ): Observable<Object> {
     return of(
-      res.sendFile(join(process.cwd(), 'tmp/uploads/profileimages/' + image)),
+      res.sendFile(
+        join(
+          process.cwd(),
+          'https://storage.googleapis.com/tentynotes/' + image,
+        ),
+      ),
     );
   }
 

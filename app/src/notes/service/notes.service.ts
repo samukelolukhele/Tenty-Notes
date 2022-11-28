@@ -5,6 +5,14 @@ import { CreateNoteDto } from '../../notes/dto/create-note.dto';
 import { UpdateNoteDto } from '../../notes/dto/update-note.dto';
 import { Note } from '../../notes/notes.entity';
 import { Repository } from 'typeorm';
+import { from, Observable } from 'rxjs';
+import {
+  Pagination,
+  paginate,
+  IPaginationOptions,
+  IPaginationMeta,
+} from 'nestjs-typeorm-paginate';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NotesService {
@@ -17,6 +25,26 @@ export class NotesService {
       relations: {
         author: true,
       },
+    });
+  }
+
+  public async paginate(
+    options: IPaginationOptions,
+  ): Promise<Pagination<Note>> {
+    return paginate<Note>(this.repo, options, {
+      relations: ['author'],
+      order: { id: 'DESC' },
+    });
+  }
+
+  public async getByUserId(
+    options: IPaginationOptions,
+    userId: number,
+  ): Promise<Pagination<Note>> {
+    return paginate<Note>(this.repo, options, {
+      relations: ['author'],
+      order: { id: 'DESC' },
+      where: { authorId: Number(userId) },
     });
   }
 
@@ -58,15 +86,6 @@ export class NotesService {
   public async getById(id: number) {
     return await this.repo.findOne({
       where: { id: id },
-      relations: {
-        author: true,
-      },
-    });
-  }
-
-  public async getByUserId(userId: number) {
-    return await this.repo.findOne({
-      where: { authorId: userId },
       relations: {
         author: true,
       },

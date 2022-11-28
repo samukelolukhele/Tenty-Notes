@@ -1,15 +1,19 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from 'react';
+import { Circles } from 'react-loader-spinner';
 
-import "../../src/styles/components/Modal/Modal.css";
-import { UseFetchTypes } from "../hooks/types/@types.useFetch";
-import useFetch from "../hooks/useFetch";
-import useForm from "../hooks/useForm";
-import Error from "./Error";
+import '../../src/styles/components/Modal/Modal.css';
+import { UseFetchTypes } from '../hooks/types/@types.useFetch';
+import useFetch from '../hooks/useFetch';
+import useForm from '../hooks/useForm';
+import Error from './Error';
+import Loading from './Loading';
+import { colours } from './utils/colours';
+import PwdRequisites from './utils/PwdRequisites';
 
 interface ModalProps {
   children?: React.ReactNode;
   bgClick?: any;
-  btnCloseVisiible?: string;
+  btnCloseVisiible?: boolean;
   btnCloseClick?: any;
 }
 
@@ -37,7 +41,9 @@ const Modal = (props: ModalProps) => {
       <div className="modal-container">
         <div className="modal">
           <button
-            style={{ display: props.btnCloseVisiible }}
+            style={{
+              display: props.btnCloseVisiible ? 'inline-block' : 'none',
+            }}
             className={`modal-close`}
             onClick={props.btnCloseClick}
           >
@@ -52,62 +58,125 @@ const Modal = (props: ModalProps) => {
 
 export const ChangePasswordModal = (props: ModalProps) => {
   const initialState = {
-    password: "",
+    password: '',
     confirmPassword: null,
   };
+  const [loading, setLoading] = useState(false);
+  const [pwdRequisites, setPwdRequisites] = useState(false);
+  const [error, setError] = useState({
+    status: false,
+    message: '',
+  });
+  const [checks, setChecks] = useState({
+    capsLetterCheck: false,
+    lowerLetterCheck: false,
+    numberCheck: false,
+    pwdLengthCheck: false,
+  });
 
   const { state, bind } = useForm(initialState);
-  const { POST, handleFetchError, fetchError } = useFetch();
+  const { POST, handleFetchError, fetchError, setFetchError } = useFetch();
 
   const handleSubmit = async () => {
-    await POST("users/change-password", true, state)
-      .then((res) => {
-        return window.location.reload();
-      })
-      .catch((err) => {
-        const status = err.response.status;
+    Object.values(checks).some(async (v) => {
+      if (v === false) {
+        setFetchError({ status: false, message: '' });
+        setLoading(false);
+        return setError({
+          status: true,
+          message: 'Password requirements not met',
+        });
+      } else {
+        setLoading(true);
+        setError({ status: false, message: '' });
+        setFetchError({ status: false, message: '' });
 
-        handleFetchError(status, 201, "Failed to change password", true);
-        handleFetchError(
-          status,
-          401,
-          "The password that was entered was incorrect"
-        );
-      });
+        await POST('users/change-password', true, state)
+          .then(() => {
+            return window.location.reload();
+          })
+          .catch((err) => {
+            const status = err.response.status;
+            setLoading(false);
+            handleFetchError(status, 201, 'Failed to change password', true);
+            handleFetchError(
+              status,
+              401,
+              'The password that was entered was incorrect',
+            );
+          });
+      }
+    });
+  };
+
+  const handleOnKeyUp = (e: ChangeEvent<any>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const { value } = e.target;
+    const capsLetterCheck = /[A-Z]/.test(value);
+    const lowerLetterCheck = /[a-z]/.test(value);
+    const numberCheck = /[0-9]/.test(value);
+    const pwdLengthCheck = value.length > 7;
+
+    setChecks({
+      capsLetterCheck,
+      lowerLetterCheck,
+      numberCheck,
+      pwdLengthCheck,
+    });
   };
 
   return (
-    <Modal btnCloseClick={props.btnCloseClick}>
+    <Modal btnCloseClick={props.btnCloseClick} btnCloseVisiible={true}>
       <label>Current Password</label>
       <input type="password" name="currentPassword" {...bind} />
       <label>New Password</label>
-      <input type="password" name="newPassword" {...bind} />
+      <input
+        type="password"
+        name="newPassword"
+        {...bind}
+        onKeyUp={handleOnKeyUp}
+        onFocus={() => setPwdRequisites(true)}
+        // onBlur={() => setPwdRequisites(false)}
+      />
+      {pwdRequisites && (
+        <PwdRequisites
+          capsCheck={checks.capsLetterCheck}
+          lowerCheck={checks.lowerLetterCheck}
+          lengthCheck={checks.lowerLetterCheck}
+          numberCheck={checks.numberCheck}
+        />
+      )}
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>
       {fetchError.status && <Error message={fetchError.message} />}
+      {error.status && <Error message={error.message} />}
+      {loading && <Circles width={40} height={40} color={colours.tetiary} />}
     </Modal>
   );
 };
 
-export const DeleteProfileModal = ({
+export const DeleteDialogueModal = ({
   onAccept,
   onCancel,
   error = false,
-  errorMessage = "",
+  errorMessage = '',
+  text = '',
+  loading = false,
 }: {
   onAccept: void | any;
   onCancel: void | any;
   error: boolean;
   errorMessage: string;
+  text: string;
+  loading: boolean;
 }) => {
   return (
-    <Modal btnCloseVisiible="none">
+    <Modal btnCloseVisiible={false}>
       <div className="dialogue-box">
-        <p>
-          Deleting your profile will also delete all of your notes. Are you sure
-          you want to delete your profile?
-        </p>
+        <p>{text}</p>
         <div className="btn-container">
           <button className="btn btn-tetiary" onClick={onCancel}>
             Cancel
@@ -117,6 +186,7 @@ export const DeleteProfileModal = ({
           </button>
         </div>
         {error && <Error message={errorMessage} />}
+        {loading && <Circles width={40} height={40} color={colours.tetiary} />}
       </div>
     </Modal>
   );
@@ -128,22 +198,40 @@ export const AddNoteModal = (props: ModalProps) => {
     body: null,
   };
 
+  const [loading, setLoading] = useState(false);
+
   const { state, bind } = useForm(initialState);
-  const { POST } = useFetch<UseFetchTypes>();
+  const { POST, handleFetchError, fetchError } = useFetch<UseFetchTypes>();
 
   const handleSubmit = async () => {
-    await POST("notes", true, state).then(() => window.location.reload());
+    setLoading(true);
+    await POST('notes', true, state)
+      .then(() => {
+        setLoading(false);
+        return window.location.reload();
+      })
+      .catch((err) => {
+        const status = err.response.status;
+        setLoading(false);
+        handleFetchError(status, 201, 'Failed to add note', true);
+      });
   };
 
   return (
-    <Modal btnCloseClick={props.btnCloseClick} bgClick={props.bgClick}>
+    <Modal
+      btnCloseClick={props.btnCloseClick}
+      bgClick={props.bgClick}
+      btnCloseVisiible={true}
+    >
       <label>Title</label>
-      <input type="text" name="title" {...bind} />
+      <input type="text" maxLength={24} name="title" {...bind} />
       <label>Content</label>
       <textarea rows={8} name="body" {...bind} />
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>
+      {loading && <Loading />}
+      {fetchError.status && <Error message={fetchError.message} />}
     </Modal>
   );
 };
@@ -156,23 +244,39 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
     description: null,
   };
   const { state, bind } = useForm(initialState);
-  const { PATCH } = useFetch<UseFetchTypes>();
+  const { PATCH, handleFetchError, fetchError } = useFetch<UseFetchTypes>();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    await PATCH("users", state).then(() => window.location.reload());
+    setLoading(true);
+    await PATCH('users', state)
+      .then(() => {
+        return window.location.reload();
+      })
+      .catch((err) => {
+        const status = err.response.status;
+        setLoading(false);
+        handleFetchError(status, 201, 'Failed to update user', true);
+      });
   };
 
   return (
-    <Modal btnCloseClick={props.btnCloseClick} bgClick={props.bgClick}>
+    <Modal
+      btnCloseClick={props.btnCloseClick}
+      bgClick={props.bgClick}
+      btnCloseVisiible={true}
+    >
       <label>Full Name</label>
       <input
         type="text"
+        maxLength={24}
         name="full_name"
         defaultValue={props.defaults?.full_name}
         {...bind}
       />
       <label>Username</label>
       <input
+        maxLength={12}
         type="text"
         name="username"
         defaultValue={props.defaults?.username}
@@ -180,6 +284,7 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
       />
       <label>Email</label>
       <input
+        maxLength={45}
         type="email"
         name="email"
         defaultValue={props.defaults?.email}
@@ -187,6 +292,7 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
       />
       <label>Description</label>
       <textarea
+        maxLength={120}
         rows={8}
         name="description"
         defaultValue={props.defaults?.description}
@@ -195,6 +301,8 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>
+      {loading && <Loading />}
+      {fetchError.status && <Error message={fetchError.message} />}
     </Modal>
   );
 };
@@ -205,19 +313,33 @@ export const UpdateNoteModal = (props: UpdateNoteProps) => {
     body: null,
   };
 
+  const [loading, setLoading] = useState(false);
+
   const { state, bind } = useForm(initialState);
-  const { PATCH } = useFetch();
+  const { PATCH, fetchError, handleFetchError } = useFetch();
 
   const handleSubmit = async () => {
-    await PATCH("notes/" + props.id, state).then(() =>
-      window.location.reload()
-    );
+    setLoading(true);
+    await PATCH('notes/' + props.id, state)
+      .then(() => {
+        return window.location.reload();
+      })
+      .catch((err) => {
+        const status = err.response.status;
+        setLoading(false);
+        handleFetchError(status, 201, 'Failed to update note.', true);
+      });
   };
 
   return (
-    <Modal btnCloseClick={props.btnCloseClick} bgClick={props.bgClick}>
+    <Modal
+      btnCloseClick={props.btnCloseClick}
+      bgClick={props.bgClick}
+      btnCloseVisiible={true}
+    >
       <label>Title</label>
       <input
+        maxLength={24}
         type="text"
         name="title"
         defaultValue={props.defaults?.title}
@@ -233,52 +355,47 @@ export const UpdateNoteModal = (props: UpdateNoteProps) => {
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>
+      {loading && <Loading />}
+      {fetchError.status && <Error message={fetchError.message} />}
     </Modal>
   );
 };
 
 export const UploadImageModal = (props: ModalProps) => {
-  const initialState = {
-    filename: null,
-  };
-
-  const [file, setFile] = useState({
-    file: {
-      filename: null,
-    },
-  });
-
+  const [loading, setLoading] = useState(false);
   const data = new FormData();
 
   const handleChange = (e: ChangeEvent<any>) => {
     const { target } = e;
 
-    data.append("file", target.files[0]);
+    data.append('file', target.files[0]);
   };
   const { POST, handleFetchError, fetchError } = useFetch();
 
   const handleSubmit = async () => {
-    await POST("users/upload", true, data)
+    setLoading(true);
+    await POST('users/upload', true, data)
       .then((res) => {
         return !fetchError.status && window.location.reload();
       })
       .catch((err) => {
+        setLoading(false);
         handleFetchError(
           err.response.status,
           401,
-          "You are not allowed to make these changes"
+          'You are not allowed to make these changes',
         );
         handleFetchError(
           err.response.status,
           201,
-          "Failed to upload image",
-          true
+          'Failed to upload image',
+          true,
         );
       });
   };
 
   return (
-    <Modal btnCloseClick={props.btnCloseClick}>
+    <Modal btnCloseClick={props.btnCloseClick} btnCloseVisiible={true}>
       <div className="file-upload-container">
         <input
           type="file"
@@ -297,6 +414,7 @@ export const UploadImageModal = (props: ModalProps) => {
           Submit
         </button>
       </div>
+      {loading && <Loading />}
       {fetchError.status && <Error message={fetchError.message} />}
     </Modal>
   );

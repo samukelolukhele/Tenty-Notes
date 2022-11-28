@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import useFetch from "./useFetch";
-import { User } from "./types/@types.User";
+import React, { useState } from 'react';
+import useFetch from './useFetch';
+import { User } from './types/@types.User';
 
 interface Note {
   id: string | number;
@@ -16,61 +16,93 @@ interface Note {
 const useUserData = () => {
   const [notes, setNotes] = useState<Note[]>([
     {
-      id: "",
-      title: "",
-      body: "",
-      authorId: "",
+      id: '',
+      title: '',
+      body: '',
+      authorId: '',
       is_pinned: false,
-      created_at: "",
-      updated_at: "",
+      created_at: '',
+      updated_at: '',
       author: {},
     },
   ]);
   const [user, setUser] = useState<User>({
-    email: "",
-    username: "",
+    email: '',
+    username: '',
     id: null,
-    description: "",
-    profile_image: "",
-    full_name: "",
+    description: '',
+    profile_image: '',
+    full_name: '',
     note: [
       {
-        id: "",
-        title: "",
-        content: "",
+        id: '',
+        title: '',
+        content: '',
         is_pinned: false,
-        authorId: "",
-        created_at: "",
-        updated_at: "",
+        authorId: '',
+        created_at: '',
+        updated_at: '',
       },
     ],
+  });
+  const [noteMetadata, setNoteMetadata] = useState({
+    currentPage: 1,
+    totalPages: 1,
+  });
+  const [noteLinkData, setNoteLinkData] = useState({
+    first: '',
+    previous: '',
+    next: '',
+    last: '',
   });
 
   const { GET } = useFetch();
 
   const handleUserData = async () => {
-    return await GET("users/profile", true)
+    return await GET('users/profile', true)
       .then((res) => {
         return setUser(res.data);
       })
       .catch((err) => console.log(err.message));
   };
 
-  const handleDashboardData = async () => {
-    handleUserData();
-    await GET("/notes").then((res) => setNotes(res.data));
-  };
-
-  const handleProfileData = async (id: any) => {
-    return await GET(`users/profile/${id}`, true)
+  const handleProfileUserData = async (id: number | string) => {
+    return await GET(`users/profile/${Number(id)}`)
       .then((res) => {
         return setUser(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  const handleDashboardData = async (page: string | number) => {
+    handleUserData();
+    await GET(`/notes?page=${page}`)
+      .then((res) => {
+        setNoteLinkData(res.data.links);
+        setNoteMetadata(res.data.meta);
+        setNotes(res.data.items);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  const handleProfileData = async (
+    id: number | string,
+    page: string | number,
+  ) => {
+    handleProfileUserData(Number(id));
+    return await GET(`notes/notes-by-user/${id}?page=${Number(page)}`, true)
+      .then((res) => {
+        setNoteLinkData(res.data.links);
+        setNoteMetadata(res.data.meta);
+        return setNotes(res.data.items);
       })
       .catch((err) => console.log(err.message));
   };
 
   return {
     notes,
+    noteMetadata,
+    noteLinkData,
     user,
     handleDashboardData,
     handleProfileData,

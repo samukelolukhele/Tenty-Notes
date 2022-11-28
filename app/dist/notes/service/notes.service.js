@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const notes_entity_1 = require("../../notes/notes.entity");
 const typeorm_2 = require("typeorm");
+const nestjs_typeorm_paginate_1 = require("nestjs-typeorm-paginate");
 let NotesService = class NotesService {
     constructor(repo) {
         this.repo = repo;
@@ -26,6 +27,19 @@ let NotesService = class NotesService {
             relations: {
                 author: true,
             },
+        });
+    }
+    async paginate(options) {
+        return (0, nestjs_typeorm_paginate_1.paginate)(this.repo, options, {
+            relations: ['author'],
+            order: { id: 'DESC' },
+        });
+    }
+    async getByUserId(options, userId) {
+        return (0, nestjs_typeorm_paginate_1.paginate)(this.repo, options, {
+            relations: ['author'],
+            order: { id: 'DESC' },
+            where: { authorId: Number(userId) },
         });
     }
     async create(note) {
@@ -58,14 +72,6 @@ let NotesService = class NotesService {
     async getById(id) {
         return await this.repo.findOne({
             where: { id: id },
-            relations: {
-                author: true,
-            },
-        });
-    }
-    async getByUserId(userId) {
-        return await this.repo.findOne({
-            where: { authorId: userId },
             relations: {
                 author: true,
             },

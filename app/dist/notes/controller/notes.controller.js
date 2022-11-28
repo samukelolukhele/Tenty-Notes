@@ -22,14 +22,19 @@ let NotesController = class NotesController {
     constructor(serv) {
         this.serv = serv;
     }
-    async getAll() {
-        return await this.serv.getAll();
+    async paginate(page = 1, limit = 10) {
+        limit = limit > 10 ? 10 : limit;
+        return this.serv.paginate({
+            page,
+            limit,
+            route: 'notes',
+        });
     }
     async getById(id) {
         return await this.serv.getById(id);
     }
-    async getNotesByUser(id) {
-        return await this.serv.getByUserId(id);
+    async getNotesByUser(page = 1, limit = 10, id) {
+        return await this.serv.getByUserId({ page, limit, route: 'notes' }, Number(id));
     }
     async create(user, note) {
         return await this.serv.create({
@@ -48,10 +53,12 @@ let NotesController = class NotesController {
 };
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
-], NotesController.prototype, "getAll", null);
+], NotesController.prototype, "paginate", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -61,9 +68,11 @@ __decorate([
 ], NotesController.prototype, "getById", null);
 __decorate([
     (0, common_1.Get)('notes-by-user/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(2), common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, Number, Number]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "getNotesByUser", null);
 __decorate([

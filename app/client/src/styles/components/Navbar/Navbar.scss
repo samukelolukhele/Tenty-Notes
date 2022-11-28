@@ -1,5 +1,5 @@
-@use "../../breakpoints" as break;
-@use "../../variables.scss" as var;
+@use '../../breakpoints' as break;
+@use '../../variables.scss' as var;
 
 .navbar {
   width: 100%;
@@ -13,7 +13,7 @@
     height: 100%;
 
     .logout {
-      font-weight: map-get(var.$font-weight, "light");
+      font-weight: map-get(var.$font-weight, 'base');
       cursor: pointer;
 
       &:hover {
@@ -24,6 +24,7 @@
     .nav-links {
       display: flex;
       gap: 0 40px;
+      font-size: 0.5rem;
 
       @include break.lg {
         position: fixed;
@@ -42,8 +43,8 @@
       }
 
       a {
-        font-weight: 300;
-
+        font-weight: map-get(var.$font-weight, 'light');
+        font-size: 1.4rem;
         &:hover {
           color: var.$tetiary;
         }

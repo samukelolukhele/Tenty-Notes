@@ -1,11 +1,11 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 body {
   overflow-x: hidden;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
 button {
@@ -46,6 +46,13 @@ input {
     font-weight: 300;
     font-style: italic;
   }
+}
+
+.loading {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pwd-requisites {

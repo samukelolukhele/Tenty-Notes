@@ -1,12 +1,12 @@
-@import "../variables.scss";
+@import '../variables.scss';
 
 $btn-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "tetiary": $tetiary,
-  "error": $error,
-  "info": $info,
-  "success": $success,
+  'primary': $primary,
+  'secondary': $secondary,
+  'tetiary': $tetiary,
+  'error': $error,
+  'info': $info,
+  'success': $success,
 );
 
 @mixin btn($bg-color: $primary) {
@@ -18,9 +18,9 @@ $btn-colors: (
   text-align: center;
   width: 130px;
   padding: 10px 0;
-  border-radius: 30px;
+  border-radius: 5px;
   font-size: 1.3rem;
-  font-weight: map-get($map: $font-weight, $key: "base");
+  font-weight: map-get($map: $font-weight, $key: 'base');
 }
 
 .btn {

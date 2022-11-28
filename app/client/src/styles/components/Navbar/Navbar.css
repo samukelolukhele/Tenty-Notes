@@ -11,7 +11,6 @@
   height: 100%;
 }
 .navbar .container .logout {
-  font-weight: 300;
   cursor: pointer;
 }
 .navbar .container .logout:hover {
@@ -20,6 +19,7 @@
 .navbar .container .nav-links {
   display: flex;
   gap: 0 40px;
+  font-size: 0.5rem;
 }
 @media (max-width: 960px) {
   .navbar .container .nav-links {
@@ -40,6 +40,7 @@
 }
 .navbar .container .nav-links a {
   font-weight: 300;
+  font-size: 1.4rem;
 }
 .navbar .container .nav-links a:hover {
   color: #1a9da7;

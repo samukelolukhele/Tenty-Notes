@@ -1,5 +1,5 @@
-@use "../../variables" as var;
-@use "../../breakpoints" as break;
+@use '../../variables' as var;
+@use '../../breakpoints' as break;
 
 .modal-bg {
   position: absolute;
@@ -24,6 +24,7 @@
 }
 
 .modal {
+  position: relative;
   max-width: 400px;
   width: 70%;
   display: flex;
@@ -32,6 +33,9 @@
   color: black;
   padding: 1.5rem 3rem;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: var.$base-border-radius;
 
   @include break.sm {
     min-width: 0;
@@ -46,7 +50,11 @@
     height: fit-content;
     color: white;
     font-size: 1.2rem;
-    font-weight: map-get(var.$font-weight, "bold");
+    border-radius: 2000px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-weight: map-get(var.$font-weight, 'bold');
     border: none;
     cursor: pointer;
 
@@ -94,9 +102,13 @@
   }
 }
 
-.file-container {
+.file-upload-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  input {
+    flex-shrink: 1;
+  }
 }

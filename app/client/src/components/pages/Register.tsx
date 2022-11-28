@@ -1,22 +1,22 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { Form, Link, redirect, useNavigate } from "react-router-dom";
-import "../../styles/pages/login/login.css";
-import "../../styles/pages/register/register.css";
-import Logo from "../Logo";
-import Error from "../Error";
-import useForm from "../../hooks/useForm";
-import useFetch from "../../hooks/useFetch";
-import Loading from "../Loading";
-import { Circles } from "react-loader-spinner";
-import { colours } from "../utils/colours";
-import PwdRequisites from "../utils/PwdRequisites";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Form, Link, redirect, useNavigate } from 'react-router-dom';
+import '../../styles/pages/login/login.css';
+import '../../styles/pages/register/register.css';
+import Logo from '../Logo';
+import Error from '../Error';
+import useForm from '../../hooks/useForm';
+import useFetch from '../../hooks/useFetch';
+import Loading from '../Loading';
+import { Circles } from 'react-loader-spinner';
+import { colours } from '../utils/colours';
+import PwdRequisites from '../utils/PwdRequisites';
 
 const Register = () => {
   const initialState = {
-    full_name: "",
-    username: "",
-    email: "",
-    description: "",
+    full_name: '',
+    username: '',
+    email: '',
+    description: '',
   };
 
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const Register = () => {
   });
   const [error, setError] = useState({
     status: false,
-    message: "",
+    message: '',
   });
 
   const { state, bind } = useForm(initialState);
@@ -55,32 +55,31 @@ const Register = () => {
     Object.values(checks).some((v) => {
       if (v === false) {
         setLoading(false);
-        console.log(true);
         return setError({
           status: true,
-          message: "Password requirements not met",
+          message: 'Password requirements not met',
         });
       }
     });
     if (state.password !== state.confirmPassword)
-      return setError({ status: true, message: "Passwords must match" });
+      return setError({ status: true, message: 'Passwords must match' });
 
     setLoading(true);
 
-    return await POST("users", false, state)
+    return await POST('users', false, state)
       .then((res) => {
-        localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem('token', res.data.access_token);
 
         setLoading(false);
-        return nav("/dashboard");
+        return nav('/dashboard');
       })
       .catch((err) => {
-        return setError({ status: true, message: "Failed to create account." });
+        return setError({ status: true, message: 'Failed to create account.' });
       });
   };
 
   useEffect(() => {
-    if (localStorage.getItem("/dashboard")) return nav("/dashboard");
+    if (localStorage.getItem('/dashboard')) return nav('/dashboard');
   }, []);
 
   return (
@@ -115,7 +114,7 @@ const Register = () => {
             <input
               type="password"
               name="confirmPassword"
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
               {...bind}
             />
           </div>
@@ -136,7 +135,7 @@ const Register = () => {
             Sign Up
           </button>
           <p>
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link to="/login" className="register-link">
               Login here.
             </Link>

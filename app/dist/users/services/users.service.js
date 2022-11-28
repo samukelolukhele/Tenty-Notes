@@ -79,6 +79,8 @@ let UsersService = class UsersService {
             relations: { note: true },
             select: { password: true, id: true },
         });
+        if (!currentPassword)
+            return null;
         const checkPassword = await bcrypt.compare(currentPassword, foundUser.password);
         if (checkPassword == false) {
             return null;
@@ -87,7 +89,7 @@ let UsersService = class UsersService {
         return await this.repo.update(foundUser.id, Object.assign({}, (newPassword && { password: hashedPassword })));
     }
     async updateById(id, user) {
-        return await this.repo.update(id, Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (user.name && { username: user.name })), (user.email && { email: user.email })), (user.full_name && { full_name: user.full_name })), (user.description && { description: user.description })), (user.profile_image && { profile_image: user.profile_image })));
+        return await this.repo.update(id, Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (user.username && { username: user.username })), (user.email && { email: user.email })), (user.full_name && { full_name: user.full_name })), (user.description && { description: user.description })), (user.profile_image && { profile_image: user.profile_image })));
     }
     async delete(id) {
         return await this.repo.delete(id);

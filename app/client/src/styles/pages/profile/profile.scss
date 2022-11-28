@@ -1,5 +1,5 @@
-@use "../../variables" as var;
-@use "../../breakpoints" as break;
+@use '../../variables' as var;
+@use '../../breakpoints' as break;
 
 .profile-page {
   .profile-container {
@@ -32,7 +32,15 @@
   }
 
   .profile {
+    background-image: var.$circle-bg;
     box-shadow: none;
+    color: white;
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.445);
+    border-radius: 0;
+
+    &:hover {
+      border: none;
+    }
   }
 
   .row {

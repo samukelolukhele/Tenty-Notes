@@ -1,17 +1,17 @@
-@use "../../variables" as var;
+@use '../../variables' as var;
+@use '../../breakpoints' as break;
 
 .card {
   position: relative;
-  height: 250px;
-  width: 100%;
+  min-height: 250px;
   display: flex;
   padding: 1.3rem 3rem;
-  border-radius: 30px;
+  border-radius: var.$base-border-radius;
   box-shadow: var.$small-box-shadow;
   flex-direction: column;
   width: fit-content;
-  background-color: lighten(var.$secondary, 10%);
-  color: var.$primary;
+  background-color: var.$primary;
+  color: var.$secondary;
 
   &:hover {
     border-left: 3px solid var.$tetiary;
@@ -36,7 +36,7 @@
 
   p {
     font-size: 0.8rem;
-    font-weight: map-get($map: var.$font-weight, $key: "light");
+    font-weight: map-get($map: var.$font-weight, $key: 'light');
   }
 }
 

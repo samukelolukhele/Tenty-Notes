@@ -1,0 +1,21 @@
+@use '../../variables' as var;
+
+.pagination-square {
+  border: 1px solid var.$primary;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  width: fit-content;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+
+  &:hover {
+    background-color: var.$primary;
+    transition: 0.3s ease-in;
+    color: white;
+  }
+}
+.pagination-page-number {
+  background-color: var.$primary;
+  color: white;
+  cursor: default;
+}

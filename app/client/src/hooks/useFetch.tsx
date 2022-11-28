@@ -1,16 +1,15 @@
-import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import axios, { AxiosResponse } from 'axios';
+import { useState } from 'react';
 
 const useFetch = <T,>() => {
   const [response, setResponse] = useState<any>();
-  const [error, setError] = useState<any>();
   const [fetchError, setFetchError] = useState({
     status: false,
-    message: "",
+    message: '',
   });
   const authHeaders = {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   };
 
@@ -18,7 +17,7 @@ const useFetch = <T,>() => {
     status: number,
     desiredStatus: number,
     message: string,
-    inverse = false
+    inverse = false,
   ) => {
     if (
       (!inverse && status === desiredStatus) ||
@@ -33,47 +32,39 @@ const useFetch = <T,>() => {
 
   const GET = async (
     route: string,
-    authRequired = false
+    authRequired = false,
   ): Promise<any | AxiosResponse<any, any>> => {
-    return await axios
-      .get(route, authRequired ? authHeaders : undefined)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => err.message);
+    return await axios.get(route, authRequired ? authHeaders : undefined);
   };
 
   const POST = async (route: string, authRequired = false, body: any) => {
     return await axios.post(
       route,
       body,
-      authRequired ? authHeaders : undefined
+      authRequired ? authHeaders : undefined,
     );
   };
 
   const PATCH = async (route: string, body: any) => {
-    return await axios
-      .patch(route, body, authHeaders)
-      .then((res) => res)
-      .catch((e) => e.message);
+    return await axios.patch(route, body, authHeaders);
   };
 
   const DELETE = async (
     route: string,
-    id: string | number | undefined = ""
+    id: string | number | undefined = '',
   ) => {
     console.log(`${route}/${id}`);
-    return await axios.delete(id == "" ? `${route}/${id}` : route, authHeaders);
+    return await axios.delete(id ? `${route}/${id}` : route, authHeaders);
   };
 
   const LOGIN = async (
     route: string,
-    body: any
+    body: any,
   ): Promise<AxiosResponse<any, any>> => {
     return await axios
       .post(route, body)
       .then((res) => {
-        localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem('token', res.data.access_token);
         return setResponse(res);
       })
       .catch((err) => err);
@@ -84,7 +75,7 @@ const useFetch = <T,>() => {
       .then((res) => {
         return res;
       })
-      .catch((err) => console.log("error"));
+      .catch((err) => console.log('error'));
   };
 
   return {

@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import "../styles/components/Navbar/Navbar.css";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import Logout from "./Logout";
-import useWindowDimesions from "../hooks/useWindowDimesions";
-import { FaTimes, FaBars } from "react-icons/fa";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import '../styles/components/Navbar/Navbar.css';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import Logout from './Logout';
+import useWindowDimesions from '../hooks/useWindowDimesions';
+import { FaTimes, FaBars } from 'react-icons/fa';
 
 function Navbar() {
   const navRef = useRef<any>();
 
-  const showNavbar = () => navRef.current.classList.toggle("responsive_nav");
+  const showNavbar = () => navRef.current.classList.toggle('responsive_nav');
+  const { loggedInUser } = useContext(AuthContext);
 
   return (
     <header className="navbar">
@@ -18,7 +19,7 @@ function Navbar() {
           <span>Tenty</span>NOTES
         </Link>
         <nav ref={navRef} className="nav-links">
-          {!localStorage.getItem("token") ? (
+          {!localStorage.getItem('token') ? (
             <>
               <button className="nav-btn nav-close-btn" onClick={showNavbar}>
                 <FaTimes />
@@ -35,7 +36,10 @@ function Navbar() {
               <Link to="/dashboard" onClick={showNavbar}>
                 Dashboard
               </Link>
-              <Link to="/dashboard/profile" onClick={showNavbar}>
+              <Link
+                to={`/dashboard/profile/?id=${loggedInUser?.id}`}
+                onClick={showNavbar}
+              >
                 Profile
               </Link>
               <Logout />

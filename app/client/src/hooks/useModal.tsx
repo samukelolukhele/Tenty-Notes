@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   UpdateUserModal,
   AddNoteModal,
-  DeleteProfileModal,
+  DeleteDialogueModal,
   UpdateNoteModal,
   UploadImageModal,
   ChangePasswordModal,
-} from "../components/Modal";
-import useFetch from "./useFetch";
+} from '../components/Modal';
+import useFetch from './useFetch';
 
 interface UserDefaultOptionsType {
   full_name?: string;
@@ -25,18 +25,29 @@ interface NoteDefaultOptionsType {
   };
 }
 
+type ModalStateType = {
+  type: string;
+  status: boolean;
+  loading?: boolean;
+  delFunction?: () => Promise<void> | void | undefined;
+};
+
 const useModal = (
   userDefaults: UserDefaultOptionsType,
-  noteDefaults: NoteDefaultOptionsType
+  noteDefaults: NoteDefaultOptionsType,
 ) => {
-  const [modal, setModal] = useState({
-    type: "Update_User",
+  const [modal, setModal] = useState<ModalStateType>({
+    type: 'Update_User',
     status: false,
+    delFunction: undefined,
+    loading: false,
   });
   const [error, setError] = useState({
     status: false,
-    message: "",
+    message: '',
   });
+  const [loading, setLoading] = useState(false);
+
   const { DELETE } = useFetch();
   const nav = useNavigate();
 
@@ -51,22 +62,26 @@ const useModal = (
     };
 
     const handleDelete = async () => {
-      await DELETE("users", undefined)
+      setLoading(true);
+      await DELETE('users', undefined)
         .then((res) => {
-          localStorage.removeItem("token");
-          return nav("/");
+          setLoading(false);
+          localStorage.removeItem('token');
+          return nav('/');
         })
         .catch((err) => {
+          setLoading(false);
+
           if (err.response.status != 202) {
             return setError({
               status: true,
-              message: "Failed to delete profile",
+              message: 'Failed to delete profile',
             });
           }
         });
     };
 
-    if (modal.type == "Change_Password")
+    if (modal.type == 'Change_Password')
       return (
         <ChangePasswordModal
           bgClick={handleClose}
@@ -74,12 +89,12 @@ const useModal = (
         />
       );
 
-    if (modal.type == "Upload_Image")
+    if (modal.type == 'Upload_Image')
       return (
         <UploadImageModal bgClick={handleClose} btnCloseClick={handleClose} />
       );
 
-    if (modal.type == "Update_User")
+    if (modal.type == 'Update_User')
       return (
         <UpdateUserModal
           defaults={userDefaults}
@@ -87,7 +102,7 @@ const useModal = (
           bgClick={handleClose}
         />
       );
-    if (modal.type == "Update_Note")
+    if (modal.type == 'Update_Note')
       return (
         <UpdateNoteModal
           id={noteDefaults?.id}
@@ -97,16 +112,32 @@ const useModal = (
         />
       );
 
-    if (modal.type == "Add_Note")
+    if (modal.type == 'Add_Note')
       return <AddNoteModal btnCloseClick={handleClose} bgClick={handleClose} />;
 
-    if (modal.type == "Delete_User")
+    if (modal.type == 'Delete_User')
       return (
-        <DeleteProfileModal
+        <DeleteDialogueModal
           onAccept={handleDelete}
           onCancel={handleClose}
+          loading={loading}
           error={error.status}
           errorMessage={error.message}
+          text="Deleting your profile will also delete all of your notes. Are you sure
+          you want to delete your profile?"
+        />
+      );
+
+    if (modal.type == 'Delete_Note')
+      return (
+        <DeleteDialogueModal
+          onAccept={modal.delFunction}
+          onCancel={handleClose}
+          loading={loading}
+          error={error.status}
+          errorMessage={error.message}
+          text="Are you sure
+          you want to delete this note?"
         />
       );
   };

@@ -85,6 +85,8 @@ export class UsersService {
       select: { password: true, id: true },
     });
 
+    if (!currentPassword) return null;
+
     const checkPassword: boolean = await bcrypt.compare(
       currentPassword,
       foundUser.password,
@@ -103,7 +105,7 @@ export class UsersService {
 
   public async updateById(id: any, user: any) {
     return await this.repo.update(id, {
-      ...(user.name && { username: user.name }),
+      ...(user.username && { username: user.username }),
       ...(user.email && { email: user.email }),
       ...(user.full_name && { full_name: user.full_name }),
       ...(user.description && { description: user.description }),

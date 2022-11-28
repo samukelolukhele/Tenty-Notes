@@ -1,11 +1,11 @@
-import React from "react";
-import "../styles/components/Card/Card.css";
-import { BsTrash2 } from "react-icons/bs";
-import { AiOutlinePushpin } from "react-icons/ai";
-import { HiOutlinePencil } from "react-icons/hi";
-import useTruncate from "../hooks/useTruncate";
-import useHover from "../hooks/useHover";
-import Username from "./Username";
+import React from 'react';
+import '../styles/components/Card/Card.css';
+import { BsTrash2 } from 'react-icons/bs';
+import { AiOutlinePushpin } from 'react-icons/ai';
+import { HiOutlinePencil } from 'react-icons/hi';
+import useTruncate from '../hooks/useTruncate';
+import useHover from '../hooks/useHover';
+import Username from './Username';
 
 interface CProps {
   title: string;
@@ -56,7 +56,7 @@ const Card = ({
           <hr />
         </div>
         <div className="card-body">
-          <p>{truncate(body, 50)}</p>
+          <p>{truncate(body, 160)}</p>
         </div>
         {hover && editPrivileges ? (
           <div className="card-tetiary">
