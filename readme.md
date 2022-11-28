@@ -42,7 +42,7 @@ To run this project, you will need to add the following environment variables to
 
 `CLIENT_URL`
 
-# Google Cloud Storage Credentials
+#### Google Cloud Storage Credentials
 
 `GCS_PROJECT`
 
