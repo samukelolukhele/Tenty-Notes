@@ -48,6 +48,7 @@
     grid-template-columns: repeat(1, 100%);
   }
   .row .card {
+    margin: 0 auto;
     padding-bottom: 4rem;
   }
 }
