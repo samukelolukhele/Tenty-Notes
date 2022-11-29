@@ -23,6 +23,8 @@ export default async function bootstrap() {
     });
   };
 
+  console.log(`${__dirname}/credentials.json`);
+
   const host = '0.0.0.0';
   const port = process.env.PORT;
 
