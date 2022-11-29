@@ -24,6 +24,8 @@ export default async function bootstrap() {
   const host = '0.0.0.0';
   const port = process.env.PORT;
 
-  await app.listen(port, host);
+  await app.listen(port, host, () =>
+    console.log(`Server running on localhost:${port}`),
+  );
 }
 bootstrap();

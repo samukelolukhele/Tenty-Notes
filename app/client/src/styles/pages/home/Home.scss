@@ -1,8 +1,8 @@
-@import "../../variables";
+@import '../../variables';
 
 .home {
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
   background-color: $primary;
   display: flex;
   justify-content: center;
@@ -46,7 +46,7 @@
 
   .secondary-text {
     font-size: 1.5rem;
-    font-weight: map-get($font-weight, "light");
+    font-weight: map-get($font-weight, 'light');
     color: $secondary;
     width: 80%;
     text-align: center;

@@ -79,7 +79,7 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('/dashboard')) return nav('/dashboard');
+    if (localStorage.getItem('token')) return nav('/dashboard');
   }, []);
 
   return (

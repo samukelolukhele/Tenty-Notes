@@ -41,7 +41,7 @@ export class UsersService {
       username: user.username,
       email: user.email.toLowerCase(),
       password: hashedPassword,
-      profile_image: 'hacker.png',
+      profile_image: 'tenty-default-img.jpeg',
       description: "Hey I'm on Tenty Notes!",
       full_name: user.full_name,
     };
