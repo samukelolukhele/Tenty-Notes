@@ -15,7 +15,7 @@ export default async function bootstrap() {
   });
 
   const createCredentialsJSON = async () => {
-    await fs.writeFile('./credentials.json', gcs_config, (err) => {
+    await fs.writeFile(`${__dirname}/credentials.json`, gcs_config, (err) => {
       if (err) {
         console.log(err);
       }
