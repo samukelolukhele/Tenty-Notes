@@ -29,7 +29,7 @@ import * as multerGoogleStorage from 'multer-google-storage';
 const gcStorage = multerGoogleStorage.storageEngine({
   bucket: process.env.GCS_BUCKET,
   projectId: process.env.GCS_PROJECT,
-  keyFilename: 'credentials.json',
+  keyFilename: `${__dirname}/credentials.json`,
   credentials: {
     client_email: process.env.GCS_CLIENT_EMAIL,
     private_key: process.env.GCS_PRIVATE_KEY,
