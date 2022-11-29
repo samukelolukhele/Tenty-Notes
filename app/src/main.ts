@@ -14,15 +14,19 @@ export default async function bootstrap() {
     origin: '*',
   });
 
-  fs.writeFile('./credentials.json', gcs_config, (err) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log('File succesfully written!');
-  });
+  const createCredentialsJSON = async () => {
+    await fs.writeFile('./credentials.json', gcs_config, (err) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log('File succesfully written!');
+    });
+  };
 
   const host = '0.0.0.0';
   const port = process.env.PORT;
+
+  await createCredentialsJSON();
 
   await app.listen(port, host, () =>
     console.log(`Server running on localhost:${port}`),
