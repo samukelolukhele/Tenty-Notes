@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   Get,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -19,22 +20,9 @@ import { CreatUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import * as Multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
 import { Observable, of } from 'rxjs';
 import path, { join } from 'path';
 import { Response } from 'express';
-import { Storage } from '@google-cloud/storage';
-import * as multerGoogleStorage from 'multer-google-storage';
-
-const gcStorage = multerGoogleStorage.storageEngine({
-  bucket: process.env.GCS_BUCKET,
-  projectId: process.env.GCS_PROJECT,
-  keyFilename: `dist/credentials.json`,
-  credentials: {
-    client_email: process.env.GCS_CLIENT_EMAIL,
-    private_key: process.env.GCS_PRIVATE_KEY,
-  },
-});
 
 @Controller('users')
 export class UsersController {
@@ -100,11 +88,20 @@ export class UsersController {
   @Post('/upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: gcStorage,
+      storage: Multer.memoryStorage(),
+      limits: { fileSize: 2097152, files: 1 },
+      fileFilter: (req, file, callback) => {
+        return file.mimetype.match(/image\/(jpg|jpeg|png|gif)$/)
+          ? callback(null, true)
+          : callback(
+              new BadRequestException('Only image files are allowed'),
+              false,
+            );
+      },
     }),
   )
   public uploadFile(@UploadedFile() file, @AuthUser() user: any) {
-    return this.serv.updateById(user.userId, { profile_image: file.filename });
+    return this.serv.updateProfileImg(file, user.userId);
   }
 
   @Get('profile-image/:image')

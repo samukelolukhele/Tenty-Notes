@@ -14,7 +14,7 @@ export declare class UsersController {
     }>;
     changePassword(user: any, password: any, res: Response): Promise<void>;
     update(user: any, updatedUser: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
-    uploadFile(file: any, user: any): Promise<import("typeorm").UpdateResult>;
+    uploadFile(file: any, user: any): Promise<any>;
     getProfileImage(image: string, res: any): Observable<Object>;
     delete(user: any): Promise<import("typeorm").DeleteResult>;
 }

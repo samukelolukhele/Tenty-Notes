@@ -8,7 +8,7 @@ import useFetch from '../hooks/useFetch';
 interface AProps {
   children?: React.ReactNode;
   loggedInUser?: User;
-  checkExpiration?: any;
+  checkExpiration?: (token: any) => Promise<void>;
 }
 
 export const AuthContext = createContext<AProps>({});

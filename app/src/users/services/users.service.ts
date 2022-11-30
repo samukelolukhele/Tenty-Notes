@@ -10,12 +10,40 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '../../users/users.entity';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/services/auth.service';
+import { Bucket, Storage } from '@google-cloud/storage';
+import { parse } from 'path';
+import { userInfo } from 'os';
+
+interface File {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer: Buffer;
+}
+
 @Injectable()
 export class UsersService {
+  private bucket: Bucket;
+  private storage: Storage;
+
   constructor(
     @InjectRepository(User) private readonly repo: Repository<User>,
     @Inject(forwardRef(() => AuthService)) private auth: AuthService,
-  ) {}
+  ) {
+    this.storage = new Storage({
+      projectId: process.env.GCS_PROJECT,
+      credentials: {
+        client_email: process.env.GCS_CLIENT_EMAIL,
+        private_key: process.env.GCS_PRIVATE_KEY,
+      },
+    });
+    this.bucket = this.storage.bucket(process.env.GCS_BUCKET);
+  }
 
   public async getAll() {
     return await this.repo.find({
@@ -101,6 +129,46 @@ export class UsersService {
     return await this.repo.update(foundUser.id, {
       ...(newPassword && { password: hashedPassword }),
     });
+  }
+
+  public async updateProfileImg(uploadedFile: File, id: number): Promise<any> {
+    const user = await this.getById(id);
+    if (user.profile_image != 'tenty-default-img.jpeg') {
+      try {
+        const fileToBeDeleted = this.bucket.file(user.profile_image);
+
+        await fileToBeDeleted.delete();
+      } catch (e) {
+        console.log({
+          Error: e.message,
+          Response:
+            'Since there was no image found the users image is now set to the default',
+        });
+      }
+      await this.updateById(id, { profile_image: 'tenty-default-img.jpeg' });
+    }
+
+    const setFilename = (uploadedFile: File): string => {
+      const fileName = parse(uploadedFile.originalname);
+      return `${fileName.name}-${Date.now()}${fileName.ext}`
+        .replace(/^\.+/g, '')
+        .replace(/^\/+/g, '')
+        .replace(/\r|\n/g, '_');
+    };
+
+    const filename = setFilename(uploadedFile);
+
+    const file = this.bucket.file(filename);
+
+    try {
+      await file.save(uploadedFile.buffer, {
+        contentType: uploadedFile.mimetype,
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    return this.updateById(id, { profile_image: file.name });
   }
 
   public async updateById(id: any, user: any) {

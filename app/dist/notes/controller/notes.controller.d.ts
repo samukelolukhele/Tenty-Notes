@@ -9,6 +9,6 @@ export declare class NotesController {
     getById(id: number): Promise<Note>;
     getNotesByUser(page: number, limit: number, id: number): Promise<Pagination<Note, import("nestjs-typeorm-paginate").IPaginationMeta>>;
     create(user: any, note: CreateNoteDto): Promise<Note>;
-    update(user: any, id: number, note: CreateNoteDto): Promise<Note | "Note not found" | import("@nestjs/common").UnauthorizedException>;
+    update(user: any, id: number, note: CreateNoteDto): Promise<Note | import("@nestjs/common").UnauthorizedException | "Note not found">;
     delete(user: any, id: number): Promise<import("@nestjs/common").UnauthorizedException | import("typeorm").DeleteResult>;
 }

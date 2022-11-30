@@ -32,7 +32,7 @@ const useFetch = <T,>() => {
   };
 
   const token = localStorage.getItem('token');
-  const checkJWT = () => token && checkExpiration(token);
+  const checkJWT = () => token && checkExpiration?.(token);
 
   const GET = async (
     route: string,

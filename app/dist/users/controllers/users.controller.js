@@ -20,26 +20,9 @@ const user_decorator_1 = require("../../auth/user.decorator");
 const create_user_dto_1 = require("../dto/create-user.dto");
 const update_user_dto_1 = require("../dto/update-user.dto");
 const users_service_1 = require("../services/users.service");
+const Multer = require("multer");
 const rxjs_1 = require("rxjs");
 const path_1 = require("path");
-const storage_1 = require("@google-cloud/storage");
-const multerGoogleStorage = require("multer-google-storage");
-const gcStorage = multerGoogleStorage.storageEngine({
-    bucket: process.env.GCS_BUCKET,
-    projectId: process.env.GCS_PROJECT,
-    keyFilename: 'dummy.json',
-    credentials: {
-        client_email: process.env.GCS_CLIENT_EMAIL,
-        private_key: process.env.GCS_PRIVATE_KEY,
-    },
-});
-const storage = new storage_1.Storage({
-    projectId: process.env.GCS_PROJECT_ID,
-    credentials: {
-        client_email: process.env.GCS_CLIENT_EMAIL,
-        private_key: process.env.GCS_PRIVATE_KEY,
-    },
-});
 let UsersController = class UsersController {
     constructor(serv) {
         this.serv = serv;
@@ -75,8 +58,7 @@ let UsersController = class UsersController {
         return await this.serv.updateById(user.userId, updatedUser);
     }
     uploadFile(file, user) {
-        console.log(file);
-        return this.serv.updateById(user.userId, { profile_image: file.filename });
+        return this.serv.updateProfileImg(file, user.userId);
     }
     getProfileImage(image, res) {
         return (0, rxjs_1.of)(res.sendFile((0, path_1.join)(process.cwd(), 'https://storage.googleapis.com/tentynotes/' + image)));
@@ -136,7 +118,13 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)('/upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
-        storage: gcStorage,
+        storage: Multer.memoryStorage(),
+        limits: { fileSize: 2097152, files: 1 },
+        fileFilter: (req, file, callback) => {
+            return file.mimetype.match(/image\/(jpg|jpeg|png|gif)$/)
+                ? callback(null, true)
+                : callback(new common_1.BadRequestException('Only image files are allowed'), false);
+        },
     })),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, user_decorator_1.AuthUser)()),
