@@ -8,6 +8,7 @@ import useFetch from '../hooks/useFetch';
 interface AProps {
   children?: React.ReactNode;
   loggedInUser?: User;
+  checkExpiration?: any;
 }
 
 export const AuthContext = createContext<AProps>({});
@@ -40,8 +41,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const decodedToken: TokenProps = jwtDecode(token);
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      window.location.reload();
-      return localStorage.removeItem('token');
+      await localStorage.removeItem('token');
+      return window.location.reload();
     }
   };
 

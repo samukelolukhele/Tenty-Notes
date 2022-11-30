@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const useFetch = <T,>() => {
-  const [response, setResponse] = useState<any>();
+  const { checkExpiration } = useContext(AuthContext);
   const [fetchError, setFetchError] = useState({
     status: false,
     message: '',
@@ -30,14 +31,19 @@ const useFetch = <T,>() => {
     }
   };
 
+  const token = localStorage.getItem('token');
+  const checkJWT = () => token && checkExpiration(token);
+
   const GET = async (
     route: string,
     authRequired = false,
   ): Promise<any | AxiosResponse<any, any>> => {
+    authHeaders && checkJWT();
     return await axios.get(route, authRequired ? authHeaders : undefined);
   };
 
   const POST = async (route: string, authRequired = false, body: any) => {
+    authRequired && checkJWT();
     return await axios.post(
       route,
       body,
@@ -53,7 +59,7 @@ const useFetch = <T,>() => {
     route: string,
     id: string | number | undefined = '',
   ) => {
-    console.log(`${route}/${id}`);
+    authHeaders && checkJWT();
     return await axios.delete(id ? `${route}/${id}` : route, authHeaders);
   };
 
@@ -64,8 +70,7 @@ const useFetch = <T,>() => {
     return await axios
       .post(route, body)
       .then((res) => {
-        localStorage.setItem('token', res.data.access_token);
-        return setResponse(res);
+        return localStorage.setItem('token', res.data.access_token);
       })
       .catch((err) => err);
   };
@@ -87,7 +92,6 @@ const useFetch = <T,>() => {
     LOGIN,
     handleFetchError,
     fetchError,
-    response,
     setFetchError,
   };
 };
