@@ -32,13 +32,13 @@ const useFetch = <T,>() => {
   };
 
   const token = localStorage.getItem('token');
-  const checkJWT = () => token && checkExpiration?.(token);
+  const checkJWT = () => checkExpiration?.(token);
 
   const GET = async (
     route: string,
     authRequired = false,
   ): Promise<any | AxiosResponse<any, any>> => {
-    authHeaders && checkJWT();
+    authRequired && checkJWT();
     return await axios.get(route, authRequired ? authHeaders : undefined);
   };
 
@@ -52,6 +52,7 @@ const useFetch = <T,>() => {
   };
 
   const PATCH = async (route: string, body: any) => {
+    checkJWT();
     return await axios.patch(route, body, authHeaders);
   };
 
@@ -59,7 +60,7 @@ const useFetch = <T,>() => {
     route: string,
     id: string | number | undefined = '',
   ) => {
-    authHeaders && checkJWT();
+    checkJWT();
     return await axios.delete(id ? `${route}/${id}` : route, authHeaders);
   };
 

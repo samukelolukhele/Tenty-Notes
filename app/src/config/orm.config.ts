@@ -10,6 +10,5 @@ export const ormConfig: TypeOrmModuleOptions = {
   username: process.env.POSTGRES_USER,
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, '../migration/*{.ts,.js')],
-  synchronize: true,
   ssl: true,
 };
