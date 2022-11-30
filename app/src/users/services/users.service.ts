@@ -39,7 +39,7 @@ export class UsersService {
       projectId: process.env.GCS_PROJECT,
       credentials: {
         client_email: process.env.GCS_CLIENT_EMAIL,
-        private_key: process.env.GCS_PRIVATE_KEY,
+        private_key: process.env.GCS_PRIVATE_KEY.replace(/\\n/gm, '\n'),
       },
     });
     this.bucket = this.storage.bucket(process.env.GCS_BUCKET);
