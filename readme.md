@@ -1,6 +1,6 @@
 # Tenty Notes
 
-A web application made for taking notes and sharing notes for revision.
+A web application made for taking and sharing notes for revision. This app utililzes ReactTS for the client side and NestJS for the server. The server implements JWT authentication, Google Cloud Storage for user profile images and PostgreSQL for the database.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
