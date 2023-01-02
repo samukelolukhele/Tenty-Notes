@@ -24,7 +24,7 @@ let LocalStrategy = class LocalStrategy extends (0, passport_1.PassportStrategy)
     async validate(email, password) {
         const user = await this.authService.validateUser(email, password);
         if (!user) {
-            throw new common_1.UnauthorizedException();
+            throw new common_1.HttpException('You are not authorized to perform this action.', common_1.HttpStatus.UNAUTHORIZED);
         }
         return user;
     }

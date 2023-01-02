@@ -50,12 +50,20 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
   public async getByProfile(@AuthUser() user: any) {
-    return await this.serv.getProfile(user.userId);
+    try {
+      return await this.serv.getProfile(user.userId);
+    } catch (e) {
+      throw new HttpException('Failed to get profile', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get('/profile/:id')
   public async getById(@Param('id') id: number) {
-    return this.serv.getById(id);
+    try {
+      return this.serv.getById(id);
+    } catch (err) {
+      throw new HttpException('Failed to get user', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Post()
@@ -65,27 +73,30 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/change-password')
-  public async changePassword(
-    @AuthUser() user: any,
-    @Body() password: any,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const result = await this.serv.updatePassword(
-      password.currentPassword,
-      password.newPassword,
-      user.userId,
-    );
+  public async changePassword(@AuthUser() user: any, @Body() password: any) {
+    try {
+      await this.serv.updatePassword(
+        password.currentPassword,
+        password.newPassword,
+        user.userId,
+      );
+    } catch (err) {
+      if (!password.newPassword)
+        throw new HttpException(
+          'No new password was provided',
+          HttpStatus.BAD_REQUEST,
+        );
 
-    if (!result) {
-      res.status(HttpStatus.UNAUTHORIZED).json({
-        status: 'Unauthorized',
-        message: 'Password does not match the one stored on the database',
-      });
-    } else if (result) {
-      res.status(HttpStatus.CREATED).json({
-        status: 'Created',
-        message: 'Password was changed successfully',
-      });
+      if (!password.currentPassword)
+        throw new HttpException(
+          'Original password not provided',
+          HttpStatus.BAD_REQUEST,
+        );
+
+      throw new HttpException(
+        'The password does not match the original one.',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
 
@@ -115,7 +126,20 @@ export class UsersController {
     }),
   )
   public uploadFile(@UploadedFile() file, @AuthUser() user: any) {
-    return this.serv.updateProfileImg(file, user.userId);
+    try {
+      return this.serv.updateProfileImg(file, user.userId);
+    } catch (e) {
+      if (!file)
+        throw new HttpException(
+          'No file was received.',
+          HttpStatus.BAD_REQUEST,
+        );
+
+      throw new HttpException(
+        'Failed to upload file.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get('profile-image/:image')
@@ -123,19 +147,30 @@ export class UsersController {
     @Param('image') image: string,
     @Res() res: any,
   ): Observable<Object> {
-    return of(
-      res.sendFile(
-        join(
-          process.cwd(),
-          'https://storage.googleapis.com/tentynotes/' + image,
+    try {
+      return of(
+        res.sendFile(
+          join(
+            process.cwd(),
+            'https://storage.googleapis.com/tentynotes/' + image,
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      throw new HttpException('File not found.', HttpStatus.NOT_FOUND);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete()
   public async delete(@AuthUser() user: any) {
-    return await this.serv.delete(user.userId);
+    try {
+      return await this.serv.delete(user.userId);
+    } catch (e) {
+      throw new HttpException(
+        'Failed to delete user.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

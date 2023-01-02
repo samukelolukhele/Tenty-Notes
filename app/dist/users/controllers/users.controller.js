@@ -36,40 +36,64 @@ let UsersController = class UsersController {
         }
     }
     async getByProfile(user) {
-        return await this.serv.getProfile(user.userId);
+        try {
+            return await this.serv.getProfile(user.userId);
+        }
+        catch (e) {
+            throw new common_1.HttpException('Failed to get profile', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async getById(id) {
-        return this.serv.getById(id);
+        try {
+            return this.serv.getById(id);
+        }
+        catch (err) {
+            throw new common_1.HttpException('Failed to get user', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async create(user) {
         return await this.serv.create(user);
     }
-    async changePassword(user, password, res) {
-        const result = await this.serv.updatePassword(password.currentPassword, password.newPassword, user.userId);
-        if (!result) {
-            res.status(common_1.HttpStatus.UNAUTHORIZED).json({
-                status: 'Unauthorized',
-                message: 'Password does not match the one stored on the database',
-            });
+    async changePassword(user, password) {
+        try {
+            await this.serv.updatePassword(password.currentPassword, password.newPassword, user.userId);
         }
-        else if (result) {
-            res.status(common_1.HttpStatus.CREATED).json({
-                status: 'Created',
-                message: 'Password was changed successfully',
-            });
+        catch (err) {
+            if (!password.newPassword)
+                throw new common_1.HttpException('No new password was provided', common_1.HttpStatus.BAD_REQUEST);
+            if (!password.currentPassword)
+                throw new common_1.HttpException('Original password not provided', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('The password does not match the original one.', common_1.HttpStatus.UNAUTHORIZED);
         }
     }
     async update(user, updatedUser) {
         return await this.serv.updateById(user.userId, updatedUser);
     }
     uploadFile(file, user) {
-        return this.serv.updateProfileImg(file, user.userId);
+        try {
+            return this.serv.updateProfileImg(file, user.userId);
+        }
+        catch (e) {
+            if (!file)
+                throw new common_1.HttpException('No file was received.', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('Failed to upload file.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     getProfileImage(image, res) {
-        return (0, rxjs_1.of)(res.sendFile((0, path_1.join)(process.cwd(), 'https://storage.googleapis.com/tentynotes/' + image)));
+        try {
+            return (0, rxjs_1.of)(res.sendFile((0, path_1.join)(process.cwd(), 'https://storage.googleapis.com/tentynotes/' + image)));
+        }
+        catch (e) {
+            throw new common_1.HttpException('File not found.', common_1.HttpStatus.NOT_FOUND);
+        }
     }
     async delete(user) {
-        return await this.serv.delete(user.userId);
+        try {
+            return await this.serv.delete(user.userId);
+        }
+        catch (e) {
+            throw new common_1.HttpException('Failed to delete user.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 };
 __decorate([
@@ -107,9 +131,8 @@ __decorate([
     (0, common_1.Post)('/change-password'),
     __param(0, (0, user_decorator_1.AuthUser)()),
     __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "changePassword", null);
 __decorate([

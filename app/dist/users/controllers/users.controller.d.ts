@@ -2,7 +2,6 @@ import { CreatUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import { Observable } from 'rxjs';
-import { Response } from 'express';
 export declare class UsersController {
     private serv;
     constructor(serv: UsersService);
@@ -12,7 +11,7 @@ export declare class UsersController {
     create(user: CreatUserDto): Promise<import("@nestjs/common").UnauthorizedException | {
         access_token: string;
     }>;
-    changePassword(user: any, password: any, res: Response): Promise<void>;
+    changePassword(user: any, password: any): Promise<void>;
     update(user: any, updatedUser: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
     uploadFile(file: any, user: any): Promise<any>;
     getProfileImage(image: string, res: any): Observable<Object>;
