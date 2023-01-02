@@ -21,6 +21,7 @@ const typeorm_2 = require("typeorm");
 const auth_service_1 = require("../../auth/services/auth.service");
 const storage_1 = require("@google-cloud/storage");
 const path_1 = require("path");
+const nestjs_typeorm_paginate_1 = require("nestjs-typeorm-paginate");
 let UsersService = class UsersService {
     constructor(repo, auth) {
         this.repo = repo;
@@ -34,11 +35,10 @@ let UsersService = class UsersService {
         });
         this.bucket = this.storage.bucket(process.env.GCS_BUCKET);
     }
-    async getAll() {
-        return await this.repo.find({
-            relations: {
-                note: true,
-            },
+    async getUsers(options) {
+        return (0, nestjs_typeorm_paginate_1.paginate)(this.repo, options, {
+            relations: ['note'],
+            order: { id: 'DESC' },
             select: {
                 email: false,
                 full_name: false,

@@ -16,6 +16,11 @@ import { AuthService } from '../../auth/services/auth.service';
 import { Bucket, Storage } from '@google-cloud/storage';
 import { parse } from 'path';
 import { userInfo } from 'os';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 interface File {
   fieldname: string;
@@ -48,11 +53,12 @@ export class UsersService {
     this.bucket = this.storage.bucket(process.env.GCS_BUCKET);
   }
 
-  public async getAll() {
-    return await this.repo.find({
-      relations: {
-        note: true,
-      },
+  public async getUsers(
+    options: IPaginationOptions,
+  ): Promise<Pagination<User>> {
+    return paginate(this.repo, options, {
+      relations: ['note'],
+      order: { id: 'DESC' },
       select: {
         email: false,
         full_name: false,

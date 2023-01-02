@@ -27,8 +27,13 @@ let UsersController = class UsersController {
     constructor(serv) {
         this.serv = serv;
     }
-    async getAll() {
-        return await this.serv.getAll();
+    async getAll(page = 1, limit = 20) {
+        try {
+            return await this.serv.getUsers({ page, limit, route: 'users' });
+        }
+        catch (e) {
+            throw new common_1.HttpException('Failed to get users', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async getByProfile(user) {
         return await this.serv.getProfile(user.userId);
@@ -69,8 +74,10 @@ let UsersController = class UsersController {
 };
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(20), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAll", null);
 __decorate([

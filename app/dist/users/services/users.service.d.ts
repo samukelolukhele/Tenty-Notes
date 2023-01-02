@@ -4,6 +4,7 @@ import { CreatUserDto } from '../../users/dto/create-user.dto';
 import { User } from '../../users/users.entity';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/services/auth.service';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 interface File {
     fieldname: string;
     originalname: string;
@@ -21,7 +22,7 @@ export declare class UsersService {
     private bucket;
     private storage;
     constructor(repo: Repository<User>, auth: AuthService);
-    getAll(): Promise<User[]>;
+    getUsers(options: IPaginationOptions): Promise<Pagination<User>>;
     create(user: CreatUserDto): Promise<UnauthorizedException | {
         access_token: string;
     }>;

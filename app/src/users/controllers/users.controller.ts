@@ -12,6 +12,10 @@ import {
   Get,
   HttpStatus,
   BadRequestException,
+  HttpException,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -29,8 +33,18 @@ export class UsersController {
   constructor(private serv: UsersService) {}
 
   @Get()
-  public async getAll() {
-    return await this.serv.getAll();
+  public async getAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number = 20,
+  ) {
+    try {
+      return await this.serv.getUsers({ page, limit, route: 'users' });
+    } catch (e) {
+      throw new HttpException(
+        'Failed to get users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)

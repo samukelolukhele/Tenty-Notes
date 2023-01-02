@@ -6,7 +6,7 @@ import { Response } from 'express';
 export declare class UsersController {
     private serv;
     constructor(serv: UsersService);
-    getAll(): Promise<import("../users.entity").User[]>;
+    getAll(page?: number, limit?: number): Promise<import("nestjs-typeorm-paginate").Pagination<import("../users.entity").User, import("nestjs-typeorm-paginate").IPaginationMeta>>;
     getByProfile(user: any): Promise<import("../users.entity").User>;
     getById(id: number): Promise<import("../users.entity").User>;
     create(user: CreatUserDto): Promise<import("@nestjs/common").UnauthorizedException | {
