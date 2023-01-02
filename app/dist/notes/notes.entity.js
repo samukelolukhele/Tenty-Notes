@@ -49,7 +49,9 @@ __decorate([
     __metadata("design:type", Date)
 ], Note.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.note),
+    (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.note, {
+        eager: true,
+    }),
     __metadata("design:type", users_entity_1.User)
 ], Note.prototype, "author", void 0);
 Note = __decorate([

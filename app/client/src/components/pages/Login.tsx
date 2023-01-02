@@ -19,8 +19,7 @@ const Login = () => {
     password: '',
   });
 
-  const { LOGIN, handleFetchError, response, fetchError } =
-    useFetch<UseFetchTypes>();
+  const { handleFetchError, fetchError } = useFetch<UseFetchTypes>();
 
   const [error, setError] = useState({ status: false, message: 'No error' });
   const [loading, setLoading] = useState(false);

@@ -1,17 +1,26 @@
-import React from "react";
+import React from 'react';
+
+interface CheckTypes {
+  capsCheck: boolean;
+  lowerCheck: boolean;
+  lengthCheck: boolean;
+  numberCheck: boolean;
+}
 
 const PwdRequisites = ({
   capsCheck,
   lowerCheck,
   lengthCheck,
   numberCheck,
-}: any) => {
+}: CheckTypes) => {
+  const checkValid = (check: boolean) => (check ? 'valid' : '');
+
   return (
     <div className="pwd-requisites">
-      <p className={lowerCheck && "valid"}>Must contain a lowercase letter</p>
-      <p className={capsCheck && "valid"}>Must contain a capital letter</p>
-      <p className={numberCheck && "valid"}>Must contain a number</p>
-      <p className={lengthCheck && "valid"}>Must be longer than 7 character</p>
+      <p className={checkValid(lowerCheck)}>Must contain a lowercase letter</p>
+      <p className={checkValid(capsCheck)}>Must contain a capital letter</p>
+      <p className={checkValid(numberCheck)}>Must contain a number</p>
+      <p className={checkValid(lengthCheck)}>Must be longer than 7 character</p>
     </div>
   );
 };

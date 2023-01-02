@@ -16,13 +16,13 @@ export class User extends BaseEntity {
   })
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   username: string;
 
   @Column({ type: 'varchar' })
   full_name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
   @Column({ type: 'varchar', length: 255 })

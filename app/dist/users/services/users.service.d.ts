@@ -28,6 +28,7 @@ export declare class UsersService {
     getById(id: any): Promise<User>;
     getProfile(id: any): Promise<User>;
     getByEmail(email: string): Promise<User>;
+    getByUsername(username: string): Promise<User>;
     updatePassword(currentPassword: string, newPassword: string, user: any): Promise<import("typeorm").UpdateResult>;
     updateProfileImg(uploadedFile: File, id: number): Promise<any>;
     updateById(id: any, user: any): Promise<import("typeorm").UpdateResult>;

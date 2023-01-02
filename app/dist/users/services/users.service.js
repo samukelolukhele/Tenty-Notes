@@ -29,7 +29,7 @@ let UsersService = class UsersService {
             projectId: process.env.GCS_PROJECT,
             credentials: {
                 client_email: process.env.GCS_CLIENT_EMAIL,
-                private_key: process.env.GCS_PRIVATE_KEY,
+                private_key: process.env.GCS_PRIVATE_KEY.replace(/\\n/gm, '\n'),
             },
         });
         this.bucket = this.storage.bucket(process.env.GCS_BUCKET);
@@ -50,8 +50,11 @@ let UsersService = class UsersService {
     }
     async create(user) {
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        if (await this.getByEmail(user.email))
-            return null;
+        if (await this.getByEmail(user.email)) {
+            throw new common_1.HttpException('Email already in use', common_1.HttpStatus.BAD_REQUEST);
+        }
+        if (await this.getByUsername(user.username))
+            throw new common_1.HttpException('Username already in use', common_1.HttpStatus.BAD_REQUEST);
         const newUser = {
             username: user.username,
             email: user.email.toLowerCase(),
@@ -81,6 +84,13 @@ let UsersService = class UsersService {
             where: { email: email },
             relations: { note: true },
             select: { password: true, id: true },
+        });
+    }
+    async getByUsername(username) {
+        return await this.repo.findOne({
+            where: { username: username },
+            relations: { note: true },
+            select: { password: false, id: true },
         });
     }
     async updatePassword(currentPassword, newPassword, user) {

@@ -32,6 +32,8 @@ export class Note extends BaseEntity {
   @Column({ type: 'timestamptz' })
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.note)
+  @ManyToOne(() => User, (user) => user.note, {
+    eager: true,
+  })
   author: User;
 }

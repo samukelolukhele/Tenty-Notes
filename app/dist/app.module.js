@@ -16,6 +16,9 @@ const notes_module_1 = require("./notes/notes.module");
 const auth_module_1 = require("./auth/auth.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
+const core_1 = require("@nestjs/core");
+const http_error_filter_1 = require("./shared/http-error.filter");
+const logging_interceptor_1 = require("./shared/logging.interceptor");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -33,7 +36,17 @@ AppModule = __decorate([
             notes_module_1.NotesModule,
             auth_module_1.AuthModule,
         ],
-        providers: [config_1.ConfigService],
+        providers: [
+            config_1.ConfigService,
+            {
+                provide: core_1.APP_FILTER,
+                useClass: http_error_filter_1.HttpErrorFilter,
+            },
+            {
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: logging_interceptor_1.LoggingInterceptor,
+            },
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;

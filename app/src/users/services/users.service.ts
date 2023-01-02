@@ -1,5 +1,8 @@
 import {
+  BadRequestException,
   forwardRef,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -63,7 +66,15 @@ export class UsersService {
   public async create(user: CreatUserDto) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
-    if (await this.getByEmail(user.email)) return null;
+    if (await this.getByEmail(user.email)) {
+      throw new HttpException('Email already in use', HttpStatus.BAD_REQUEST);
+    }
+
+    if (await this.getByUsername(user.username))
+      throw new HttpException(
+        'Username already in use',
+        HttpStatus.BAD_REQUEST,
+      );
 
     const newUser = {
       username: user.username,
@@ -99,6 +110,14 @@ export class UsersService {
       where: { email: email },
       relations: { note: true },
       select: { password: true, id: true },
+    });
+  }
+
+  public async getByUsername(username: string): Promise<User> {
+    return await this.repo.findOne({
+      where: { username: username },
+      relations: { note: true },
+      select: { password: false, id: true },
     });
   }
 

@@ -51,7 +51,9 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: ChangeEvent<any>) => {
+    e.preventDefault();
+    setError({ status: false, message: '' });
     Object.values(checks).some((v) => {
       if (v === false) {
         setLoading(false);
@@ -68,13 +70,16 @@ const Register = () => {
 
     return await POST('users', false, state)
       .then((res) => {
-        localStorage.setItem('token', res.data.access_token);
+        res.data.access_token &&
+          localStorage.setItem('token', res.data.access_token);
 
         setLoading(false);
         return nav('/dashboard');
       })
       .catch((err) => {
-        return setError({ status: true, message: 'Failed to create account.' });
+        console.log(err);
+        setLoading(false);
+        return setError({ status: true, message: err.response.data.message });
       });
   };
 
@@ -91,16 +96,16 @@ const Register = () => {
             <div className="register-name-container">
               <div className="full-name-container">
                 <label>Full Name</label>
-                <input type="text" name="full_name" {...bind} />
+                <input type="text" name="full_name" {...bind} required />
               </div>
               <div className="username-container">
                 <label>Username</label>
-                <input type="text" name="username" {...bind} />
+                <input type="text" name="username" {...bind} required />
               </div>
             </div>
 
             <label>Email</label>
-            <input type="email" name="email" {...bind} />
+            <input type="email" name="email" {...bind} required />
             <label>Password</label>
             <input
               type="password"
@@ -114,7 +119,7 @@ const Register = () => {
             <input
               type="password"
               name="confirmPassword"
-              onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
               {...bind}
             />
           </div>
