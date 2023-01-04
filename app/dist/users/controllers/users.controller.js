@@ -84,7 +84,7 @@ let UsersController = class UsersController {
             return (0, rxjs_1.of)(res.sendFile((0, path_1.join)(process.cwd(), 'https://storage.googleapis.com/tentynotes/' + image)));
         }
         catch (e) {
-            throw new common_1.HttpException('File not found.', common_1.HttpStatus.NOT_FOUND);
+            throw new common_1.HttpException('Image not found.', common_1.HttpStatus.NOT_FOUND);
         }
     }
     async delete(user) {

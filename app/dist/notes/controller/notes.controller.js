@@ -34,21 +34,48 @@ let NotesController = class NotesController {
         return await this.serv.getById(id);
     }
     async getNotesByUser(page = 1, limit = 10, id) {
-        return await this.serv.getByUserId({ page, limit, route: 'notes' }, Number(id));
+        try {
+            return await this.serv.getByUserId({ page, limit, route: 'notes' }, Number(id));
+        }
+        catch (err) {
+            throw new common_1.HttpException('Failed to retrieve notes.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async create(user, note) {
-        return await this.serv.create({
-            title: note.title,
-            body: note.body,
-            authorId: user.userId,
-            is_pinned: false,
-        });
+        try {
+            return await this.serv.create({
+                title: note.title,
+                body: note.body,
+                authorId: user.userId,
+                is_pinned: false,
+            });
+        }
+        catch (err) {
+            if (err.status !== 400)
+                throw new common_1.HttpException('Failed to create note.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new common_1.HttpException('The required fields were not provided.', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async update(user, id, note) {
-        return await this.serv.update(user.userId, id, note);
+        try {
+            return await this.serv.updateById(id, user.userId, note);
+        }
+        catch (err) {
+            console.log(err);
+            if (err.status === 401)
+                throw new common_1.HttpException('Failed to update note.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new common_1.HttpException('This note belongs to another user.', common_1.HttpStatus.UNAUTHORIZED);
+        }
     }
     async delete(user, id) {
-        return await this.serv.delete(user.userId, id);
+        try {
+            return await this.serv.delete(user.userId, id);
+        }
+        catch (err) {
+            if (err.status !== 401)
+                throw new common_1.HttpException('Failed to delete note.', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new common_1.HttpException('This note belongs to another user.', common_1.HttpStatus.UNAUTHORIZED);
+        }
     }
 };
 __decorate([

@@ -10,6 +10,11 @@ exports.LocalAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 let LocalAuthGuard = class LocalAuthGuard extends (0, passport_1.AuthGuard)('local') {
+    handleRequest(err, user, info, context, status) {
+        if (err || !user)
+            throw new common_1.HttpException('The email and password combination are incorrect.', common_1.HttpStatus.UNAUTHORIZED);
+        return user;
+    }
 };
 LocalAuthGuard = __decorate([
     (0, common_1.Injectable)()

@@ -44,6 +44,9 @@ let NotesService = class NotesService {
     }
     async create(note) {
         const date = new Date().toISOString().slice(0, 10);
+        if (!note.title || !note.body || !note.authorId)
+            throw new common_1.HttpException('The required fields were not provided.', common_1.HttpStatus.BAD_REQUEST);
+        console.log(note);
         const newNote = await this.repo.create({
             title: note.title,
             body: note.body,
@@ -81,13 +84,14 @@ let NotesService = class NotesService {
         const noteToUpdate = await this.getById(id);
         const date = new Date().toISOString().slice(0, 10);
         if (noteToUpdate.authorId !== userId)
-            return new common_1.UnauthorizedException();
-        return await this.repo.update(id, Object.assign(Object.assign(Object.assign(Object.assign({}, (note.title && { title: note.title })), (note.body && { body: note.body })), (note.is_pinned && { is_pinned: note.is_pinned })), { updated_at: date }));
+            throw new common_1.UnauthorizedException('', 'This note belongs to another user.');
+        await this.repo.update(id, Object.assign(Object.assign(Object.assign(Object.assign({}, (note.title && { title: note.title })), (note.body && { body: note.body })), (note.is_pinned && { is_pinned: note.is_pinned })), { authorId: noteToUpdate.authorId, updated_at: date }));
+        return await this.getById(id);
     }
     async delete(userId, id) {
         const noteToDel = await this.getById(id);
         if (noteToDel.authorId != userId)
-            return new common_1.UnauthorizedException();
+            throw new common_1.UnauthorizedException();
         return await this.repo.delete(id);
     }
 };

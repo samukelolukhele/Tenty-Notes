@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
 import { CreateNoteDto } from '../../notes/dto/create-note.dto';
@@ -51,6 +56,14 @@ export class NotesService {
   public async create(note: CreateNoteDto) {
     const date = new Date().toISOString().slice(0, 10);
 
+    if (!note.title || !note.body || !note.authorId)
+      throw new HttpException(
+        'The required fields were not provided.',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    console.log(note);
+
     const newNote = await this.repo.create({
       title: note.title,
       body: note.body,
@@ -96,20 +109,24 @@ export class NotesService {
     const noteToUpdate = await this.getById(id);
     const date = new Date().toISOString().slice(0, 10);
 
-    if (noteToUpdate.authorId !== userId) return new UnauthorizedException();
+    if (noteToUpdate.authorId !== userId)
+      throw new UnauthorizedException('', 'This note belongs to another user.');
 
-    return await this.repo.update(id, {
+    await this.repo.update(id, {
       ...(note.title && { title: note.title }),
       ...(note.body && { body: note.body }),
       ...(note.is_pinned && { is_pinned: note.is_pinned }),
+      authorId: noteToUpdate.authorId,
       updated_at: date,
     });
+
+    return await this.getById(id);
   }
 
   public async delete(userId: any, id: number) {
     const noteToDel = await this.getById(id);
 
-    if (noteToDel.authorId != userId) return new UnauthorizedException();
+    if (noteToDel.authorId != userId) throw new UnauthorizedException();
 
     return await this.repo.delete(id);
   }

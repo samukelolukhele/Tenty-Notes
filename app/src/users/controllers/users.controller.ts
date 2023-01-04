@@ -26,7 +26,6 @@ import { UsersService } from '../services/users.service';
 import * as Multer from 'multer';
 import { Observable, of } from 'rxjs';
 import path, { join } from 'path';
-import { Response } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -157,7 +156,7 @@ export class UsersController {
         ),
       );
     } catch (e) {
-      throw new HttpException('File not found.', HttpStatus.NOT_FOUND);
+      throw new HttpException('Image not found.', HttpStatus.NOT_FOUND);
     }
   }
 
