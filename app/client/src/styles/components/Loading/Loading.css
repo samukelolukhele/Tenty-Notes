@@ -16,11 +16,11 @@
 }
 
 .bg-tetiary {
-  background-color: #1a9da7;
+  background-color: #1a40a7;
 }
 
 .bg-tetiary-darken {
-  background-color: #13747b;
+  background-color: #132f7b;
 }
 
 .spinner {
@@ -38,7 +38,7 @@
   border-radius: 50%;
 }
 .spinner .spinner-inner-1 {
-  background: linear-gradient(to right, rgba(26, 157, 167, 0) 0%, rgba(26, 157, 167, 0) 50%, #1a9da7 51%);
+  background: linear-gradient(to right, rgba(26, 64, 167, 0) 0%, rgba(26, 64, 167, 0) 50%, #1a40a7 51%);
 }
 .spinner .spinner-inner-2 {
   background: linear-gradient(to top, rgba(24, 24, 24, 0) 0%, #181818 100%);

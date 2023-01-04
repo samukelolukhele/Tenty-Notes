@@ -51,10 +51,10 @@ let UsersService = class UsersService {
     async create(user) {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         if (await this.getByEmail(user.email)) {
-            throw new common_1.HttpException('Email already in use', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('Email already in use.', common_1.HttpStatus.BAD_REQUEST);
         }
         if (await this.getByUsername(user.username))
-            throw new common_1.HttpException('Username already in use', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('Username already in use.', common_1.HttpStatus.BAD_REQUEST);
         const newUser = {
             username: user.username,
             email: user.email.toLowerCase(),
@@ -116,7 +116,7 @@ let UsersService = class UsersService {
                 await fileToBeDeleted.delete();
             }
             catch (e) {
-                console.log({
+                common_1.Logger.log({
                     Error: e.message,
                     Response: 'Since there was no image found the users image is now set to the default',
                 });

@@ -50,17 +50,8 @@ const Login = () => {
         return window.location.reload();
       })
       .catch((err) => {
-        handleFetchError(
-          Number(err.response.status),
-          201,
-          'Failed to login',
-          true,
-        );
-        handleFetchError(
-          Number(err.response.status),
-          401,
-          'Login credentials are incorrect',
-        );
+        const message = err.response.data.message;
+        setError({ status: err.status, message: message });
 
         setLoading(false);
       });

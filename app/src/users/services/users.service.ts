@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -73,12 +74,12 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
     if (await this.getByEmail(user.email)) {
-      throw new HttpException('Email already in use', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Email already in use.', HttpStatus.BAD_REQUEST);
     }
 
     if (await this.getByUsername(user.username))
       throw new HttpException(
-        'Username already in use',
+        'Username already in use.',
         HttpStatus.BAD_REQUEST,
       );
 
@@ -164,7 +165,7 @@ export class UsersService {
 
         await fileToBeDeleted.delete();
       } catch (e) {
-        console.log({
+        Logger.log({
           Error: e.message,
           Response:
             'Since there was no image found the users image is now set to the default',

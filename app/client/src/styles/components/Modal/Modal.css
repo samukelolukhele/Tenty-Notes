@@ -42,7 +42,7 @@
   }
 }
 .modal .modal-close {
-  background-color: #d32752;
+  background-color: #e91818;
   margin-left: auto;
   padding: 0.5rem 0.8rem;
   width: -webkit-fit-content;
@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 .modal .modal-close:hover {
-  background-color: #a81f41;
+  background-color: #bc1212;
   transform: scale(1.1);
   transition: ease 0.5s;
 }

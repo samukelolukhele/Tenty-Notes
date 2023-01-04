@@ -75,12 +75,12 @@ export const ChangePasswordModal = (props: ModalProps) => {
   });
 
   const { state, bind } = useForm(initialState);
-  const { POST, handleFetchError, fetchError, setFetchError } = useFetch();
+  const { POST } = useFetch();
 
   const handleSubmit = async () => {
     Object.values(checks).some(async (v) => {
       if (v === false) {
-        setFetchError({ status: false, message: '' });
+        setError({ status: false, message: '' });
         setLoading(false);
         return setError({
           status: true,
@@ -89,21 +89,16 @@ export const ChangePasswordModal = (props: ModalProps) => {
       } else {
         setLoading(true);
         setError({ status: false, message: '' });
-        setFetchError({ status: false, message: '' });
+        setError({ status: false, message: '' });
 
         await POST('users/change-password', true, state)
           .then(() => {
             return window.location.reload();
           })
           .catch((err) => {
-            const status = err.response.status;
+            const message = err.response.data.message;
             setLoading(false);
-            handleFetchError(status, 201, 'Failed to change password', true);
-            handleFetchError(
-              status,
-              401,
-              'The password that was entered was incorrect',
-            );
+            setError({ status: true, message: message });
           });
       }
     });
@@ -151,7 +146,6 @@ export const ChangePasswordModal = (props: ModalProps) => {
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>
-      {fetchError.status && <Error message={fetchError.message} />}
       {error.status && <Error message={error.message} />}
       {loading && <Circles width={40} height={40} color={colours.tetiary} />}
     </Modal>
@@ -199,9 +193,10 @@ export const AddNoteModal = (props: ModalProps) => {
   };
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, message: '' });
 
   const { state, bind } = useForm(initialState);
-  const { POST, handleFetchError, fetchError } = useFetch<UseFetchTypes>();
+  const { POST } = useFetch<UseFetchTypes>();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -211,9 +206,9 @@ export const AddNoteModal = (props: ModalProps) => {
         return window.location.reload();
       })
       .catch((err) => {
-        const status = err.response.status;
+        const message = err.response.data.message;
         setLoading(false);
-        handleFetchError(status, 201, 'Failed to add note', true);
+        setError({ status: true, message: message });
       });
   };
 
@@ -231,7 +226,7 @@ export const AddNoteModal = (props: ModalProps) => {
         Submit
       </button>
       {loading && <Loading />}
-      {fetchError.status && <Error message={fetchError.message} />}
+      {error.status && <Error message={error.message} />}
     </Modal>
   );
 };
@@ -244,8 +239,9 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
     description: null,
   };
   const { state, bind } = useForm(initialState);
-  const { PATCH, handleFetchError, fetchError } = useFetch<UseFetchTypes>();
+  const { PATCH } = useFetch<UseFetchTypes>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, message: '' });
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -254,9 +250,9 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
         return window.location.reload();
       })
       .catch((err) => {
-        const status = err.response.status;
+        const message = err.response.data.message;
+        setError({ status: err.status, message: message });
         setLoading(false);
-        handleFetchError(status, 201, 'Failed to update user', true);
       });
   };
 
@@ -302,7 +298,7 @@ export const UpdateUserModal = (props: UpdateUserProps) => {
         Submit
       </button>
       {loading && <Loading />}
-      {fetchError.status && <Error message={fetchError.message} />}
+      {error.status && <Error message={error.message} />}
     </Modal>
   );
 };
@@ -314,9 +310,10 @@ export const UpdateNoteModal = (props: UpdateNoteProps) => {
   };
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, message: '' });
 
   const { state, bind } = useForm(initialState);
-  const { PATCH, fetchError, handleFetchError } = useFetch();
+  const { PATCH } = useFetch();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -325,9 +322,9 @@ export const UpdateNoteModal = (props: UpdateNoteProps) => {
         return window.location.reload();
       })
       .catch((err) => {
-        const status = err.response.status;
+        const message = err.response.data.message;
+        setError({ status: err.status, message: message });
         setLoading(false);
-        handleFetchError(status, 201, 'Failed to update note.', true);
       });
   };
 
@@ -356,13 +353,14 @@ export const UpdateNoteModal = (props: UpdateNoteProps) => {
         Submit
       </button>
       {loading && <Loading />}
-      {fetchError.status && <Error message={fetchError.message} />}
+      {error.status && <Error message={error.message} />}
     </Modal>
   );
 };
 
 export const UploadImageModal = (props: ModalProps) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: true, message: '' });
   const data = new FormData();
 
   const handleChange = (e: ChangeEvent<any>) => {
@@ -370,7 +368,7 @@ export const UploadImageModal = (props: ModalProps) => {
 
     data.append('file', target.files[0]);
   };
-  const { POST, handleFetchError, fetchError } = useFetch();
+  const { POST } = useFetch();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -381,17 +379,8 @@ export const UploadImageModal = (props: ModalProps) => {
       })
       .catch((err) => {
         setLoading(false);
-        handleFetchError(
-          err.response.status,
-          401,
-          'You are not allowed to make these changes',
-        );
-        handleFetchError(
-          err.response.status,
-          201,
-          'Failed to upload image',
-          true,
-        );
+        const message = err.response.data.message;
+        setError({ status: err.status, message: message });
       });
   };
 
@@ -416,7 +405,7 @@ export const UploadImageModal = (props: ModalProps) => {
         </button>
       </div>
       {loading && <Loading />}
-      {fetchError.status && <Error message={fetchError.message} />}
+      {error.status && <Error message={error.message} />}
     </Modal>
   );
 };

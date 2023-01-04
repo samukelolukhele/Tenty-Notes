@@ -54,17 +54,19 @@ const Register = () => {
   const handleSubmit = async (e: ChangeEvent<any>) => {
     e.preventDefault();
     setError({ status: false, message: '' });
+
     Object.values(checks).some((v) => {
       if (v === false) {
         setLoading(false);
         return setError({
           status: true,
-          message: 'Password requirements not met',
+          message: 'Password requirements not met.',
         });
       }
     });
+
     if (state.password !== state.confirmPassword)
-      return setError({ status: true, message: 'Passwords must match' });
+      return setError({ status: true, message: 'Passwords must match.' });
 
     setLoading(true);
 
@@ -124,6 +126,7 @@ const Register = () => {
             />
           </div>
           <hr className="register-divider" />
+          {error.status && <Error message={error.message} />}
           {pwdRequisites && (
             <PwdRequisites
               capsCheck={checks.capsLetterCheck}
@@ -148,7 +151,6 @@ const Register = () => {
           {loading && (
             <Circles width={40} height={40} color={colours.tetiary} />
           )}
-          {error.status && <Error message={error.message} />}
         </div>
       </div>
     </div>

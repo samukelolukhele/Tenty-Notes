@@ -14,7 +14,7 @@
   color: #dddddd;
 }
 .card:hover {
-  border-left: 3px solid #1a9da7;
+  border-left: 3px solid #1a40a7;
   transition: ease 0.3s;
 }
 
@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 .card-header .card-title:hover {
-  color: #1a9da7;
+  color: #1a40a7;
 }
 .card-header .card-author {
   cursor: pointer;
@@ -49,11 +49,11 @@
   padding: 4px;
   font-size: 1.5rem;
   border-radius: 1000px;
-  color: #1a9da7;
-  border: 1px solid #1a9da7;
+  color: #1a40a7;
+  border: 1px solid #1a40a7;
 }
 .card-tetiary .pencil-icon:hover {
-  background-color: #1a9da7;
+  background-color: #1a40a7;
   color: white;
 }
 .card-tetiary .trash-icon {
@@ -62,6 +62,6 @@
   border-radius: 1000px;
 }
 .card-tetiary .trash-icon:hover {
-  background-color: #d32752;
+  background-color: #e91818;
   color: white;
 }/*# sourceMappingURL=Card.css.map */

@@ -60,7 +60,7 @@
   width: fit-content;
 }
 .row .card .card-author:hover {
-  color: #1a9da7;
+  color: #1a40a7;
 }
 
 .profile {
@@ -144,7 +144,7 @@
   width: fit-content;
 }
 .profile-container .profile-info .profile-name-container .profile-username:hover {
-  color: #1a9da7;
+  color: #1a40a7;
   cursor: pointer;
 }
 .profile-container .profile-info .profile-name-container button {

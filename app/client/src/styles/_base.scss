@@ -63,10 +63,9 @@ input {
 }
 
 .error-message {
-  background-color: $error;
-  color: white;
+  color: $error;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: normal;
   text-align: center;
   padding: 2px 2rem;
 }
