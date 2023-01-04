@@ -19,8 +19,6 @@ const Login = () => {
     password: '',
   });
 
-  const { handleFetchError, fetchError } = useFetch<UseFetchTypes>();
-
   const [error, setError] = useState({ status: false, message: 'No error' });
   const [loading, setLoading] = useState(false);
 
@@ -94,7 +92,7 @@ const Login = () => {
           {loading && (
             <Circles width={40} height={40} color={colours.tetiary} />
           )}
-          {fetchError.status && <Error message={fetchError.message} />}
+          {error.status && <Error message={error.message} />}
         </div>
       </div>
     </div>
