@@ -14,7 +14,7 @@
   cursor: pointer;
 }
 .navbar .container .logout:hover {
-  color: #1a40a7;
+  color: #13aa9a;
 }
 .navbar .container .nav-links {
   display: flex;
@@ -43,7 +43,7 @@
   font-size: 1.4rem;
 }
 .navbar .container .nav-links a:hover {
-  color: #1a40a7;
+  color: #13aa9a;
 }
 .navbar .container .nav-btn {
   background: transparent;

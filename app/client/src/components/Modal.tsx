@@ -11,6 +11,7 @@ import { colours } from './utils/colours';
 import PwdRequisites from './utils/PwdRequisites';
 
 interface ModalProps {
+  className?: string;
   children?: React.ReactNode;
   bgClick?: any;
   btnCloseVisiible?: boolean;
@@ -38,19 +39,17 @@ const Modal = (props: ModalProps) => {
   return (
     <>
       <div className="modal-bg" onClick={props.bgClick}></div>
-      <div className="modal-container">
-        <div className="modal">
-          <button
-            style={{
-              display: props.btnCloseVisiible ? 'inline-block' : 'none',
-            }}
-            className={`modal-close`}
-            onClick={props.btnCloseClick}
-          >
-            X
-          </button>
-          <div className="modal-fields">{props.children}</div>
-        </div>
+      <div className={`modal ${props.className}`}>
+        <button
+          style={{
+            display: props.btnCloseVisiible ? 'inline-block' : 'none',
+          }}
+          className={`modal-close`}
+          onClick={props.btnCloseClick}
+        >
+          X
+        </button>
+        <div className="modal-fields">{props.children}</div>
       </div>
     </>
   );
@@ -217,11 +216,23 @@ export const AddNoteModal = (props: ModalProps) => {
       btnCloseClick={props.btnCloseClick}
       bgClick={props.bgClick}
       btnCloseVisiible={true}
+      className="add-note-modal"
     >
       <label>Title</label>
-      <input type="text" maxLength={24} name="title" {...bind} />
-      <label>Content</label>
-      <textarea rows={8} name="body" {...bind} />
+      <input
+        type="text"
+        maxLength={24}
+        name="title"
+        placeholder="Note title..."
+        {...bind}
+      />
+      <label htmlFor="body">Content</label>
+      <textarea
+        rows={12}
+        name="body"
+        {...bind}
+        placeholder="Write anything here!"
+      />
       <button className="btn btn-tetiary" onClick={handleSubmit}>
         Submit
       </button>

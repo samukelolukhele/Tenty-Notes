@@ -1,4 +1,4 @@
-@use "../../variables" as var;
+@use '../../variables' as var;
 
 .login {
   width: 100vw;
@@ -19,7 +19,7 @@
   padding: 3.5rem 2.75rem;
   box-shadow: var.$base-box-shadow;
   background-color: var.$primary;
-  width: 100%;
+  width: 290px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -16,9 +16,17 @@ import PrivateRoute from './components/PrivateRoute';
 import Note from './components/pages/Note';
 import Profile from './components/pages/Profile';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: 300000,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -42,6 +50,7 @@ function App() {
           </Routes>
         </Router>
       </AuthContextProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

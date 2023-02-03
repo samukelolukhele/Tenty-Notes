@@ -39,7 +39,12 @@ const useFetch = <T,>() => {
     authRequired = false,
   ): Promise<any | AxiosResponse<any, any>> => {
     authRequired && checkJWT();
-    return await axios.get(route, authRequired ? authHeaders : undefined);
+    const { data } = await axios.get(
+      route,
+      authRequired ? authHeaders : undefined,
+    );
+
+    return data;
   };
 
   const POST = async (route: string, authRequired = false, body: any) => {

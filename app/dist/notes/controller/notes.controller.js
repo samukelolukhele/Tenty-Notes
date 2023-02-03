@@ -22,8 +22,7 @@ let NotesController = class NotesController {
     constructor(serv) {
         this.serv = serv;
     }
-    async paginate(page = 1, limit = 10) {
-        limit = limit > 10 ? 10 : limit;
+    async paginate(page = 1, limit = 2) {
         return this.serv.paginate({
             page,
             limit,
@@ -81,7 +80,7 @@ let NotesController = class NotesController {
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(2), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)

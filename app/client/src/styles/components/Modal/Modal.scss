@@ -2,29 +2,30 @@
 @use '../../breakpoints' as break;
 
 .modal-bg {
-  position: absolute;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 2;
   top: 0;
   left: 0;
   width: 100%;
-  height: 200vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 .modal-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  margin: auto;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
   z-index: 3;
 }
 
 .modal {
-  position: relative;
+  position: fixed;
   max-width: 400px;
   width: 70%;
   display: flex;
@@ -36,6 +37,11 @@
   justify-content: center;
   align-items: center;
   border-radius: var.$base-border-radius;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 
   @include break.sm {
     min-width: 0;
@@ -73,13 +79,30 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 4px 0;
+    gap: 10px;
+
+    label {
+      margin-left: 0.3rem;
+      font-weight: map-get(var.$font-weight, 'light');
+    }
+
+    textarea {
+      border: 2px solid #d2d2d2;
+      border-radius: var.$base-border-radius;
+      padding: 10px;
+    }
 
     input {
-      padding: 0.7rem 0;
+      border: 2px solid #d2d2d2;
+      padding: 0.7rem 10px;
+      border-radius: var.$base-border-radius;
       background-color: #ffffff;
     }
   }
+}
+
+.add-note-modal {
+  max-width: 800px;
 }
 
 .dialogue-box {

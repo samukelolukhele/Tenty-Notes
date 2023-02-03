@@ -10,11 +10,12 @@
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  min-width: 200px;
   background-color: #181818;
   color: #dddddd;
 }
 .card:hover {
-  border-left: 3px solid #1a40a7;
+  border-left: 3px solid #13aa9a;
   transition: ease 0.3s;
 }
 
@@ -26,7 +27,7 @@
   cursor: pointer;
 }
 .card-header .card-title:hover {
-  color: #1a40a7;
+  color: #13aa9a;
 }
 .card-header .card-author {
   cursor: pointer;
@@ -49,11 +50,11 @@
   padding: 4px;
   font-size: 1.5rem;
   border-radius: 1000px;
-  color: #1a40a7;
-  border: 1px solid #1a40a7;
+  color: #13aa9a;
+  border: 1px solid #13aa9a;
 }
 .card-tetiary .pencil-icon:hover {
-  background-color: #1a40a7;
+  background-color: #13aa9a;
   color: white;
 }
 .card-tetiary .trash-icon {
@@ -62,6 +63,6 @@
   border-radius: 1000px;
 }
 .card-tetiary .trash-icon:hover {
-  background-color: #e91818;
+  background-color: #c62424;
   color: white;
 }/*# sourceMappingURL=Card.css.map */

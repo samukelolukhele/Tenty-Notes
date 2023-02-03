@@ -48,8 +48,8 @@ const Login = () => {
         return window.location.reload();
       })
       .catch((err) => {
-        const message = err.response.data.message;
-        setError({ status: err.status, message: message });
+        const eMessage = err.response.data.message;
+        setError({ status: true, message: eMessage });
 
         setLoading(false);
       });

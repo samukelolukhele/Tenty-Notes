@@ -1,10 +1,10 @@
-import React from "react";
-import useLink from "../hooks/useLink";
+import React from 'react';
+import useLink from '../hooks/useLink';
 
 interface UProps {
   className?: string;
   userId: any;
-  username: string;
+  username?: string;
   route: string;
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Circles } from 'react-loader-spinner';
+import { Circles, Grid } from 'react-loader-spinner';
 import { colours } from './utils/colours';
 
 const Loading = ({ colour }: { colour?: string }) => {
@@ -10,6 +10,15 @@ const Loading = ({ colour }: { colour?: string }) => {
       height={40}
       color={colour || colours.tetiary}
     />
+  );
+};
+
+export const PageLoading = ({ colour }: { colour?: string }) => {
+  return (
+    <div className="loading-container">
+      <Grid width={80} height={80} color={colour || colours.primary} />{' '}
+      <h3>Loading please wait...</h3>{' '}
+    </div>
   );
 };
 

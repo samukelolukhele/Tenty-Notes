@@ -28,9 +28,9 @@ export class NotesController {
   @Get()
   async paginate(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 2,
   ): Promise<Pagination<Note>> {
-    limit = limit > 10 ? 10 : limit;
+    // limit = limit > 10 ? 10 : limit;
 
     return this.serv.paginate({
       page,

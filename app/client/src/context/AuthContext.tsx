@@ -3,7 +3,6 @@ import jwtDecode from 'jwt-decode';
 import React, { createContext, useEffect, useState } from 'react';
 import { TokenProps } from '../hooks/types/@types.Token';
 import { User } from '../hooks/types/@types.User';
-import useFetch from '../hooks/useFetch';
 
 interface AProps {
   children?: React.ReactNode;
@@ -17,7 +16,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedInUser, setLoggedInUser] = useState<User>({
     email: '',
     username: '',
-    id: null,
+    id: 1,
     description: '',
     profile_image: '',
     full_name: '',

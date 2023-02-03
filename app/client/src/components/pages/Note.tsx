@@ -6,61 +6,47 @@ import useGetSearchParams from '../../hooks/useGetSearchParams';
 import '../../styles/pages/note/note.css';
 import Username from '../Username';
 import { colours } from '../utils/colours';
+import useData from '../../hooks/useData';
+import { PageLoading } from '../Loading';
 
 const Note = () => {
-  const [note, setNote] = useState({
-    title: '',
-    body: '',
-    created_at: '',
-    updated_at: '',
-    author: {
-      email: '',
-      username: '',
-      id: null,
-      description: '',
-      profile_image: '',
-      full_name: '',
-    },
-  });
-
-  const { GET } = useFetch();
   const searchTerm = useGetSearchParams('id');
-
-  const handlePageData = async () => {
-    return await GET('notes/' + searchTerm).then((res) => setNote(res.data));
-  };
+  const { note, isLoadingNote, isFetchingNote, refetchNote } = useData(
+    null,
+    Number(searchTerm),
+  );
 
   useEffect(() => {
-    handlePageData();
+    refetchNote();
   }, []);
 
-  return !note.title ? (
-    <div className="loading-container">
-      <Grid height={80} width={80} color={colours.primary} />
-      <h3>Loading please wait...</h3>
-    </div>
-  ) : (
+  if (isLoadingNote || isFetchingNote)
+    return <PageLoading colour={colours.tetiary} />;
+
+  return (
     <div className="container-small">
       <div className="note">
         <div className="note-container">
           <div className="note-title-container">
-            <h1 className="note-title">{note.title}</h1>
+            <h1 className="note-title">{note?.title}</h1>
             <div className="note-username-container">
               <img
                 className="note-image"
-                src={`https://storage.googleapis.com/tentynotes/${note.author.profile_image}`}
+                src={`https://storage.googleapis.com/tentynotes/${
+                  note?.author && note?.author?.profile_image
+                }`}
               />
               <Username
-                username={note.author.username}
-                userId={note.author.id}
+                username={note?.author?.username}
+                userId={note?.author?.id}
                 route="dashboard/profile"
                 className="note-username"
               />
-              <p className="note-date">{note.created_at}</p>
+              <p className="note-date">{note?.created_at}</p>
             </div>
           </div>
           <div className="note-content-container">
-            <p className="note-body">{note.body}</p>
+            <p className="note-body">{note?.body}</p>
           </div>
         </div>
       </div>

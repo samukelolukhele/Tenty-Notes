@@ -45,4 +45,9 @@
     width: 80%;
     grid-template-columns: repeat(auto, 1fr);
   }
+}
+.profile-page .no-notes {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #686868;
 }/*# sourceMappingURL=profile.css.map */
