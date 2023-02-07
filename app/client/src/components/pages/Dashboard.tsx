@@ -135,7 +135,7 @@ const Dashboard = () => {
                     >
                       <AiOutlinePlus />
                     </button>
-                    <button
+                    {/* <button
                       className="btn btn-edit-profile btn-tetiary"
                       onClick={() =>
                         setModal({ type: 'Update_User', status: true })
@@ -158,7 +158,7 @@ const Dashboard = () => {
                       }
                     >
                       Delete Profile
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <p className="profile-description">{user?.description}</p>

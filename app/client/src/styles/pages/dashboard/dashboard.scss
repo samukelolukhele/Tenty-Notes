@@ -203,10 +203,6 @@
           display: flex;
           align-items: center;
           z-index: 98;
-
-          @include break.md {
-            bottom: 40vh;
-          }
         }
       }
     }

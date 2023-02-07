@@ -122,30 +122,6 @@ const Profile = () => {
                     >
                       <AiOutlinePlus />
                     </button>
-                    <button
-                      className="btn btn-tetiary"
-                      onClick={() =>
-                        setModal({ type: 'Update_User', status: true })
-                      }
-                    >
-                      Edit Profile
-                    </button>
-                    <button
-                      className="btn btn-info"
-                      onClick={() =>
-                        setModal({ type: 'Change_Password', status: true })
-                      }
-                    >
-                      Change Password
-                    </button>
-                    <button
-                      className="btn btn-error"
-                      onClick={() =>
-                        setModal({ type: 'Delete_User', status: true })
-                      }
-                    >
-                      Delete Profile
-                    </button>
                   </div>
                 ) : (
                   <></>

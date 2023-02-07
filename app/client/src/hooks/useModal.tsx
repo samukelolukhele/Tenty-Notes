@@ -33,8 +33,8 @@ type ModalStateType = {
 };
 
 const useModal = (
-  userDefaults: UserDefaultOptionsType,
-  noteDefaults: NoteDefaultOptionsType,
+  userDefaults?: UserDefaultOptionsType,
+  noteDefaults?: NoteDefaultOptionsType,
 ) => {
   const [modal, setModal] = useState<ModalStateType>({
     type: 'Update_User',

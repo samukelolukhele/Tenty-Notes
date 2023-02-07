@@ -196,11 +196,6 @@
   align-items: center;
   z-index: 98;
 }
-@media (max-width: 720px) {
-  .profile-container .profile-info .profile-name-container .action-btns .btn-add-note {
-    bottom: 40vh;
-  }
-}
 .profile-container .profile-info .profile-description {
   word-wrap: break-word;
   width: 90%;

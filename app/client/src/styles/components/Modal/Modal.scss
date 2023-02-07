@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 98;
   top: 0;
   left: 0;
   width: 100%;
@@ -37,11 +37,12 @@
   justify-content: center;
   align-items: center;
   border-radius: var.$base-border-radius;
-  z-index: 3;
+  z-index: 99;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
+  top: 20%;
 
   @include break.sm {
     min-width: 0;
