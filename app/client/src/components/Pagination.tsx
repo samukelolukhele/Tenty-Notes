@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useUserData from '../hooks/useUserData';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import '../styles/components/Pagination/Pagination.css';
 
