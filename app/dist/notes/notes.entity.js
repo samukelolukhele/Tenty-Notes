@@ -38,7 +38,7 @@ __decorate([
 ], Note.prototype, "authorId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'boolean' }),
-    __metadata("design:type", Boolean)
+    __metadata("design:type", Object)
 ], Note.prototype, "is_pinned", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamptz' }),

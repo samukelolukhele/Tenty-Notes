@@ -25,7 +25,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { UsersService } from '../services/users.service';
 import * as Multer from 'multer';
 import { Observable, of } from 'rxjs';
-import path, { join } from 'path';
+import { join } from 'path';
 
 @Controller('users')
 export class UsersController {
@@ -33,8 +33,8 @@ export class UsersController {
 
   @Get()
   public async getAll(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number = 20,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit = 20,
   ) {
     try {
       return await this.serv.getUsers({ page, limit, route: 'users' });
@@ -145,7 +145,7 @@ export class UsersController {
   public getProfileImage(
     @Param('image') image: string,
     @Res() res: any,
-  ): Observable<Object> {
+  ): Observable<any> {
     try {
       return of(
         res.sendFile(

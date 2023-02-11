@@ -82,7 +82,7 @@ __decorate([
     __param(0, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(2), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "paginate", null);
 __decorate([
@@ -98,7 +98,7 @@ __decorate([
     __param(1, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(2), common_1.ParseIntPipe)),
     __param(2, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, Number]),
+    __metadata("design:paramtypes", [Object, Object, Number]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "getNotesByUser", null);
 __decorate([

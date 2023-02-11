@@ -1,5 +1,4 @@
 /// <reference types="node" />
-import { UnauthorizedException } from '@nestjs/common';
 import { CreatUserDto } from '../../users/dto/create-user.dto';
 import { User } from '../../users/users.entity';
 import { Repository } from 'typeorm';
@@ -23,7 +22,7 @@ export declare class UsersService {
     private storage;
     constructor(repo: Repository<User>, auth: AuthService);
     getUsers(options: IPaginationOptions): Promise<Pagination<User>>;
-    create(user: CreatUserDto): Promise<UnauthorizedException | {
+    create(user: CreatUserDto): Promise<import("@nestjs/common").UnauthorizedException | {
         access_token: string;
     }>;
     getById(id: any): Promise<User>;

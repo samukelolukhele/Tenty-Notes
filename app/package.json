@@ -18,7 +18,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "main": "dist/index.js",
+  "engines": {
+    "node": "14"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -42,6 +50,8 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "date-and-time": "^2.4.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^4.2.1",
     "dotenv": "^16.0.3",
     "multer": "^1.4.5-lts.1",
     "nest-router": "^1.0.9",

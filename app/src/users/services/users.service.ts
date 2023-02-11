@@ -1,12 +1,10 @@
 import {
-  BadRequestException,
   forwardRef,
   HttpException,
   HttpStatus,
   Inject,
   Injectable,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatUserDto } from '../../users/dto/create-user.dto';
@@ -16,7 +14,6 @@ import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/services/auth.service';
 import { Bucket, Storage } from '@google-cloud/storage';
 import { parse } from 'path';
-import { userInfo } from 'os';
 import {
   IPaginationOptions,
   Pagination,

@@ -13,6 +13,7 @@ export class CreatUserDto {
     description: 'The email address of the user',
     example: 'john.doe@email.com',
   })
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 

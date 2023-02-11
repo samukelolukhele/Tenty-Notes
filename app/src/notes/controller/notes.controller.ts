@@ -6,7 +6,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -27,8 +26,8 @@ export class NotesController {
 
   @Get()
   async paginate(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 2,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit = 2,
   ): Promise<Pagination<Note>> {
     // limit = limit > 10 ? 10 : limit;
 
@@ -46,8 +45,8 @@ export class NotesController {
 
   @Get('notes-by-user/:id')
   async getNotesByUser(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit: number = 10,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(2), ParseIntPipe) limit = 10,
     @Param('id') id: number,
   ) {
     try {

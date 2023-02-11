@@ -26,6 +26,7 @@ __decorate([
         description: 'The email of the user',
         example: 'john@doe.com',
     }),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "email", void 0);
 __decorate([

@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
-  handleRequest(err, user, info, context, status) {
+  handleRequest(err, user) {
     if (err || !user)
       throw new HttpException(
         'The email and password combination are incorrect.',

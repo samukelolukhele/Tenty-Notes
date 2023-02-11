@@ -24,7 +24,7 @@ export class Note extends BaseEntity {
   authorId: number;
 
   @Column({ type: 'boolean' })
-  is_pinned: boolean = false;
+  is_pinned = false;
 
   @Column({ type: 'timestamptz' })
   created_at: Date;

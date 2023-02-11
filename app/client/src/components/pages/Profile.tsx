@@ -151,7 +151,7 @@ const Profile = () => {
             })}
         </div>
         {isLoadingProfileNotes && <Loading colour={colours.primary} />}
-        {notes && notes?.items?.length > 0 ? (
+        {!isLoadingProfileNotes && notes && notes?.items?.length > 0 ? (
           <Pagination
             currentPage={page}
             nextClick={() => handleNext(notes, page)}

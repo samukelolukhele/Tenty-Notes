@@ -5,19 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { use } from 'passport';
 import { CreateNoteDto } from '../../notes/dto/create-note.dto';
 import { UpdateNoteDto } from '../../notes/dto/update-note.dto';
 import { Note } from '../../notes/notes.entity';
 import { Repository } from 'typeorm';
-import { from, Observable } from 'rxjs';
 import {
   Pagination,
   paginate,
   IPaginationOptions,
-  IPaginationMeta,
 } from 'nestjs-typeorm-paginate';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NotesService {
