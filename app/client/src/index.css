@@ -5,7 +5,8 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
+  position: relative;
 }
 
 button {
@@ -201,4 +202,4 @@ input {
   transform: scale(1.05);
   box-shadow: -1px 4px 20px 0px rgba(0, 0, 0, 0.75);
   transition: ease-in 0.3s;
-}/*# sourceMappingURL=index.css.map */
+} /*# sourceMappingURL=index.css.map */

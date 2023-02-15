@@ -12,7 +12,7 @@ async function bootstrap() {
         origin: '*',
     });
     const host = '0.0.0.0';
-    const port = process.env.PORT;
+    const port = process.env.PORT || 8082;
     await app.listen(port, host, () => console.log(`Server running on localhost:${port}`));
 }
 exports.default = bootstrap;

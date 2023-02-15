@@ -384,7 +384,7 @@ export const UploadImageModal = (props: ModalProps) => {
   const handleSubmit = async () => {
     setLoading(true);
     await POST('users/upload', true, data)
-      .then((res) => {
+      .then(() => {
         setLoading(false);
         return window.location.reload();
       })
