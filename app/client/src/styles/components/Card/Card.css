@@ -18,6 +18,14 @@
   border-left: 3px solid #13aa9a;
   transition: ease 0.3s;
 }
+@media (max-width: 480px) {
+  .card {
+    min-width: 205px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
 
 .card-header {
   font-size: 1.4rem;

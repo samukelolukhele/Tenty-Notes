@@ -18,6 +18,11 @@
     border-left: 3px solid var.$tetiary;
     transition: ease 0.3s;
   }
+
+  @include break.sm {
+    min-width: 205px;
+    width: fit-content;
+  }
 }
 
 .card-header {
