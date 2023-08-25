@@ -154,7 +154,6 @@ button {
     transform: none !important;
   }
   .responsive_nav .user-container-mobile {
-    height: -webkit-min-content !important;
     height: -moz-min-content !important;
     height: min-content !important;
     margin-top: 0 !important;

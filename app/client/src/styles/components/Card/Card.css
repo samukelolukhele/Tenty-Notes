@@ -7,7 +7,6 @@
   border-radius: 5px;
   box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.32);
   flex-direction: column;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   min-width: 240px;
@@ -21,7 +20,6 @@
 @media (max-width: 480px) {
   .card {
     min-width: 205px;
-    width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
   }
